@@ -1,0 +1,233 @@
+<!--begin::Content-->
+<?php $user = $this->session->userdata('sias-finance'); ?>
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Pemasukan</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item text-muted">
+                            <a href="" class="text-muted">Detail Pemasukan Sekolah</a>
+                        </li>                       
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Toolbar-->
+            <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="top">
+                <a onclick="window.history.back();" class="btn btn-light-danger btn-sm font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-backward"></i>Kembali</a>           
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Notice-->
+            <?php echo $this->session->flashdata('flash_message'); ?>
+            <!--end::Notice-->
+            <div class="row">
+                <div class="col-lg-12" id="kt_form" >
+                    <!--begin::Card-->
+                    <div class="card card-custom" >
+                        <div class="card-header mt-2" style="justify-content: center">
+                            <div class="card-title text-center">                                
+                                <h2 class="card-label font-size-h1 font-weight-bolder">
+                                    Detail Tagihan DU "<?php echo strtoupper(strtolower($income_du[0]->nama)); ?>" - <?php echo $income_du[0]->nis; ?>
+                                    <span class="pt-2 font-size-sm d-block text-warning">Berikut detail Tagihan DU Siswa sesuai kode Invoice</span>
+                                </h2>
+                            </div>
+                        </div>
+                        <!--begin::Form-->
+                        <form class="form" novalidate="novalidate" action="<?php echo site_url('finance/income/income/update_income_du/' . paramEncrypt($income_du[0]->id_tagihan_pembayaran_du)); ?>" enctype="multipart/form-data" method="post" id="kt_edit_income_du_form">
+                            <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+                            <input type="hidden" name="id_tagihan" value="<?php echo paramEncrypt($income_du[0]->id_tagihan_pembayaran_du); ?>">
+                            <div class="card-body text-center">
+                                <div class="row border-bottom">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bolder">Nomor Invoice</label>
+                                            <input type="text" name="nomor_invoice" value="<?php echo $income_du[0]->id_invoice; ?>" class="form-control form-control-lg" />
+                                            <span class="form-text text-dark "><b class="text-danger">*WAJIB DIISI, </b>isikan Nomor Invoice</span>               
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label class="font-weight-bolder">Nomor Pembayaran</label>
+                                            <input type="text" name="nomor_pembayaran" value="<?php echo $income_du[0]->nomor_siswa; ?>" class="form-control form-control-lg" />
+                                            <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI, </b>isikan Nomor Pembayaran</span>               
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label class="font-weight-bolder">Total Nominal (Rp)</label>
+                                            <input type="text" name="nominal_tagihan" value="<?php echo $income_du[0]->nominal_tagihan; ?>" class="form-control  form-control-lg" />
+                                            <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI, </b>isikan Total Nominal</span>               
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">    
+                                        <div class="text-center">
+                                            <label class="font-weight-bolder font-size-h6 ">Tahun Ajaran</label>
+                                        </div>
+                                        <p class="font-weight-boldest font-size-h1 text-info"><?php echo $income_du[0]->tahun_ajaran; ?></p>
+                                    </div>
+                                    <div class="col-lg-2">    
+                                        <div class="text-center">
+                                            <label class="font-weight-bolder font-size-h6 ">Semester</label>
+                                        </div>
+                                        <p class="font-weight-boldest font-size-h1 text-info"><?php echo strtoupper($income_du[0]->semester); ?></p>
+                                    </div>
+                                </div>
+                                <div class="row border-bottom">
+                                    <div class="col-lg-6 border-right border-left">
+                                        <div class="row mt-2">
+                                            <div class="col-lg-12">
+                                                <h6 class="text-center font-weight-bolder mb-5 mt-5 font-size-h4 text-warning">
+                                                    Identitas Siswa
+                                                </h6>
+                                            </div>
+                                            <div class="form-group col-lg-12 col-12">
+                                                <label class="font-weight-bold">Nama Siswa</label>
+                                                <textarea class="form-control" name="nama_siswa" rows="2"><?php echo $income_du[0]->nama; ?></textarea>
+                                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI, </b>isikan Nama Siswa</span>               
+
+                                            </div>                                            
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">NIS</label>
+                                                <input type="text" name="nis" disabled="" value="<?php echo $income_du[0]->nis; ?>" class="input-reset form-control-solid  form-control form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS </b></span>               
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Tingkat</label>
+                                                <input type="text" name="tahun_pajak" disabled="" value="<?php
+                                                if ($income_du[0]->level_tingkat == 1) {
+                                                    echo 'KB';
+                                                } else if ($income_du[0]->level_tingkat == 2) {
+                                                    echo 'TK';
+                                                } else if ($income_du[0]->level_tingkat == 3) {
+                                                    echo 'SD';
+                                                } else if ($income_du[0]->level_tingkat == 4) {
+                                                    echo 'SMP';
+                                                } else if ($income_du[0]->level_tingkat == 5) {
+                                                    echo 'SMA';
+                                                }
+                                                ?>" class="input-reset form-control-solid  form-control form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS </b></span>    
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Kelas</label>
+                                                <input type="text" name="kelas" disabled="" value="<?php echo $income_du[0]->nama_tingkat; ?>" class="input-reset form-control-solid  form-control form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS </b></span>    
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Nama Kelas</label>
+                                                <input type="text" name="nama_kelas" disabled="" value="<?php echo $income_du[0]->nama_kelas; ?>" class="input-reset form-control-solid  form-control form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS </b></span>    
+                                            </div>
+                                        </div>
+                                    </div>       
+                                    <div class="col-lg-6 border-right border-left">
+                                        <div class="row mt-2">
+                                            <div class="col-lg-12">
+                                                <h6 class="text-center font-weight-bolder mb-5 mt-5 font-size-h4 text-warning">
+                                                    Identitas Transfer Tagihan
+                                                </h6>
+                                            </div>
+                                            <div class="form-group col-lg-12 col-12">
+                                                <label class="font-weight-bold">Rincian</label>
+                                                <textarea class="form-control" name="rincian" rows="2"><?php echo $income_du[0]->rincian; ?></textarea>
+                                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI, </b>isikan Rincian Tagihan</span>               
+
+                                            </div>                                                                                     
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Tanggal Invoice</label>
+                                                <input type="text" id="kt_datepicker_income" name="tanggal_invoice" readonly="" value="<?php echo $income_du[0]->tanggal_invoice; ?>" class="form-control  form-control-lg"  />
+                                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI, </b>pilih Tanggal Invoice</span> 
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Nomor Jurnal Pembukuan</label>
+                                                <input type="text" name="nama_wajib_pajak" readonly="" value="<?php echo $income_du[0]->nomor_jurnal_pembukuan; ?>" class="form-control form-control-solid form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS </b></span>    
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Informasi</label>
+                                                <textarea class="form-control" name="informasi" rows="2"><?php echo $income_du[0]->informasi; ?></textarea>
+                                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI, </b>isikan Rincian Tagihan</span> 
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Catatan</label>
+                                                <textarea class="form-control"  name="catatan" rows="2"><?php echo $income_du[0]->catatan; ?></textarea>
+                                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI, </b>isikan Catatan Tagihan</span> 
+                                            </div>
+                                        </div>
+                                    </div>     
+                                </div>           
+                                <div class=" mt-5 row border-bottom">       
+                                    <div class="col-lg-2 text-center">  
+                                    </div>
+                                    <div class="col-lg-2 text-center">    
+                                        <div class="text-center">
+                                            <label class="font-weight-bolder font-size-h6 ">Tipe Tagihan</label>
+                                        </div>
+                                        <?php if ($income_du[0]->tipe_tagihan == 1) { ?>
+                                            <p class="font-weight-boldest display-3 mb-1 text-warning text-center">DPB</p>
+                                        <?php } elseif ($income_du[0]->tipe_tagihan == 2) { ?>
+                                            <p class="font-weight-boldest display-3 mb-1 text-success text-center">DU</p>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-lg-3 text-center">    
+                                        <div class="text-center">
+                                            <label class="font-weight-bolder font-size-h6 ">Chanel Pembayaran</label>
+                                        </div>
+                                        <p class="font-weight-boldest display-3 mb-1 text-warning text-center"><?php echo strtoupper($income_du[0]->channel_pembayaran); ?></p>
+                                    </div>                                   
+                                    <div class="col-lg-3 text-center" >    
+                                        <div class="text-center">
+                                            <label class="font-weight-bolder font-size-h6">Status Pembayaran</label>
+                                        </div>
+                                        <div class=" text-center ">
+                                            <?php if ($income_du[0]->status_pembayaran == "MENUNGGU") { ?>
+                                                <p class="font-weight-boldest display-3 mb-1 text-warning text-center">MENUNGGU</p>
+                                            <?php } else if ($income_du[0]->status_pembayaran == "SUKSES") { ?>
+                                                <p class="font-weight-boldest display-3 mb-1 text-success">SUKSES</p>
+                                            <?php } else if ($income_du[0]->status_pembayaran == "GAGAL") { ?>
+                                                <p class="font-weight-boldest display-3 mb-1 text-danger">GAGAL</p>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 text-center">  
+                                    </div>
+                                </div>
+                                <div class="mt-6 text-center" style="justify-content: center">
+                                    <button class="btn btn-success btn-lg font-weight-bold mr-10"><i class="fas fa-check-circle "></i>KONFIRMASI PERUBAHAN</button>
+                                </div>
+                            </div>
+
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<script>
+    var url_confirm = "<?php echo site_url("finance/income/income/confirm_update_income") ?>";
+</script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-income-du.js"></script>
