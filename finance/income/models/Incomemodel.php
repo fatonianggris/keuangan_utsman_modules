@@ -200,16 +200,15 @@ class IncomeModel extends CI_Model
 
 	public function get_schoolyear()
 	{
-
 		$sql = $this->db->query("SELECT * FROM tahun_ajaran WHERE semester='ganjil'");
 		return $sql->result();
 	}
 
 	public function get_schoolyear_now()
 	{
-		$this->db->select('*');
-		$this->db->where('status_tahun_ajaran', 1);
-		$sql = $this->db->get($this->table_schoolyear);
+		$this->db2->select('*');
+		$this->db2->where('status_tahun_ajaran', 1);
+		$sql = $this->db2->get($this->table_schoolyear);
 		return $sql->result();
 	}
 
