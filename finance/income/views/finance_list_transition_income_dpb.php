@@ -121,10 +121,11 @@
 									<thead>
 										<tr>
 											<th>ID Invoice</th>
-											<th>No Pembayaran</th>
-											<th>Nama</th>
-											<th>Waktu Berlaku</th>
-											<th>Info Kelas</th>
+											<th>No. Pembayaran</th>
+											<th>Nama Siswa</th>
+											<th>Tgl Invoice</th>
+											<th>Tingkat</th>
+											<th>Kelas</th>
 											<th>Rincian</th>
 											<th>Total Nominal</th>
 											<th>Status Transaksi</th>
@@ -143,7 +144,11 @@
 												</td>
 												<td class="font-weight-bolder text-warning"><?php echo (($value->nomor_pembayaran_dpb)); ?></td>
 												<td class="font-weight-bolder"><?php echo ucwords(strtolower($value->nama)); ?></td>
-												<td class="font-weight-bolder text-danger"><?php echo $value->tgl_invoice; ?></td>
+												<td class="font-weight-bolder text-danger"><?php echo $value->tanggal_invoice; ?></td>
+												<td class="font-weight-bolder">
+													<?php $tingkat = explode(" ", $value[0]->informasi);
+													echo $tingkat[0]; ?>
+												</td>
 												<td class="font-weight-bolder"><?php echo (($value->informasi)); ?></td>
 												<td class="font-weight-bolder"><?php echo strtoupper(strtolower($value->rincian)); ?></td>
 												<td class="font-weight-bolder"><?php echo number_format($value->nominal_tagihan, 0, ',', '.'); ?></td>
