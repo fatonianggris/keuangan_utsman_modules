@@ -44,7 +44,7 @@
                 <div class="col-lg-12">
                     <!--begin::Entry-->
                     <div class="px-mobile">
-                        <div class="alert alert-custom alert-warning alert-shadow fade show" role="alert">
+                        <div class="alert alert-custom alert-light-warning alert-shadow fade show" role="alert">
                             <div class="alert-icon">
                                 <span class="svg-icon svg-icon-dark svg-icon-4x">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/General/Thunder-move.svg-->
