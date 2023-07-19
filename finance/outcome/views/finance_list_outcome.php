@@ -136,7 +136,7 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Status Tahun Ajaran:</label>
+                                        <label>Tahun Ajaran:</label>
                                         <select class="form-control datatable-input" data-col-index="7">
                                             <option value="">Pilih Tahun Ajaran</option>
                                             <?php
