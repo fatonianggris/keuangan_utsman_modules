@@ -138,7 +138,7 @@ if (!empty($schoolyear)) {
                                             <label>Jenis Transaksi:</label>
                                             <select class="form-control datatable-input" data-col-index="5">
                                                 <option value="">Pilih Transaksi</option>
-                                                <option value="DEBIT">Debit</option>
+                                                <option value="DEBET">Debet</option>
                                                 <option value="KREDIT">Kredit</option>
                                             </select>
                                         </div>
@@ -149,8 +149,10 @@ if (!empty($schoolyear)) {
                                                 data-col-index="6" />
                                         </div>
                                     </div>
-                                    <div class="row mt-8">
-                                        <div class="col-lg-10">
+                                    
+                                <div class="row mt-8">
+                                    <div class="row col-lg-7">
+                                        <div class="col-lg-12 mb-lg-0 mb-6">
                                             <button class="btn btn-primary btn-primary--icon" id="kt_search">
                                                 <span>
                                                     <i class="la la-search"></i>
@@ -164,7 +166,22 @@ if (!empty($schoolyear)) {
                                                 </span>
                                             </button>
                                         </div>
-                                        <div class="col-lg-2 text-right">
+                                    </div>
+                                    <div class="row col-lg-5">
+                                        <div class="col-lg-4 mb-lg-0 mb-6 text-right">
+                                            <span class="font-weight-bolder">Tampilkan Dari Tanggal</span>
+                                        </div>
+                                        <div class="col-lg-6 mb-lg-0 mb-6">
+                                            <div class="input-group" id="kt_daterangepicker_6">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i
+                                                            class="la la-calendar-check-o"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control font-weight-bolder" readonly=""
+                                                    placeholder="Select date range">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 mb-lg-0 mb-6">
                                             <div class="btn-group">
                                                 <button class="btn btn-warning font-weight-bold dropdown-toggle"
                                                     type="button" data-toggle="dropdown" aria-haspopup="true"
@@ -173,29 +190,19 @@ if (!empty($schoolyear)) {
                                                     Export
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <form class="form" id="frm-excel"
-                                                        action="<?php echo site_url('ppdb/report/export_data_csv'); ?>"
-                                                        method="POST">
-                                                        <input type="text" id="id_check_excel" class="form-control"
-                                                            value="" name="data_check" style="display:none">
-                                                        <button class="dropdown-item" role="button" type="submit"><i
-                                                                class="flaticon2-checking"></i> Laporan .csv</button>
-                                                    </form>
-                                                    <form class="form" id="frm-form"
-                                                        action="<?php echo site_url('ppdb/admission/export_student_formulir'); ?>"
-                                                        method="POST">
-                                                        <input type="text" id="id_check_form" class="form-control"
-                                                            value="" name="data_check" style="display:none">
-                                                        <button class="dropdown-item" role="button" type="submit"><i
-                                                                class="flaticon-doc"></i> Laporan .pdf</button>
-                                                    </form>
+                                                    <button id="btn_excel" class="dropdown-item" role="button"
+                                                        type="submit"><i class="flaticon2-checking"></i> Laporan
+                                                        .csv</button>
 
+                                                    <button id="btn_pdf" class="dropdown-item" role="button"
+                                                        type="submit"><i class="flaticon-doc"></i> Laporan
+                                                        .pdf</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                                <!--begin: Datatable-->
+                                </div>
+
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-separate table-hover table-light-primary table-checkable"

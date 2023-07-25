@@ -62,7 +62,9 @@
                                     <!--end::Svg Icon-->
                                 </span>
                             </div>
-                            <div class="alert-text text-dark font-weight-bold">MOHON UNTUK DIPERHATIKAN!!.<br> Silahkan Melakukan Pengecekan Kembali Untuk Transaksi KREDIT/DEBET & Untuk Fitur Edit/Delete Transaksi Hanya Berlaku Untuk Transaksi Terakhir, Terima Kasih !</div>
+                            <div class="alert-text text-dark font-weight-bold">MOHON UNTUK DIPERHATIKAN!!.<br> Silahkan
+                                Melakukan Pengecekan Kembali Untuk Transaksi KREDIT/DEBET & Untuk Fitur Edit/Delete
+                                Transaksi Hanya Berlaku Untuk Transaksi Terakhir, Terima Kasih !</div>
                             <div class="alert-close">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true"><i class="ki ki-close"></i></span>
@@ -98,52 +100,53 @@
                         <div class="card-body" id="paper">
                             <div class="card-body">
                                 <!--begin: Search Form-->
-                                <form class="">
-                                    <div class="row mb-4">
-                                        <div class="col-lg-2 mb-lg-0 mb-6">
-                                            <label>NIS Siswa:</label>
-                                            <input type="text" class="form-control datatable-input"
-                                                placeholder="Inputkan NIS Siswa" data-col-index="1" />
-                                        </div>
-                                        <div class="col-lg-4 mb-lg-0 mb-6">
-                                            <label>Nama Siswa:</label>
-                                            <input type="text" class="form-control datatable-input"
-                                                placeholder="Inputkan Nama Siswa" data-col-index="2" />
-                                        </div>
-                                        <div class="col-lg-2 mb-lg-0 mb-6">
-                                            <label>Tahun Ajaran:</label>
-                                            <select class="form-control datatable-input" data-col-index="4">
-                                                <option value="">Pilih Tahun Ajaran</option>
-                                                <?php
+
+                                <div class="row mb-4">
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>NIS Siswa:</label>
+                                        <input type="text" class="form-control datatable-input"
+                                            placeholder="Inputkan NIS Siswa" data-col-index="1" />
+                                    </div>
+                                    <div class="col-lg-4 mb-lg-0 mb-6">
+                                        <label>Nama Siswa:</label>
+                                        <input type="text" class="form-control datatable-input"
+                                            placeholder="Inputkan Nama Siswa" data-col-index="2" />
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Tahun Ajaran:</label>
+                                        <select class="form-control datatable-input" data-col-index="4">
+                                            <option value="">Pilih Tahun Ajaran</option>
+                                            <?php
 if (!empty($schoolyear)) {
     foreach ($schoolyear as $key => $value) {
         ?>
-                                                <option value="<?php echo $value->id_tahun_ajaran; ?>">
-                                                    <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
-                                                </option>
-                                                <?php
+                                            <option value="<?php echo $value->id_tahun_ajaran; ?>">
+                                                <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
+                                            </option>
+                                            <?php
 } //ngatur nomor urut
 }
 ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 mb-lg-0 mb-6">
-                                            <label>Jenis Transaksi:</label>
-                                            <select class="form-control datatable-input" data-col-index="5">
-                                                <option value="">Pilih Transaksi</option>
-                                                <option value="DEBIT">Debit</option>
-                                                <option value="KREDIT">Kredit</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2  mb-lg-0 mb-6">
-                                            <label>Tanggal Transaksi:</label>
-                                            <input type="text" class="form-control datatable-input"
-                                                id="kt_datepicker_transaction" placeholder="Input Tanggal"
-                                                data-col-index="6" />
-                                        </div>
+                                        </select>
                                     </div>
-                                    <div class="row mt-8">
-                                        <div class="col-lg-10">
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Jenis Transaksi:</label>
+                                        <select class="form-control datatable-input" data-col-index="5">
+                                            <option value="">Pilih Transaksi</option>
+                                            <option value="DEBET">Debet</option>
+                                            <option value="KREDIT">Kredit</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2  mb-lg-0 mb-6">
+                                        <label>Tanggal Transaksi:</label>
+                                        <input type="text" class="form-control datatable-input"
+                                            id="kt_datepicker_transaction" placeholder="Input Tanggal"
+                                            data-col-index="6" />
+                                    </div>
+                                </div>
+                                <div class="row mt-8">
+                                    <div class="row col-lg-7">
+                                        <div class="col-lg-12 mb-lg-0 mb-6">
                                             <button class="btn btn-primary btn-primary--icon" id="kt_search">
                                                 <span>
                                                     <i class="la la-search"></i>
@@ -157,7 +160,22 @@ if (!empty($schoolyear)) {
                                                 </span>
                                             </button>
                                         </div>
-                                        <div class="col-lg-2 text-right">
+                                    </div>
+                                    <div class="row col-lg-5">
+                                        <div class="col-lg-4 mb-lg-0 mb-6 text-right">
+                                            <span class="font-weight-bolder">Tampilkan Dari Tanggal</span>
+                                        </div>
+                                        <div class="col-lg-6 mb-lg-0 mb-6">
+                                            <div class="input-group" id="kt_daterangepicker_6">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i
+                                                            class="la la-calendar-check-o"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control font-weight-bolder" readonly=""
+                                                    placeholder="Select date range">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 mb-lg-0 mb-6">
                                             <div class="btn-group">
                                                 <button class="btn btn-warning font-weight-bold dropdown-toggle"
                                                     type="button" data-toggle="dropdown" aria-haspopup="true"
@@ -166,28 +184,19 @@ if (!empty($schoolyear)) {
                                                     Export
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <form class="form" id="frm-excel"
-                                                        action="#"
-                                                        method="POST">
-                                                        <input type="text" id="id_check_excel" class="form-control"
-                                                            value="" name="data_check" style="display:none">
-                                                        <button class="dropdown-item" role="button" type="submit"><i
-                                                                class="flaticon2-checking"></i> Laporan .csv</button>
-                                                    </form>
-                                                    <form class="form" id="frm-form"
-                                                        action="#"
-                                                        method="POST">
-                                                        <input type="text" id="id_check_form" class="form-control"
-                                                            value="" name="data_check" style="display:none">
-                                                        <button class="dropdown-item" role="button" type="submit"><i
-                                                                class="flaticon-doc"></i> Laporan .pdf</button>
-                                                    </form>
+                                                    <button id="btn_excel" class="dropdown-item" role="button"
+                                                        type="submit"><i class="flaticon2-checking"></i> Laporan
+                                                        .csv</button>
 
+                                                    <button id="btn_pdf" class="dropdown-item" role="button"
+                                                        type="submit"><i class="flaticon-doc"></i> Laporan
+                                                        .pdf</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+
                                 <!--begin: Datatable-->
                             </div>
                             <div class="table-responsive">
@@ -676,8 +685,6 @@ if (!empty($schoolyear)) {
             <form class="form" novalidate="novalidate"
                 action="<?php echo site_url('finance/savings/get_student_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
-                <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>"
-                    value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">

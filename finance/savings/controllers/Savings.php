@@ -16,6 +16,7 @@ class Savings extends MX_Controller
             redirect('finance/auth');
         }
         $this->load->library('form_validation');
+        $this->load->library('pdfgenerator');
     }
 
     //
@@ -62,32 +63,47 @@ class Savings extends MX_Controller
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             echo json_encode($data);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
     }
 
     public function get_all_transaction()
     {
-        $data = $this->SavingsModel->get_all_transaction_savings();
+        $param = $this->input->get();
+        $get = $this->security->xss_clean($param);
+
+        $data = $this->SavingsModel->get_all_transaction_savings($get['start_date'], $get['end_date']);
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             echo json_encode($data);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
     }
 
     public function get_student_transaction($nis = '')
     {
-        $data = $this->SavingsModel->get_student_transaction_recap_by_nis($nis); //?
+        $param = $this->input->get();
+        $get = $this->security->xss_clean($param);
+
+        $data = $this->SavingsModel->get_student_transaction_recap_by_nis($nis, $get['start_date'], $get['end_date']); //?
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             echo json_encode($data);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
     }
 
@@ -99,8 +115,11 @@ class Savings extends MX_Controller
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             echo json_encode($data);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
     }
 
@@ -205,8 +224,12 @@ class Savings extends MX_Controller
 
             echo json_encode($output);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
 
     }
@@ -273,8 +296,12 @@ class Savings extends MX_Controller
             }
             echo json_encode($output);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
 
     }
@@ -345,8 +372,12 @@ class Savings extends MX_Controller
             }
             echo json_encode($output);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
 
     }
@@ -416,8 +447,12 @@ class Savings extends MX_Controller
             }
             echo json_encode($output);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
 
     }
@@ -476,8 +511,12 @@ class Savings extends MX_Controller
 
             echo json_encode($output);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
 
     }
@@ -536,10 +575,62 @@ class Savings extends MX_Controller
 
             echo json_encode($output);
         } else {
-            $datas['title'] = 'ERROR | PAGE NOT FOUND';
-            echo json_encode($datas);
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
         }
 
+    }
+
+    public function print_saving_pdf()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            $fileName = 'Laporan_Tabungan_Siswa_' . $data['date_range'];
+
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                );
+            } else {
+
+                $get['saving'] = $this->SavingsModel->get_data_saving_export_all($data['data_check']);
+                $get['page'] = $this->SavingsModel->get_page();
+                $get['contact'] = $this->SavingsModel->get_contact();
+                $get['rentang_tanggal'] = $data['date_range'];
+
+                if ($get['saving'] == null or $get['saving'] == false) {
+                    //add new data
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    );
+                } else {
+
+                    $html = $this->load->view('pdf_template/saving', $get, true);
+                    $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true);
+
+                }
+            }
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+        }
+
+        echo json_encode($output);
     }
     //-----------------------------------------------------------------------//
 //
