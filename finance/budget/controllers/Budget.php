@@ -24,7 +24,7 @@ class Budget extends MX_Controller {
         $data['nav_bud'] = 'menu-item-here';
 
         $data['structure'] = $this->BudgetModel->get_structure_account();
-        $data['account'] = $this->BudgetModel->get_core_account();
+        $data['account'] = $this->BudgetModel->get_all_account();
         $data['schoolyear'] = $this->BudgetModel->get_schoolyear();
         $data['budget'] = $this->BudgetModel->get_budget_fondation();
 
@@ -60,7 +60,7 @@ class Budget extends MX_Controller {
     public function add_budget_fondation() {
         $data['nav_bud'] = 'menu-item-here';
 
-        $data['structure'] = $this->BudgetModel->get_structure_account();
+        //$data['structure'] = $this->BudgetModel->get_structure_account();
         $data['schoolyear'] = $this->BudgetModel->get_schoolyear();
 
         if ($this->user_finance[0]->id_role_struktur == 4 || $this->user_finance[0]->id_role_struktur == 5 || $this->user_finance[0]->id_role_struktur == 6 || $this->user_finance[0]->id_role_struktur == 9) {

@@ -56,6 +56,20 @@ class Savings extends MX_Controller
         }
     }
 
+	public function joint_saving_transaction()
+    {
+        $data['nav_save'] = 'menu-item-here';
+        $data['structure'] = $this->SavingsModel->get_structure_account();
+        $data['schoolyear'] = $this->SavingsModel->get_schoolyear();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            $this->template->load('template_finance/template_finance', 'finance_joint_savings_transaction', $data);
+        } else {
+            $datas['title'] = 'ERROR | PAGE NOT FOUND';
+            $this->load->view('error_404', $datas);
+        }
+    }
+
     public function get_all_student()
     {
         $data = $this->SavingsModel->get_student();
@@ -71,12 +85,45 @@ class Savings extends MX_Controller
         }
     }
 
+	public function get_all_joint_savings()
+    {
+        $data = $this->SavingsModel->get_joint_saving();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            echo json_encode($data);
+        } else {
+            $output = array("status" => false,
+                "messages" => "Opps!, Nama Tabungan Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+    }
+
     public function get_all_transaction()
     {
         $param = $this->input->get();
         $get = $this->security->xss_clean($param);
 
         $data = $this->SavingsModel->get_all_transaction_savings($get['start_date'], $get['end_date']);
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            echo json_encode($data);
+        } else {
+            $output = array("status" => false,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+    }
+
+	public function get_all_joint_transaction()
+    {
+        $param = $this->input->get();
+        $get = $this->security->xss_clean($param);
+
+        $data = $this->SavingsModel->get_all_joint_transaction_savings($get['start_date'], $get['end_date']);
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             echo json_encode($data);
@@ -117,6 +164,22 @@ class Savings extends MX_Controller
         } else {
             $output = array("status" => false,
                 "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+    }
+
+	public function get_joint_saving_info($nis = '')
+    {
+        $data['info_tabungan'] = $this->SavingsModel->get_joint_saving_by_acc_number($nis);
+        $data['info_transaksi'] = $this->SavingsModel->get_info_joint_saving_transaction($nis);
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            echo json_encode($data);
+        } else {
+            $output = array("status" => false,
+                "messages" => "Opps!, Tabungan Bersama Tidak Terdaftar, Silahkan coba lagi.",
             );
 
             echo json_encode($output);
@@ -169,6 +232,78 @@ class Savings extends MX_Controller
 
         $data['status_kredit_debet'] = "1";
         $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['nis'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                if ($get_balance[0]->saldo_tabungan == 0) {
+
+                    $data['saldo_akhir'] = $data['nominal'];
+
+                } else if ($data['nominal'] <= 0) {
+
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh <= 0, Silahkan input ulang.",
+                    );
+
+                    echo json_encode($output);
+                    exit();
+
+                } else {
+
+                    $data['saldo_akhir'] = $data['nominal'] + $get_balance[0]->saldo_tabungan;
+
+                }
+
+                $input_credit = $this->SavingsModel->insert_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
+
+                if ($input_credit == true && $update_balance == true) {
+
+                    $output = array("status" => true,
+                        "token" => $token,
+                        "messages" => "Berhasil Disetor!, Setor Tabungan Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
+                    );
+
+                } else {
+
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                    );
+                }
+
+            }
+
+            echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
+	public function post_credit_joint_savings()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $data['status_kredit_debet'] = "1";
+        $get_balance = $this->SavingsModel->get_joint_saving_balance($data['nomor_rekening']);
 
         $token = $this->security->get_csrf_hash();
 
@@ -604,6 +739,11 @@ class Savings extends MX_Controller
                 );
             } else {
 
+                $output = array("status" => true,
+                    "token" => $token,
+                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                );
+
                 $get['saving'] = $this->SavingsModel->get_data_saving_export_all($data['data_check']);
                 $get['page'] = $this->SavingsModel->get_page();
                 $get['contact'] = $this->SavingsModel->get_contact();
@@ -616,7 +756,6 @@ class Savings extends MX_Controller
                         "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
                     );
                 } else {
-
                     $html = $this->load->view('pdf_template/saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true);
 

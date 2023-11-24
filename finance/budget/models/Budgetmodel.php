@@ -128,6 +128,14 @@ class BudgetModel extends CI_Model {
         $sql = $this->db->get($this->table_structure);
         return $sql->result();
     }
+
+	public function get_all_account() {
+
+        $this->db->select('id_akun_keuangan, nama_akun,role_akun');
+		$this->db->where_not_in('role_akun', array(1, 3));
+        $sql = $this->db->get($this->table_account);
+        return $sql->result();
+    }
     
     public function get_core_account() {
 
