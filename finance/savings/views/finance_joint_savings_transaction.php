@@ -206,7 +206,7 @@ if (!empty($schoolyear)) {
                                         <tr>
                                             <th class="text-center"></th>
                                             <th>Nomor Rekening</th>
-                                            <th>Nama Tabungan</th>
+                                            <th>Nama Tabungan Bersama</th>
                                             <th>Waktu Transaksi</th>
                                             <th>TA</th>
                                             <th>Jenis Transaksi</th>
@@ -253,7 +253,7 @@ if (!empty($schoolyear)) {
     <div class="modal-dialog modal-lg" role="document" id="kt_form_credit">
         <div class="modal-content">
             <div class="modal-header bg-success">
-                <h5 class="modal-title font-weight-bolder"> Setor Tabungan </h5>
+                <h5 class="modal-title font-weight-bolder"> Setor Tabungan Bersama</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -70,6 +70,21 @@ class Savings extends MX_Controller
         }
     }
 
+	public function add_joint_saving()
+    {
+        $data['nav_save'] = 'menu-item-here';
+        $data['structure'] = $this->SavingsModel->get_structure_account();
+        $data['schoolyear'] = $this->SavingsModel->get_schoolyear();
+
+		if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            $this->template->load('template_finance/template_finance', 'finance_add_joint_savings', $data);
+        } else {
+            $datas['title'] = 'ERROR | PAGE NOT FOUND';
+            $this->load->view('error_404', $datas);
+        }
+      
+    }
+
     public function get_all_student()
     {
         $data = $this->SavingsModel->get_student();
@@ -169,6 +184,42 @@ class Savings extends MX_Controller
             echo json_encode($output);
         }
     }
+
+	public function post_joint_savings() {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $this->form_validation->set_rules('inputNomorRekeningBersama', 'Nama Pengeluaran', 'required');
+        $this->form_validation->set_rules('inputNamaRekeningBersama', 'Nominal Pengeluaran ', 'required');
+        $this->form_validation->set_rules('inputNominalSaldoAwal', 'Jenis Pengeluaran ', 'required');
+        $this->form_validation->set_rules('inputTahunAjaran', 'Jenjang Pengeluaran ', 'required');
+        $this->form_validation->set_rules('inputJenjang', 'Status Pembayaran', 'required');
+        $this->form_validation->set_rules('inputNamaWaliPenanggungJawab', 'Tahun Ajaran', 'required');
+		$this->form_validation->set_rules('inputNomorWaliPenanggungJawab', 'Tahun Ajaran', 'required');
+		$this->form_validation->set_rules('inputNamaSiswaPenanggungJawab', 'Tahun Ajaran', 'required');
+
+        $name_division = $this->SavingsModel->check_name_division($data['jenis_pengeluaran']);
+
+        if ($this->form_validation->run() == FALSE) {
+
+            $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
+            redirect('finance/outcome/add_nota_outcome');
+        } else {
+          
+            $input = $this->OutcomeModel->insert_nota_outcome($this->user_finance[0]->id_akun_keuangan, $data);
+
+            if ($input == true) {
+
+                $this->session->set_flashdata('flash_message', succ_msg("Berhasil Diajukan, Pengeluaran '$data[nama_pengeluaran]' Anda telah diajukan. Silahkan cek Pengajuan Pengeluaran Anda di menu Daftar Pengeluaran"));
+                redirect('finance/outcome/add_nota_outcome');
+            } else {
+
+                $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan input ulang...'));
+                redirect('finance/outcome/add_nota_outcome');
+            }
+        }
+    }
+
 
 	public function get_joint_saving_info($nis = '')
     {
