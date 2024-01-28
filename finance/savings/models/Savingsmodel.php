@@ -563,7 +563,7 @@ class SavingsModel extends CI_Model
                                     u8514965_panel_utsman.transaksi_tabungan tt
                                 LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
-                                    u8514965_panel_utsman.s.id_siswa = u8514965_panel_utsman.tt.nis_siswa
+                                    u8514965_panel_utsman.s.nis_siswa = u8514965_panel_utsman.tt.nis_siswa
                                 LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
                                     u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
