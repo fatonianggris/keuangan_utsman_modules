@@ -28,8 +28,8 @@ class SavingsModel extends CI_Model
 										u8514965_panel_utsman.tt.nis_siswa,
 										u8514965_panel_utsman.s.nama_lengkap,
 										u8514965_panel_utsman.s.jenis_kelamin,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
 										u8514965_panel_utsman.tt.saldo,
 										u8514965_panel_utsman.tt.catatan,
 										u8514965_panel_utsman.tt.nominal,
@@ -59,9 +59,9 @@ class SavingsModel extends CI_Model
 									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
 										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									ORDER BY
 										u8514965_panel_utsman.tt.id_transaksi
 									DESC LIMIT 5");
@@ -435,8 +435,8 @@ class SavingsModel extends CI_Model
 								u8514965_panel_utsman.tt.id_transaksi,
 								u8514965_panel_utsman.tt.nis_siswa,
 								u8514965_panel_utsman.s.nama_lengkap,
-								keuangan_utsman.ak.nama_akun,
-								keuangan_utsman.ak.email_akun,
+								u8514965_keuangan_utsman.ak.nama_akun,
+								u8514965_keuangan_utsman.ak.email_akun,
 								u8514965_panel_utsman.tt.saldo,
 								u8514965_panel_utsman.tt.catatan,
 								u8514965_panel_utsman.tt.nominal,
@@ -466,9 +466,9 @@ class SavingsModel extends CI_Model
 							LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 							ON
 								u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
-							LEFT JOIN keuangan_utsman.akun_keuangan ak
+							LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 							ON
-								keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+								u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 							WHERE u8514965_panel_utsman.tt.id_transaksi IN ($id)
 							ORDER BY
 								u8514965_panel_utsman.tt.id_transaksi
@@ -485,8 +485,8 @@ class SavingsModel extends CI_Model
 								u8514965_panel_utsman.tb.nama_tabungan_bersama,
 								u8514965_panel_utsman.s.nama_lengkap,
 								u8514965_panel_utsman.s.nama_orangtua,
-								keuangan_utsman.ak.nama_akun,
-								keuangan_utsman.ak.email_akun,
+								u8514965_keuangan_utsman.ak.nama_akun,
+								u8514965_keuangan_utsman.ak.email_akun,
 								u8514965_panel_utsman.tt.saldo,
 								u8514965_panel_utsman.tt.catatan,
 								u8514965_panel_utsman.tt.nominal,
@@ -519,9 +519,9 @@ class SavingsModel extends CI_Model
 							LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 							ON
 								u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
-							LEFT JOIN keuangan_utsman.akun_keuangan ak
+							LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 							ON
-								keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+								u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 							WHERE u8514965_panel_utsman.tt.id_transaksi_bersama IN ($id)
 							ORDER BY
 								u8514965_panel_utsman.tt.id_transaksi_bersama
@@ -536,8 +536,8 @@ class SavingsModel extends CI_Model
                                     u8514965_panel_utsman.tt.id_transaksi,
                                     u8514965_panel_utsman.tt.nis_siswa,
                                     u8514965_panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
                                     u8514965_panel_utsman.tt.saldo,
                                     u8514965_panel_utsman.tt.catatan,
                                     u8514965_panel_utsman.tt.nominal,
@@ -570,9 +570,9 @@ class SavingsModel extends CI_Model
                                 LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
                                     u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
                                 WHERE u8514965_panel_utsman.tt.nis_siswa = $nis AND
 									(
 										STR_TO_DATE(
@@ -593,8 +593,8 @@ class SavingsModel extends CI_Model
                                     u8514965_panel_utsman.tt.nomor_rekening_bersama,
                                     u8514965_panel_utsman.s.nama_lengkap,
 									u8514965_panel_utsman.s.nama_orangtua,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
                                     u8514965_panel_utsman.tt.saldo,
                                     u8514965_panel_utsman.tt.catatan,
                                     u8514965_panel_utsman.tt.nominal,
@@ -624,9 +624,9 @@ class SavingsModel extends CI_Model
                                 LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
                                     u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
                                 WHERE u8514965_panel_utsman.tt.nomor_rekening = $nis AND
 									(
 										STR_TO_DATE(
@@ -646,8 +646,8 @@ class SavingsModel extends CI_Model
                                     u8514965_panel_utsman.tt.id_transaksi,
                                     u8514965_panel_utsman.tt.nis_siswa,
                                     u8514965_panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
                                     u8514965_panel_utsman.tt.saldo,
                                     u8514965_panel_utsman.tt.catatan,
                                     u8514965_panel_utsman.tt.nominal,
@@ -677,9 +677,9 @@ class SavingsModel extends CI_Model
                                 LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
                                     u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										STR_TO_DATE(
@@ -700,8 +700,8 @@ class SavingsModel extends CI_Model
                                     u8514965_panel_utsman.tt.nomor_rekenining_bersama,
                                     u8514965_panel_utsman.s.nama_lengkap,
 									u8514965_panel_utsman.s.nama_orangtua,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
                                     u8514965_panel_utsman.tt.saldo,
                                     u8514965_panel_utsman.tt.catatan,
                                     u8514965_panel_utsman.tt.nominal,
@@ -731,9 +731,9 @@ class SavingsModel extends CI_Model
                                 LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
                                     u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										STR_TO_DATE(
