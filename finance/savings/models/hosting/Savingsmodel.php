@@ -561,9 +561,6 @@ class SavingsModel extends CI_Model
                                 END AS status_edit
                                 FROM
                                     u8514965_panel_utsman.transaksi_tabungan tt
-								LEFT JOIN u8514965_panel_utsman.tabungan_bersama tb
-								ON
-								u8514965_panel_utsman.tb.nomor_rekening_bersama = u8514965_panel_utsman.tt.nomor_rekening_bersama
                                 LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
                                     u8514965_panel_utsman.s.id_siswa = u8514965_panel_utsman.tt.nis_siswa
