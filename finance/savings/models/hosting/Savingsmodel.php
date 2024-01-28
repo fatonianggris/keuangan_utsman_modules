@@ -11,10 +11,11 @@ class SavingsModel extends CI_Model
     private $table_structure = 'struktur_akun_keuangan';
     private $table_general_page = 'general_page';
     private $table_outcome = 'pengeluaran';
-    private $table_savings = 'transaksi_tabungan';
+    private $table_savings_transaction = 'transaksi_tabungan';
+    private $table_joint_saving_transaction = 'transaksi_tabungan_bersama';
     private $table_student = 'siswa';
+    private $table_joint_saving = 'tabungan_bersama';
     private $table_contact = 'kontak';
-
     private $table_vstudent = 'view_siswa';
 
     //
@@ -372,6 +373,13 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function get_joint_saving()
+    {
+        $this->db2->select('id_tabungan_bersama, nomor_rekening_bersama, nama_tabungan_bersama');
+        $sql = $this->db2->get($this->table_vstudent);
+        return $sql->result();
+    }
+
     public function get_student_by_nis($nis_student = '')
     {
         $this->db2->select('s.nis, s.nama_lengkap, s.saldo_tabungan, s.nama_wali, s.email, tpd.informasi');
@@ -385,11 +393,35 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function get_joint_saving_by_acc_number($acc_number = '')
+    {
+        $this->db2->select('tb.nomor_rekening_bersama, tb.nama_tabungan_bersama, s.saldo_tabungan_bersama, s.nama_wali as penanggung_jawab, s.email, s.nomor_hp');
+        $this->db2->from('tabungan_bersama tb');
+        $this->db2->join('siswa s', 'tb.id_siswa_penanggung_jawab = s.id_siswa', 'left');
+        $this->db2->where('tb.nomor_rekening_bersama', $acc_number);
+        $this->db2->limit(1);
+
+        $sql = $this->db2->get();
+        return $sql->result();
+    }
+
     public function get_info_student_transaction($nis_student = '')
     {
         $this->db2->select("nis_siswa, catatan, nominal, saldo, th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
         $this->db2->from('transaksi_tabungan');
         $this->db2->where('nis_siswa', $nis_student);
+        $this->db2->order_by('waktu_transaksi', 'DESC');
+        $this->db2->limit(1);
+
+        $sql = $this->db2->get();
+        return $sql->result();
+    }
+
+    public function get_info_joint_saving_transaction($number = '')
+    {
+        $this->db2->select("nomor_rekening_bersama, catatan, nominal, saldo, th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
+        $this->db2->from('transaksi_tabungan_bersama');
+        $this->db2->where('nomor_rekening_bersama', $number);
         $this->db2->order_by('waktu_transaksi', 'DESC');
         $this->db2->limit(1);
 
@@ -445,6 +477,59 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function get_data_joint_saving_export_all($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								u8514965_panel_utsman.tt.id_transaksi_bersama,
+								u8514965_panel_utsman.tt.nomor_rekening_bersama,
+								u8514965_panel_utsman.tb.nama_tabungan_bersama,
+								u8514965_panel_utsman.s.nama_lengkap,
+								u8514965_panel_utsman.s.nama_orangtua,
+								u8514965_keuangan_utsman.ak.nama_akun,
+								u8514965_keuangan_utsman.ak.email_akun,
+								u8514965_panel_utsman.tt.saldo,
+								u8514965_panel_utsman.tt.catatan,
+								u8514965_panel_utsman.tt.nominal,
+								u8514965_panel_utsman.tt.status_kredit_debet,
+								CONCAT(
+									u8514965_panel_utsman.ta.tahun_awal,
+									'/',
+									u8514965_panel_utsman.ta.tahun_akhir
+								) AS tahun_ajaran,
+								u8514965_panel_utsman.tt.th_ajaran,
+								u8514965_panel_utsman.tt.tanggal_transaksi,
+								DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+								CASE WHEN EXISTS(
+								SELECT
+									u8514965_panel_utsman.vmax.id_max
+								FROM
+									u8514965_panel_utsman.view_max_id_transaction vmax
+								WHERE
+									u8514965_panel_utsman.tt.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
+							) THEN 1 ELSE 0
+							END AS status_edit
+							FROM
+								u8514965_panel_utsman.transaksi_tabungan_bersama tt
+							LEFT JOIN u8514965_panel_utsman.tabungan_bersama tb
+							ON
+								u8514965_panel_utsman.tb.nomor_rekening_bersama = u8514965_panel_utsman.tt.nomor_rekening_bersama
+							LEFT JOIN u8514965_panel_utsman.siswa s
+							ON
+								u8514965_panel_utsman.s.id_siswa = u8514965_panel_utsman.tt.id_siswa_penanggung_jawab
+							LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
+							ON
+								u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+							LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
+							ON
+								u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+							WHERE u8514965_panel_utsman.tt.id_transaksi_bersama IN ($id)
+							ORDER BY
+								u8514965_panel_utsman.tt.id_transaksi_bersama
+							DESC");
+
+        return $sql->result();
+    }
+
     public function get_student_transaction_recap_by_nis($nis = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
@@ -476,9 +561,12 @@ class SavingsModel extends CI_Model
                                 END AS status_edit
                                 FROM
                                     u8514965_panel_utsman.transaksi_tabungan tt
+								LEFT JOIN u8514965_panel_utsman.tabungan_bersama tb
+								ON
+								u8514965_panel_utsman.tb.nomor_rekening_bersama = u8514965_panel_utsman.tt.nomor_rekening_bersama
                                 LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
-                                    u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+                                    u8514965_panel_utsman.s.id_siswa = u8514965_panel_utsman.tt.nis_siswa
                                 LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
                                     u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
@@ -497,6 +585,61 @@ class SavingsModel extends CI_Model
                                 DESC");
         return $sql->result();
     }
+
+	public function get_student_joint_transaction_recap_by_nis($nis = '', $start_date = '', $end_date = '')
+    {
+        $sql = $this->db->query("SELECT
+                                    u8514965_panel_utsman.tt.id_transaksi_bersama,
+                                    u8514965_panel_utsman.tt.nomor_rekening_bersama,
+                                    u8514965_panel_utsman.s.nama_lengkap,
+									u8514965_panel_utsman.s.nama_orangtua,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
+                                    CONCAT(
+                                        u8514965_panel_utsman.ta.tahun_awal,
+                                        '/',
+                                        u8514965_panel_utsman.ta.tahun_akhir
+                                    ) AS tahun_ajaran,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+                                    CASE WHEN EXISTS(
+                                    SELECT
+                                        u8514965_panel_utsman.vmax.id_max
+                                    FROM
+                                        u8514965_panel_utsman.view_max_id_transaction vmax
+                                    WHERE
+                                        u8514965_panel_utsman.tt.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
+                                ) THEN 1 ELSE 0
+                                END AS status_edit
+                                FROM
+                                    u8514965_panel_utsman.transaksi_tabungan_bersama tt
+                                LEFT JOIN u8514965_panel_utsman.siswa s
+                                ON
+                                    u8514965_panel_utsman.s.id_siswa = u8514965_panel_utsman.tt.id_siswa_penanggung_jawab
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
+                                ON
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
+                                ON
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+                                WHERE u8514965_panel_utsman.tt.nomor_rekening = $nis AND
+									(
+										STR_TO_DATE(
+											u8514965_panel_utsman.tt.tanggal_transaksi,
+											'%d/%m/%Y'
+										) BETWEEN '$start_date' AND '$end_date'
+									)
+                                ORDER BY
+                                    u8514965_panel_utsman.tt.id_transaksi_bersama
+                                DESC");
+        return $sql->result();
+    }
+
     public function get_all_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
@@ -550,6 +693,60 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+	public function get_all_joint_transaction_savings($start_date = '', $end_date = '')
+    {
+        $sql = $this->db->query("SELECT
+                                    u8514965_panel_utsman.tt.id_transaksi_bersama,
+                                    u8514965_panel_utsman.tt.nomor_rekenining_bersama,
+                                    u8514965_panel_utsman.s.nama_lengkap,
+									u8514965_panel_utsman.s.nama_orangtua,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
+                                    CONCAT(
+                                        u8514965_panel_utsman.ta.tahun_awal,
+                                        '/',
+                                        u8514965_panel_utsman.ta.tahun_akhir
+                                    ) AS tahun_ajaran,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+                                    CASE WHEN EXISTS(
+                                    SELECT
+                                        u8514965_panel_utsman.vmax.id_max
+                                    FROM
+                                        u8514965_panel_utsman.view_max_id_transaction vmax
+                                    WHERE
+                                        u8514965_panel_utsman.tt.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
+                                ) THEN 1 ELSE 0
+                                END AS status_edit
+                                FROM
+                                    u8514965_panel_utsman.transaksi_tabungan_bersama tt
+                                LEFT JOIN u8514965_panel_utsman.siswa s
+                                ON
+                                    u8514965_panel_utsman.s.nomor_rekenining_bersama = u8514965_panel_utsman.tt.nomor_rekenining_bersama
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
+                                ON
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
+                                ON
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+									WHERE
+									(
+										STR_TO_DATE(
+											u8514965_panel_utsman.tt.tanggal_transaksi,
+											'%d/%m/%Y'
+										) BETWEEN '$start_date' AND '$end_date'
+									)
+                                ORDER BY
+                                    u8514965_panel_utsman.tt.id_transaksi_bersama
+                                DESC");
+        return $sql->result();
+    }
+
     public function get_student_balance($nis_student = '')
     {
 
@@ -559,11 +756,30 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function get_joint_saving_balance($nomor_rekening = '')
+    {
+        $this->db2->select('id_tabungan_bersama, nomor_rekening_bersama, nama_tabungan_bersama, saldo_tabunangan_bersama');
+        $this->db2->where('nomor_rekening_bersama', $nomor_rekening);
+        $sql = $this->db2->get($this->table_joint_saving);
+        return $sql->result();
+    }
+
     public function get_student_transaction_last($id_transaction = '')
     {
 
         $this->db2->select("nis_siswa, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
         $this->db2->from('transaksi_tabungan');
+        $this->db2->where('id_transaksi', $id_transaction);
+
+        $sql = $this->db2->get();
+        return $sql->result();
+    }
+
+    public function get_joint_transaction_last($id_transaction = '')
+    {
+
+        $this->db2->select("nomor_rekening_bersama, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
+        $this->db2->from('transaksi_tabungan_bersama');
         $this->db2->where('id_transaksi', $id_transaction);
 
         $sql = $this->db2->get();
@@ -585,7 +801,33 @@ class SavingsModel extends CI_Model
             'th_ajaran' => $value['tahun_ajaran'],
         );
 
-        $this->db2->insert($this->table_savings, $data);
+        $this->db2->insert($this->table_savings_transaction, $data);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function insert_credit_joint_saving($id = '', $value = '')
+    {
+        $this->db2->trans_begin();
+
+        $data = array(
+            'nomor_rekening_bersama' => $value['nomor_rekening_bersama'],
+            'id_pegawai' => $id,
+            'nominal' => $value['nominal'],
+            'saldo' => $value['saldo_akhir'],
+            'catatan' => $value['catatan_kredit'],
+            'tanggal_transaksi' => $value['tanggal_transaksi'],
+            'status_kredit_debet' => $value['status_kredit_debet'],
+            'th_ajaran' => $value['tahun_ajaran'],
+        );
+
+        $this->db2->insert($this->table_joint_saving_transaction, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -610,7 +852,32 @@ class SavingsModel extends CI_Model
         );
 
         $this->db2->where('id_transaksi', $id);
-        $this->db2->update($this->table_savings, $data);
+        $this->db2->update($this->table_savings_transaction, $data);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function update_credit_joint_saving($id = '', $value = '')
+    {
+        $this->db2->trans_begin();
+
+        $data = array(
+            'nomor_rekening_bersama' => $value['nomor_rekening_bersama'],
+            'nominal' => $value['nominal'],
+            'saldo' => $value['saldo_akhir'],
+            'catatan' => $value['catatan_kredit'],
+            'tanggal_transaksi' => $value['tanggal_transaksi'],
+            'th_ajaran' => $value['tahun_ajaran'],
+        );
+
+        $this->db2->where('id_transaksi_bersama', $id);
+        $this->db2->update($this->table_joint_saving_transaction, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -636,7 +903,32 @@ class SavingsModel extends CI_Model
             'th_ajaran' => $value['tahun_ajaran'],
         );
 
-        $this->db2->insert($this->table_savings, $data);
+        $this->db2->insert($this->table_savings_transaction, $data);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+    public function insert_debet_joint_saving($id = '', $value = '')
+    {
+        $this->db2->trans_begin();
+
+        $data = array(
+            'id_pegawai' => $id,
+            'nomor_rekening_bersama' => $value['nomor_rekening_bersama'],
+            'nominal' => $value['nominal'],
+            'saldo' => $value['saldo_akhir'],
+            'catatan' => $value['catatan_debet'],
+            'tanggal_transaksi' => $value['tanggal_transaksi'],
+            'status_kredit_debet' => $value['status_kredit_debet'],
+            'th_ajaran' => $value['tahun_ajaran'],
+        );
+
+        $this->db2->insert($this->table_joint_saving_transaction, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -661,7 +953,32 @@ class SavingsModel extends CI_Model
         );
 
         $this->db2->where('id_transaksi', $id);
-        $this->db2->update($this->table_savings, $data);
+        $this->db2->update($this->table_savings_transaction, $data);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function update_debet_joint_saving($id = '', $value = '')
+    {
+        $this->db2->trans_begin();
+
+        $data = array(
+            'nomor_rekening_bersama' => $value['nomor_rekening_bersama'],
+            'nominal' => $value['nominal'],
+            'saldo' => $value['saldo_akhir'],
+            'catatan' => $value['catatan_debet'],
+            'tanggal_transaksi' => $value['tanggal_transaksi'],
+            'th_ajaran' => $value['tahun_ajaran'],
+        );
+
+        $this->db2->where('id_transaksi_bersama', $id);
+        $this->db2->update($this->table_joint_saving_transaction, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -692,12 +1009,48 @@ class SavingsModel extends CI_Model
         }
     }
 
+    public function update_balance_joint_saving($no = '', $saldo = '')
+    {
+        $this->db2->trans_begin();
+
+        $data = array(
+            'saldo_tabungan_bersama' => $saldo,
+        );
+
+        $this->db2->where('nomor_rekening_bersama', $no);
+        $this->db2->update($this->table_joint_saving, $data);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
     public function delete_transaction($id = '')
     {
         $this->db2->trans_begin();
 
         $this->db2->where('id_transaksi', $id);
-        $this->db2->delete($this->table_savings);
+        $this->db2->delete($this->table_savings_transaction);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function delete_joint_transaction($id = '')
+    {
+        $this->db2->trans_begin();
+
+        $this->db2->where('id_transaksi_bersama', $id);
+        $this->db2->delete($this->table_joint_saving_transaction);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
