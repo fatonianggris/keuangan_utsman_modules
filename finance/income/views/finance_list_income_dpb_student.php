@@ -267,7 +267,7 @@
 												<td class="font-weight-bolder"><?php echo ucwords(strtolower($value->nama_lengkap)); ?></td>
 												<td class="font-weight-bolder text-warning"><?php echo (($value->nomor_pembayaran_dpb)); ?></td>
 												<td class="font-weight-bolder">
-													<?php $tingkat = explode(" ", $value[0]->informasi);
+													<?php $tingkat = explode(" ", $value->informasi);
 													echo $tingkat[0]; ?>
 												</td>
 												<td class="font-weight-bolder"><?php echo (($value->informasi)); ?></td>

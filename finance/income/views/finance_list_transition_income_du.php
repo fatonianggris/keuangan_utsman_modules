@@ -266,6 +266,7 @@
 	function act_confirm_data_payment() {
 		var csrfName = $('.txt_csrfname').attr('name');
 		var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+		
 		Swal.fire({
 			title: "Peringatan!",
 			text: "Apakah anda yakin ingin MENYETUJUI Impor Data Tagihan ini?",
@@ -322,7 +323,7 @@
 	}
 </script>
 <script>
-	function act_reject_data_payment(id, name) {
+	function act_reject_data_payment() {
 		var csrfName = $('.txt_csrfname').attr('name');
 		var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 

@@ -268,7 +268,7 @@
 												<td class="font-weight-bolder"><?php echo ucwords(strtolower($value->nama_lengkap)); ?></td>
 												<td class="font-weight-bolder text-warning"><?php echo (($value->nomor_pembayaran_du)); ?></td>
 												<td class="font-weight-bolder">
-													<?php $tingkat = explode(" ", $value[0]->informasi);
+													<?php $tingkat = explode(" ", $value->informasi);
 													echo $tingkat[0]; ?>
 												</td>
 												<td class="font-weight-bolder"><?php echo (($value->informasi)); ?></td>
@@ -380,7 +380,7 @@
 					<i aria-hidden="true" class="ki ki-close"></i>
 				</button>
 			</div>
-			<form class="form" method="POST" action="<?php echo site_url('finance/income/income/import_du_payment'); ?>" enctype="multipart/form-data" id="kt_upload_payment">
+			<form class="form" method="POST" action="<?php echo site_url('finance/income/income/import_du_payment'); ?>" enctype="multipart/form-data" id="kt_upload_payment_du">
 				<input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 				<div class="modal-body">
 					<div class="row">

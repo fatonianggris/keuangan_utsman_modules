@@ -11,7 +11,7 @@ class SavingsModel extends CI_Model
     private $table_structure = 'struktur_akun_keuangan';
     private $table_general_page = 'general_page';
     private $table_outcome = 'pengeluaran';
-    private $table_savings_transaction = 'transaksi_tabungan';
+    private $table_savings_transaction_general = 'transaksi_tabungan_umum';
     private $table_joint_saving_transaction = 'transaksi_tabungan_bersama';
     private $table_student = 'siswa';
     private $table_joint_saving = 'tabungan_bersama';
@@ -24,7 +24,7 @@ class SavingsModel extends CI_Model
     public function get_new_transaction()
     {
         $sql = $this->db->query("SELECT
-										u8514965_panel_utsman.tt.id_transaksi,
+										u8514965_panel_utsman.tt.id_transaksi_umum,
 										u8514965_panel_utsman.tt.nis_siswa,
 										u8514965_panel_utsman.s.nama_lengkap,
 										u8514965_panel_utsman.s.jenis_kelamin,
@@ -46,13 +46,13 @@ class SavingsModel extends CI_Model
 										SELECT
 											u8514965_panel_utsman.vmax.id_max
 										FROM
-											u8514965_panel_utsman.view_max_id_transaction vmax
+											u8514965_panel_utsman.view_max_id_transaction_general vmax
 										WHERE
-											u8514965_panel_utsman.tt.id_transaksi = u8514965_panel_utsman.vmax.id_max
+											u8514965_panel_utsman.tt.id_transaksi_umum = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										u8514965_panel_utsman.transaksi_tabungan tt
+										u8514965_panel_utsman.transaksi_tabungan_umum tt
 									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
 										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
@@ -63,7 +63,7 @@ class SavingsModel extends CI_Model
 									ON
 										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									ORDER BY
-										u8514965_panel_utsman.tt.id_transaksi
+										u8514965_panel_utsman.tt.id_transaksi_umum
 									DESC LIMIT 5");
         return $sql->result();
     }
@@ -78,19 +78,19 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												u8514965_panel_utsman.tb.id_transaksi,
+												u8514965_panel_utsman.tb.id_transaksi_umum,
 												u8514965_panel_utsman.tb.nominal,
 												u8514965_panel_utsman.tb.nis_siswa,
 												u8514965_panel_utsman.tb.th_ajaran,
 												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												u8514965_panel_utsman.transaksi_tabungan tb
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
 											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
 												u8514965_panel_utsman.tb.status_kredit_debet = 1 AND u8514965_panel_utsman.tdpb.informasi LIKE('%TK%') OR u8514965_panel_utsman.tdpb.informasi LIKE('%KB%')
 											GROUP BY
-												u8514965_panel_utsman.tb.id_transaksi
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
 										tt.th_ajaran = th.id_tahun_ajaran
@@ -101,19 +101,19 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												u8514965_panel_utsman.tb.id_transaksi,
+												u8514965_panel_utsman.tb.id_transaksi_umum,
 												u8514965_panel_utsman.tb.nominal,
 												u8514965_panel_utsman.tb.nis_siswa,
 												u8514965_panel_utsman.tb.th_ajaran,
 												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												u8514965_panel_utsman.transaksi_tabungan tb
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
 											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
 												u8514965_panel_utsman.tb.status_kredit_debet = 1 AND u8514965_panel_utsman.tdpb.informasi LIKE('%SD%')
 											GROUP BY
-												u8514965_panel_utsman.tb.id_transaksi
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
 										tt.th_ajaran = th.id_tahun_ajaran
@@ -124,19 +124,19 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												u8514965_panel_utsman.tb.id_transaksi,
+												u8514965_panel_utsman.tb.id_transaksi_umum,
 												u8514965_panel_utsman.tb.nominal,
 												u8514965_panel_utsman.tb.nis_siswa,
 												u8514965_panel_utsman.tb.th_ajaran,
 												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												u8514965_panel_utsman.transaksi_tabungan tb
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
 											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
 												u8514965_panel_utsman.tb.status_kredit_debet = 1 AND u8514965_panel_utsman.tdpb.informasi LIKE('%SMP%')
 											GROUP BY
-												u8514965_panel_utsman.tb.id_transaksi
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
 										tt.th_ajaran = th.id_tahun_ajaran
@@ -166,19 +166,19 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												u8514965_panel_utsman.tb.id_transaksi,
+												u8514965_panel_utsman.tb.id_transaksi_umum,
 												u8514965_panel_utsman.tb.nominal,
 												u8514965_panel_utsman.tb.nis_siswa,
 												u8514965_panel_utsman.tb.th_ajaran,
 												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												u8514965_panel_utsman.transaksi_tabungan tb
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
 											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
 												u8514965_panel_utsman.tb.status_kredit_debet = 2 AND u8514965_panel_utsman.tdpb.informasi LIKE('%TK%') OR u8514965_panel_utsman.tdpb.informasi LIKE('%KB%')
 											GROUP BY
-												u8514965_panel_utsman.tb.id_transaksi
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
 										tt.th_ajaran = th.id_tahun_ajaran
@@ -189,13 +189,13 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												u8514965_panel_utsman.tb.id_transaksi,
+												u8514965_panel_utsman.tb.id_transaksi_umum,
 												u8514965_panel_utsman.tb.nominal,
 												u8514965_panel_utsman.tb.nis_siswa,
 												u8514965_panel_utsman.tb.th_ajaran,
 												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												u8514965_panel_utsman.transaksi_tabungan tb
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
 											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
@@ -212,19 +212,19 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												u8514965_panel_utsman.tb.id_transaksi,
+												u8514965_panel_utsman.tb.id_transaksi_umum,
 												u8514965_panel_utsman.tb.nominal,
 												u8514965_panel_utsman.tb.nis_siswa,
 												u8514965_panel_utsman.tb.th_ajaran,
 												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												u8514965_panel_utsman.transaksi_tabungan tb
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
 											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
 												u8514965_panel_utsman.tb.status_kredit_debet = 2 AND u8514965_panel_utsman.tdpb.informasi LIKE('%SMP%')
 											GROUP BY
-												u8514965_panel_utsman.tb.id_transaksi
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
 										tt.th_ajaran = th.id_tahun_ajaran
@@ -254,19 +254,19 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											u8514965_panel_utsman.tb.id_transaksi,
+											u8514965_panel_utsman.tb.id_transaksi_umum,
 											u8514965_panel_utsman.tb.nominal,
 											u8514965_panel_utsman.tb.nis_siswa,
 											u8514965_panel_utsman.tb.th_ajaran,
 											u8514965_panel_utsman.tdpb.informasi
 										FROM
-											u8514965_panel_utsman.transaksi_tabungan tb
+											u8514965_panel_utsman.transaksi_tabungan_umum tb
 										LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 											u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 										WHERE
 											u8514965_panel_utsman.tb.status_kredit_debet = 1
 										GROUP BY
-											u8514965_panel_utsman.tb.id_transaksi
+											u8514965_panel_utsman.tb.id_transaksi_umum
 									) tt
 								WHERE
 									tt.th_ajaran = th.id_tahun_ajaran
@@ -277,19 +277,19 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											u8514965_panel_utsman.tb.id_transaksi,
+											u8514965_panel_utsman.tb.id_transaksi_umum,
 											u8514965_panel_utsman.tb.nominal,
 											u8514965_panel_utsman.tb.nis_siswa,
 											u8514965_panel_utsman.tb.th_ajaran,
 											u8514965_panel_utsman.tdpb.informasi
 										FROM
-											u8514965_panel_utsman.transaksi_tabungan tb
+											u8514965_panel_utsman.transaksi_tabungan_umum tb
 										LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
 											u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 										WHERE
 											u8514965_panel_utsman.tb.status_kredit_debet = 2
 										GROUP BY
-											u8514965_panel_utsman.tb.id_transaksi
+											u8514965_panel_utsman.tb.id_transaksi_umum
 									) tt
 								WHERE
 									tt.th_ajaran = th.id_tahun_ajaran
@@ -408,7 +408,7 @@ class SavingsModel extends CI_Model
     public function get_info_student_transaction($nis_student = '')
     {
         $this->db2->select("nis_siswa, catatan, nominal, saldo, th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
-        $this->db2->from('transaksi_tabungan');
+        $this->db2->from('transaksi_tabungan_umum');
         $this->db2->where('nis_siswa', $nis_student);
         $this->db2->order_by('waktu_transaksi', 'DESC');
         $this->db2->limit(1);
@@ -432,7 +432,7 @@ class SavingsModel extends CI_Model
     public function get_data_saving_export_all($id = '')
     {
         $sql = $this->db->query("SELECT
-								u8514965_panel_utsman.tt.id_transaksi,
+								u8514965_panel_utsman.tt.id_transaksi_umum,
 								u8514965_panel_utsman.tt.nis_siswa,
 								u8514965_panel_utsman.s.nama_lengkap,
 								u8514965_keuangan_utsman.ak.nama_akun,
@@ -453,13 +453,13 @@ class SavingsModel extends CI_Model
 								SELECT
 									u8514965_panel_utsman.vmax.id_max
 								FROM
-									u8514965_panel_utsman.view_max_id_transaction vmax
+									u8514965_panel_utsman.view_max_id_transaction_general vmax
 								WHERE
-									u8514965_panel_utsman.tt.id_transaksi = u8514965_panel_utsman.vmax.id_max
+									u8514965_panel_utsman.tt.id_transaksi_umum = u8514965_panel_utsman.vmax.id_max
 							) THEN 1 ELSE 0
 							END AS status_edit
 							FROM
-								u8514965_panel_utsman.transaksi_tabungan tt
+								u8514965_panel_utsman.transaksi_tabungan_umum tt
 							LEFT JOIN u8514965_panel_utsman.siswa s
 							ON
 								u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
@@ -469,9 +469,9 @@ class SavingsModel extends CI_Model
 							LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 							ON
 								u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
-							WHERE u8514965_panel_utsman.tt.id_transaksi IN ($id)
+							WHERE u8514965_panel_utsman.tt.id_transaksi_umum IN ($id)
 							ORDER BY
-								u8514965_panel_utsman.tt.id_transaksi
+								u8514965_panel_utsman.tt.id_transaksi_umum
 							DESC");
 
         return $sql->result();
@@ -503,7 +503,7 @@ class SavingsModel extends CI_Model
 								SELECT
 									u8514965_panel_utsman.vmax.id_max
 								FROM
-									u8514965_panel_utsman.view_max_id_transaction vmax
+									u8514965_panel_utsman.view_max_id_transaction_general vmax
 								WHERE
 									u8514965_panel_utsman.tt.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
 							) THEN 1 ELSE 0
@@ -533,7 +533,7 @@ class SavingsModel extends CI_Model
     public function get_student_transaction_recap_by_nis($nis = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    u8514965_panel_utsman.tt.id_transaksi,
+                                    u8514965_panel_utsman.tt.id_transaksi_umum,
                                     u8514965_panel_utsman.tt.nis_siswa,
                                     u8514965_panel_utsman.s.nama_lengkap,
                                     u8514965_keuangan_utsman.ak.nama_akun,
@@ -554,13 +554,13 @@ class SavingsModel extends CI_Model
                                     SELECT
                                         u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        u8514965_panel_utsman.view_max_id_transaction vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_general vmax
                                     WHERE
-                                        u8514965_panel_utsman.tt.id_transaksi = u8514965_panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_umum = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    u8514965_panel_utsman.transaksi_tabungan tt
+                                    u8514965_panel_utsman.transaksi_tabungan_umum tt
                                 LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
                                     u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
@@ -578,7 +578,7 @@ class SavingsModel extends CI_Model
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    u8514965_panel_utsman.tt.id_transaksi
+                                    u8514965_panel_utsman.tt.id_transaksi_umum
                                 DESC");
         return $sql->result();
     }
@@ -608,7 +608,7 @@ class SavingsModel extends CI_Model
                                     SELECT
                                         u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        u8514965_panel_utsman.view_max_id_transaction vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_general vmax
                                     WHERE
                                         u8514965_panel_utsman.tt.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
@@ -640,7 +640,7 @@ class SavingsModel extends CI_Model
     public function get_all_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    u8514965_panel_utsman.tt.id_transaksi,
+                                    u8514965_panel_utsman.tt.id_transaksi_umum,
                                     u8514965_panel_utsman.tt.nis_siswa,
                                     u8514965_panel_utsman.s.nama_lengkap,
                                     u8514965_keuangan_utsman.ak.nama_akun,
@@ -661,13 +661,13 @@ class SavingsModel extends CI_Model
                                     SELECT
                                         u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        u8514965_panel_utsman.view_max_id_transaction vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_general vmax
                                     WHERE
-                                        u8514965_panel_utsman.tt.id_transaksi = u8514965_panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_umum = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    u8514965_panel_utsman.transaksi_tabungan tt
+                                    u8514965_panel_utsman.transaksi_tabungan_umum tt
                                 LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
                                     u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
@@ -715,7 +715,7 @@ class SavingsModel extends CI_Model
                                     SELECT
                                         u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        u8514965_panel_utsman.view_max_id_transaction vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_general vmax
                                     WHERE
                                         u8514965_panel_utsman.tt.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
@@ -765,8 +765,8 @@ class SavingsModel extends CI_Model
     {
 
         $this->db2->select("nis_siswa, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
-        $this->db2->from('transaksi_tabungan');
-        $this->db2->where('id_transaksi', $id_transaction);
+        $this->db2->from('transaksi_tabungan_umum');
+        $this->db2->where('id_transaksi_umum', $id_transaction);
 
         $sql = $this->db2->get();
         return $sql->result();
@@ -777,7 +777,7 @@ class SavingsModel extends CI_Model
 
         $this->db2->select("nomor_rekening_bersama, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
         $this->db2->from('transaksi_tabungan_bersama');
-        $this->db2->where('id_transaksi', $id_transaction);
+        $this->db2->where('id_transaksi_bersama', $id_transaction);
 
         $sql = $this->db2->get();
         return $sql->result();
@@ -798,7 +798,7 @@ class SavingsModel extends CI_Model
             'th_ajaran' => $value['tahun_ajaran'],
         );
 
-        $this->db2->insert($this->table_savings_transaction, $data);
+        $this->db2->insert($this->table_savings_transaction_general, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -848,8 +848,8 @@ class SavingsModel extends CI_Model
             'th_ajaran' => $value['tahun_ajaran'],
         );
 
-        $this->db2->where('id_transaksi', $id);
-        $this->db2->update($this->table_savings_transaction, $data);
+        $this->db2->where('id_transaksi_umum', $id);
+        $this->db2->update($this->table_savings_transaction_general, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -900,7 +900,7 @@ class SavingsModel extends CI_Model
             'th_ajaran' => $value['tahun_ajaran'],
         );
 
-        $this->db2->insert($this->table_savings_transaction, $data);
+        $this->db2->insert($this->table_savings_transaction_general, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -949,8 +949,8 @@ class SavingsModel extends CI_Model
             'th_ajaran' => $value['tahun_ajaran'],
         );
 
-        $this->db2->where('id_transaksi', $id);
-        $this->db2->update($this->table_savings_transaction, $data);
+        $this->db2->where('id_transaksi_umum', $id);
+        $this->db2->update($this->table_savings_transaction_general, $data);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -1030,8 +1030,8 @@ class SavingsModel extends CI_Model
     {
         $this->db2->trans_begin();
 
-        $this->db2->where('id_transaksi', $id);
-        $this->db2->delete($this->table_savings_transaction);
+        $this->db2->where('id_transaksi_umum', $id);
+        $this->db2->delete($this->table_savings_transaction_general);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
