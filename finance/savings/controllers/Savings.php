@@ -66,6 +66,20 @@ class Savings extends MX_Controller
         }
     }
 
+    public function list_import_joint_saving()
+    {
+        $data['nav_save'] = 'menu-item-here';
+        $data['structure'] = $this->SavingsModel->get_structure_account();
+        $data['schoolyear'] = $this->SavingsModel->get_schoolyear();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            $this->template->load('template_finance/template_finance', 'finance_import_joint_savings', $data);
+        } else {
+            $datas['title'] = 'ERROR | PAGE NOT FOUND';
+            $this->load->view('error_404', $datas);
+        }
+    }
+
     public function savings_recap()
     {
         $data['nav_save'] = 'menu-item-here';
@@ -180,7 +194,40 @@ class Savings extends MX_Controller
         } else {
             $check_import = $this->SavingsModel->get_number_import_personal_saving($number);
 
-            if ($check_import && ($number_old != $check_import->nis)) {
+            if ($check_import && ($number_old != $check_import[0]->nis)) {
+                $isAvailable = false;
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                ));
+            } else {
+                $isAvailable = true;
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                ));
+            }
+        }
+    }
+
+    public function check_number_import_joint_saving()
+    {
+
+        $norek = $this->input->post('nomor_rekening_bersama');
+        $number = $this->security->xss_clean($norek);
+
+        $old_norek = $this->input->post('old_nomor_rekening_bersama');
+        $number_old = $this->security->xss_clean($old_norek);
+
+        $check = $this->SavingsModel->get_number_joint_saving($number);
+
+        if ($check) {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        } else {
+            $check_import = $this->SavingsModel->get_number_import_joint_saving($number);
+
+            if ($check_import && ($number_old != $check_import[0]->nomor_rekening_bersama)) {
                 $isAvailable = false;
                 echo json_encode(array(
                     'valid' => $isAvailable,
@@ -327,6 +374,20 @@ class Savings extends MX_Controller
     public function get_all_import_personal_customer()
     {
         $data = $this->SavingsModel->get_all_import_personal_customer();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            echo json_encode($data);
+        } else {
+            $output = array("status" => false,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+            echo json_encode($output);
+        }
+    }
+
+	public function get_all_import_joint_customer()
+    {
+        $data = $this->SavingsModel->get_all_import_joint_customer();
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             echo json_encode($data);
@@ -2990,6 +3051,7 @@ class Savings extends MX_Controller
                             if ($sheetData[$i]['0']) {
                                 $data_array[$i] = array(
                                     'nis' => (filter_var(trim($sheetData[$i]['0']), FILTER_SANITIZE_STRING)),
+                                    'password' => (password_hash(trim($sheetData[$i]['0']), PASSWORD_DEFAULT, array('cost' => 12))),
                                     'nama_nasabah' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
                                     'tanggal_transaksi' => (filter_var(trim($data['input_tanggal_transaksi']), FILTER_SANITIZE_STRING)),
                                     'tahun_ajaran' => (filter_var(trim($data['input_tahun_ajaran']), FILTER_SANITIZE_STRING)),
@@ -3033,6 +3095,142 @@ class Savings extends MX_Controller
         }
     }
 
+    public function import_joint_saving()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $this->form_validation->set_rules('pin_verification', 'PIN Anda', 'required');
+        $this->form_validation->set_rules('input_tanggal_transaksi', 'Tanggal Transaksi', 'required');
+        $this->form_validation->set_rules('input_tahun_ajaran', 'Tahun Ajaran', 'required');
+
+        $recaptchaResponse = trim($this->input->post('g-recaptcha-response'));
+        $userIp = $this->input->ip_address();
+
+        if ($this->form_validation->run() == false) {
+
+            $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
+            redirect('finance/savings/list_joint_saving');
+        } else {
+            $check_pass = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+            // pass verify
+            if (password_verify(($data['pin_verification']), $check_pass[0]->pin_akun)) {
+                // gcaptha verify
+                if ($this->googleCaptachStore($recaptchaResponse, $userIp) == 1) {
+
+                    // If file uploaded
+                    $file_mimes = array(
+                        'text/x-comma-separated-values',
+                        'text/comma-separated-values',
+                        'application/octet-stream',
+                        'application/vnd.ms-excel',
+                        'application/x-csv',
+                        'text/x-csv',
+                        'text/csv',
+                        'application/csv',
+                        'application/excel',
+                        'application/vnd.msexcel',
+                        'text/plain',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    );
+
+                    if (isset($_FILES['file_joint_saving']['name']) && in_array($_FILES['file_joint_saving']['type'], $file_mimes)) {
+                        $this->SavingsModel->clear_import_data_joint_saving();
+
+                        $arr_file = explode('.', $_FILES['file_joint_saving']['name']);
+                        $extension = end($arr_file);
+
+                        if ($extension == 'csv') {
+                            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                        } elseif ($extension == 'xlsx') {
+                            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                        } else {
+                            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                        }
+
+                        $reader->setReadDataOnly(true);
+                        $reader->setReadEmptyCells(false);
+                        $spreadsheet = $reader->load($_FILES['file_joint_saving']['tmp_name']);
+                        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+                        $status_nis = '';
+                        $status_norek = '';
+                        $tingkat = '';
+
+                        $data_array = array();
+                        for ($i = 1; $i < count($sheetData); $i++) {
+
+                            $student = $this->SavingsModel->get_student_nis($sheetData[$i]['1']);
+                            if ($student) {
+                                $status_nis = '1';
+                            } else {
+                                $status_nis = '2';
+                            }
+
+                            $norek = $this->SavingsModel->get_number_joint_saving($sheetData[$i]['0']);
+                            if (!$norek) {
+                                $status_norek = '2';
+                            } else {
+                                $status_norek = '1';
+                            }
+
+                            if (strtoupper($sheetData[$i]['4']) == 'DC') {
+                                $tingkat = '6';
+                            } else if (strtoupper($sheetData[$i]['4']) == 'KB') {
+                                $tingkat = '1';
+                            } else if (strtoupper($sheetData[$i]['4']) == 'TK') {
+                                $tingkat = '2';
+                            } else if (strtoupper($sheetData[$i]['4']) == 'SD') {
+                                $tingkat = '3';
+                            } else if (strtoupper($sheetData[$i]['4']) == 'SMP') {
+                                $tingkat = '4';
+                            }
+
+                            if ($sheetData[$i]['0']) {
+                                $data_array[$i] = array(
+                                    'nomor_rekening_bersama' => (filter_var(trim($sheetData[$i]['0']), FILTER_SANITIZE_STRING)),
+                                    'id_siswa_penanggung_jawab' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
+                                    'nama_tabungan_bersama' => (filter_var(trim($sheetData[$i]['2']), FILTER_SANITIZE_STRING)),
+                                    'saldo_bersama' => (filter_var(trim($sheetData[$i]['3']), FILTER_SANITIZE_STRING)),
+                                    'tahun_ajaran' => (filter_var(trim($data['input_tahun_ajaran']), FILTER_SANITIZE_STRING)),
+                                    'tingkat' => (filter_var(trim($tingkat), FILTER_SANITIZE_STRING)),
+                                    'tanggal_transaksi' => (filter_var(trim($data['input_tanggal_transaksi']), FILTER_SANITIZE_STRING)),
+                                    'nama_wali' => (filter_var(trim($sheetData[$i]['5']), FILTER_SANITIZE_STRING)),
+                                    'nomor_hp_wali' => (filter_var(trim($sheetData[$i]['6']), FILTER_SANITIZE_STRING)),
+                                    'status_nasabah_bersama' => (filter_var(trim($status_norek), FILTER_SANITIZE_STRING)),
+                                    'status_penanggung_jawab' => (filter_var(trim($status_nis), FILTER_SANITIZE_STRING)),
+                                );
+                            }
+                        }
+
+                        $import_data = $this->db2->insert_batch('import_nasabah_bersama', $data_array);
+
+                        if ($import_data == true) {
+
+                            $this->session->set_flashdata('flash_message', warn_msg("Peringatan!, File <b>" . $_FILES['file_joint_saving']['name'] . "</b> Telah diproses, Silahkan melakukan <b>PENGECEKAN & PERSETUJUAN</b> untuk mengimpor seluruh data file tersebut. Jika terjadi ketidaksamaan dengan Data Asli, dimohon untuk <b>MENGUBAH DATA</b>. Terima Kasih"));
+                            redirect('finance/savings/list_import_joint_saving/' . paramEncrypt("sekolah_utsman"));
+                        } else {
+
+                            $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan import ulang...'));
+                            redirect('finance/savings/list_joint_saving');
+                        }
+                    } else {
+
+                        $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Silahkan Import file berformat csv/xls/xlsx'));
+                        redirect('finance/savings/list_joint_saving');
+                    }
+                } else {
+
+                    $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Google Recaptcha terdapat kesalahan.'));
+                    redirect('finance/savings/list_joint_saving');
+                }
+            } else {
+                $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf., Password Anda salah!'));
+                redirect('finance/savings/list_joint_saving');
+            }
+        }
+    }
+
     public function accept_import_personal_saving()
     {
         $param = $this->input->post();
@@ -3065,7 +3263,7 @@ class Savings extends MX_Controller
 
                     for ($i = 0; $i < count($result_import); $i++) {
 
-						$random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+                        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
 
                         if ($result_import[$i]['saldo_umum'] != 0 && $result_import[$i]['saldo_umum'] != null && $result_import[$i]['saldo_umum'] != "" && !empty($result_import[$i]['saldo_umum'])) {
 

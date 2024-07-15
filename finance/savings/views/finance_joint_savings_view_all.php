@@ -62,6 +62,10 @@
                                     <i class="flaticon2-layers-1 text-primary"></i>
                                 </span>
                                 <h3 class="card-label">Daftar Nasabah Tabungan Bersama</h3>
+								<a href="#" data-toggle="modal" data-target="#modal_import_joint"
+                                    class="btn btn-warning btn-md">
+                                    <i class="flaticon-upload"></i>Import Nasabah Bersama
+                                </a>
                             </div>
                             <div class="card-toolbar">
                                 <div class="buttons">
@@ -413,7 +417,133 @@ if (!empty($schoolyear)) {
         </div>
     </div>
 </div>
+
 <!-- End of Modal Rekap -->
+<div class="modal fade" id="modal_import_joint" tabindex="-1" aria-labelledby="exampleModalSizeLg" aria-hidden="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="kt_modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import Nasabah Bersama</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <form class="form" method="POST"
+                action="<?php echo site_url('finance/savings/import_joint_saving'); ?>"
+                enctype="multipart/form-data" id="kt_upload_nasabah_joint">
+                <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+                    value="<?php echo $this->security->get_csrf_hash(); ?>">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <h5 class="modal-title text-center font-weight-bolder">SEBELUM MENGUPLOAD DIHARAPKAN
+                                MENGEDIT FILE SESUAI CONTOH
+                                FORMAT HEADER & ISI FILE DIBAWAH INI!</h5>
+                            <img class="mb-2 mt-5" src="<?php echo base_url() . "/uploads/data/format_excel_joint.png"; ?>"
+                                alt="format" height="" width="100%">
+                            <span class="form-text text-dark mb-5 text-center"><b class="text-danger"><a
+                                        href="<?php echo base_url() . "uploads/data/contoh_format_excel_joint.xlsx"; ?>">*KLIK
+                                        DISINI</a>, </b>untuk mendownload
+                                file contoh format excel.</span>
+                        </div>
+                        <div class="col-xl-8">
+                            <div class="form-group">
+                                <label>Upload File Excel Nasabah</label>
+                                <input type="file" class="dropify_import form-control" name="file_joint_saving"
+                                    data-max-file-size="10M" data-height="170"
+                                    data-allowed-file-extensions="xls xlsx" />
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI, </b>format xls,
+                                    xlsx dan ukuran < 10Mb</span>
+                            </div>
+							<input type="hidden" class="hidden" name="pin_verification">
+                        </div>
+						<div class="col-xl-4">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Tanggal Transaksi</label>
+                                    <input type="text" name="input_tanggal_transaksi"
+                                        value="<?php echo date('d/m/Y'); ?>"
+                                        class="form-control form-control-lg kt_datepicker_kredit"
+                                        id="input_tanggal_transaksi" placeholder="Inputkan Tanggal Transaksi" />
+                                    <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                            DIPILIH,</b> Pilih Tanggal Transaksi
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Tahun Ajaran</label>
+                                    <select name="input_tahun_ajaran" class="form-control form-control-lg">
+                                        <option value="">Pilih Tahun Ajaran</option>
+                                        <?php
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value) {
+        ?>
+                                        <option value="<?php echo $value->id_tahun_ajaran; ?>">
+                                            <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
+                                        </option>
+                                        <?php
+} //ngatur nomor urut
+}
+?>
+                                    </select>
+                                    <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,
+                                        </b>isikan Tahun Ajaran</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--begin::Action-->
+
+                        <div class="col-xl-6 text-center">
+                            <div class="form-group">
+                                <label>PIN Anda</label>
+                                <div class="row col-12 d-flex justify-content-center" id="otp">
+                                    <input
+                                        class="col-2 ml-8 mr-2 text-center form-control form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_one" type="text" id="first" maxlength="1" />
+
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+										name="input_two" type="text" id="second" maxlength="1" />
+
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg  form-control-solid font-weight-bolder"
+										name="input_three" type="text" id="third" maxlength="1" />
+
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+										name="input_four" type="text" id="fourth" maxlength="1" />
+
+                                    <input
+                                        class="col-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_five" type="text" id="fifth" maxlength="1" />
+                                </div>
+                                <span class="form-text text-dark mt-4"><b class="text-danger">*WAJIB DIISI, </b>Inputkan
+                                    PIN Anda</span>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group text-center">
+                                <div class="g-recaptcha"
+                                    data-sitekey="<?php echo $this->config->item('google_site_key') ?>"></div>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DICENTANG, </b>Silahkan
+                                    Centang untuk Menyetujui</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="kt_login_signin_submit" class="btn btn-success font-weight-bold mr-2">Upload</button>
+                    <button type="reset" class="btn btn-light-danger font-weight-bold"
+                        data-dismiss="modal">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
 <?php if ($user[0]->id_role_struktur == 5) {?>
 var id_role = 5;
@@ -422,6 +552,19 @@ var id_role = 7;
 <?php }?>
 
 </script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-joint-saving.js">
-</script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-joint-saving.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-joint-saving.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/blur.pin.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/import-joint.js"></script>
+<script>
+$(document).ready(function() {
+    $('.dropify_import').dropify({
+        messages: {
+            'default': 'Klik atau Geser file Anda disini',
+            'replace': 'Klik atau Geser file Anda untuk mengganti',
+            'remove': 'Hapus',
+            'error': 'Ooops, terjadi kesalahan.'
+        }
+    });
+});
+</script>

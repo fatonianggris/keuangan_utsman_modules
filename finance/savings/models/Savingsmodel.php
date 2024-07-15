@@ -21,7 +21,7 @@ class SavingsModel extends CI_Model
     private $table_vstudent = 'view_siswa';
     private $table_account = 'akun_keuangan';
     private $table_import_personal_saving = 'import_nasabah_personal';
-    private $table_import_joint_saving = 'import_nasabah_joint';
+    private $table_import_joint_saving = 'import_nasabah_bersama';
 
     //
     //------------------------------COUNT--------------------------------//
@@ -38,6 +38,17 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function get_number_joint_saving($number = '')
+    {
+
+        $this->db2->select('nomor_rekening_bersama');
+        $this->db2->where('nomor_rekening_bersama', $number);
+
+        $sql = $this->db2->get($this->table_joint_saving);
+
+        return $sql->result();
+    }
+
     public function get_number_import_personal_saving($number = '')
     {
 
@@ -45,6 +56,17 @@ class SavingsModel extends CI_Model
         $this->db2->where('nis', $number);
 
         $sql = $this->db2->get($this->table_import_personal_saving);
+
+        return $sql->result();
+    }
+
+    public function get_number_import_joint_saving($number = '')
+    {
+
+        $this->db2->select('nomor_rekening_bersama');
+        $this->db2->where('nomor_rekening_bersama', $number);
+
+        $sql = $this->db2->get($this->table_import_joint_saving);
 
         return $sql->result();
     }
@@ -58,17 +80,6 @@ class SavingsModel extends CI_Model
 									WHERE
 										id_nasabah IN ($id) AND status_nasabah = $status");
         return $sql->result_array();
-    }
-
-    public function get_number_joint_saving($number = '')
-    {
-
-        $this->db2->select('nomor_rekening_bersama');
-        $this->db2->where('nomor_rekening_bersama', $number);
-
-        $sql = $this->db2->get($this->table_joint_saving);
-
-        return $sql->result();
     }
 
     public function get_new_transaction()
@@ -778,6 +789,7 @@ class SavingsModel extends CI_Model
 										");
         return $sql->result();
     }
+
     public function get_all_import_personal_customer()
     {
         $sql = $this->db2->query("SELECT
@@ -969,6 +981,43 @@ class SavingsModel extends CI_Model
 									DESC");
         return $sql->result();
     }
+
+    public function get_all_import_joint_customer()
+    {
+        $sql = $this->db2->query("SELECT
+										u8514965_panel_utsman.tb.id_nasabah_bersama,
+										u8514965_panel_utsman.tb.id_siswa_penanggung_jawab,
+										u8514965_panel_utsman.tb.nomor_rekening_bersama,
+										u8514965_panel_utsman.tb.nama_tabungan_bersama,
+										u8514965_panel_utsman.tb.tingkat,
+										u8514965_panel_utsman.tb.tahun_ajaran,
+										u8514965_panel_utsman.tb.nama_wali,
+										u8514965_panel_utsman.tb.nama_tabungan_bersama,
+										u8514965_panel_utsman.tb.saldo_bersama,
+										u8514965_panel_utsman.tb.nomor_hp_wali,
+										u8514965_panel_utsman.tb.tanggal_transaksi,
+										u8514965_panel_utsman.tb.status_nasabah_bersama,
+										u8514965_panel_utsman.tb.status_penanggung_jawab,
+										u8514965_panel_utsman.s.nama_lengkap,
+										CONCAT(
+                                        u8514965_panel_utsman.ta.tahun_awal,
+                                        '/',
+                                        u8514965_panel_utsman.ta.tahun_akhir
+                                    	) AS nama_tahun_ajaran
+									FROM
+										u8514965_panel_utsman.import_nasabah_bersama tb
+									LEFT JOIN u8514965_panel_utsman.siswa s
+                                	ON
+                                   		 u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tb.id_siswa_penanggung_jawab
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
+                                	ON
+                                    	u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tb.tahun_ajaran
+									ORDER BY
+										u8514965_panel_utsman.tb.id_nasabah_bersama
+									DESC");
+        return $sql->result();
+    }
+
     public function get_all_joint_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
@@ -1773,6 +1822,7 @@ class SavingsModel extends CI_Model
 											nis,
 											nomor_pembayaran_dpb,
 											nomor_pembayaran_du,
+											password,
 											level_tingkat,
 											nama_lengkap,
 											nomor_handphone,
@@ -1790,6 +1840,7 @@ class SavingsModel extends CI_Model
 												'8',
 												SUBSTRING(u8514965_panel_utsman.inp.nis, 2)
 											) AS nomor_du,
+											u8514965_panel_utsman.inp.password,
 											u8514965_panel_utsman.inp.tingkat,
 											u8514965_panel_utsman.inp.nama_nasabah,
 											u8514965_panel_utsman.inp.nomor_hp_wali,

@@ -567,13 +567,13 @@ if (!empty($schoolyear)) {
 </div>
 <!-- End of Modal Rekap -->
 <script>
-
 <?php if ($user[0]->id_role_struktur == 5) {?>
 var id_role = 5;
 <?php } else {?>
 var id_role = 7;
 <?php }?>
 </script>
+
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-personal-saving.js">
 </script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-personal.js"></script>
@@ -590,5 +590,4 @@ $(document).ready(function() {
         }
     });
 });
-
 </script>
