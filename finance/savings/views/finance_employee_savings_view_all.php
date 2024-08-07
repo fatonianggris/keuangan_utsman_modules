@@ -10,12 +10,12 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">Tabungan Bersama</h5>
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Tabungan Pegawai</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item text-muted">
-                            <a href="" class="text-muted">Daftar Tabungan Bersama</a>
+                            <a href="" class="text-muted">Daftar Nasabah Tabungan</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -44,11 +44,12 @@
                 <div class="col-lg-12">
                     <!--begin::Entry-->
                     <div class="px-mobile">
-                        <div class="alert alert-custom alert-light-dark shadow-sm alert-shadow fade show" role="alert">
+                        <div class="alert alert-custom alert-light-default shadow-sm alert-shadow fade show"
+                            role="alert">
                             <div class="alert-text font-weight-bolder text-center text-dark">
                                 <h1 class="font-weight-boldest text-danger">
-                                    <li class="fas fa-exclamation-triangle"></li> DAFTAR TABUNGAN BERSAMA <li
-                                        class="fas fa-exclamation-triangle">
+                                    <li class="fas fa-exclamation-triangle"></li> DAFTAR NASABAH PEGAWAI <li
+                                        class="fas fa-exclamation-triangle"></li>
                                 </h1>
                                 MOHON UNTUK DIPERHATIKAN!!.<br> Silahkan
                                 Melakukan Pengecekan Kembali Untuk Transaksi KREDIT/DEBET Terima Kasih!
@@ -61,17 +62,18 @@
                                 <span class="card-icon">
                                     <i class="flaticon2-layers-1 text-primary"></i>
                                 </span>
-                                <h3 class="card-label">Daftar Nasabah Tabungan Bersama</h3>
-                                <a href="#" data-toggle="modal" data-target="#modal_import_joint"
+                                <h3 class="card-label">Daftar Nasabah Pegawai</h3>
+                                <a href="#" data-toggle="modal" data-target="#modal_import_nasabah"
                                     class="btn btn-warning btn-md">
-                                    <i class="flaticon-upload"></i>Import Nasabah Bersama
+                                    <i class="flaticon-upload"></i>Import Nasabah Pegawai
                                 </a>
                             </div>
+
                             <div class="card-toolbar">
                                 <div class="buttons">
-                                    <a href="<?php echo site_url("/finance/savings/add_joint_saving") ?>"
+                                    <a href="<?php echo site_url("/finance/savings/add_personal_saving") ?>"
                                         class="btn btn-success mr-2">
-                                        <i class="fa fa-plus"></i> Tambah Tabungan Baru
+                                        <i class="fa fa-plus"></i> Tambah Nasabah Baru
                                     </a>
                                     <button class="btn btn-primary" data-toggle="modal" data-target="#modalRekap"
                                         id="btnRekap">
@@ -83,54 +85,80 @@
                         <div class="card-body" id="paper">
                             <div class="card-body">
                                 <!--begin: Search Form-->
-
                                 <div class="row mb-4">
                                     <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Nomor Rekening Bersama:</label>
+                                        <label>Nomor Rekening/NIP:</label>
                                         <input type="text" class="form-control datatable-input"
                                             placeholder="Inputkan Nomor Rekening" data-col-index="1" />
                                     </div>
                                     <div class="col-lg-3 mb-lg-0 mb-6">
-                                        <label>Nama Tabungan:</label>
+                                        <label>Nama Pegawai:</label>
                                         <input type="text" class="form-control datatable-input"
-                                            placeholder="Inputkan Nama Tabungan" data-col-index="2" />
+                                            placeholder="Inputkan Nama Pegawai" data-col-index="2" />
                                     </div>
-                                    <div class="col-lg-3 mb-lg-0 mb-6">
-                                        <label>Penanggung Jawab:</label>
-                                        <input type="text" class="form-control datatable-input"
-                                            placeholder="Inputkan Nama Penanggung Jawab" data-col-index="3" />
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Jenis Kelamin</label>
+                                        <select type="text" class="form-control datatable-input" data-col-index="3">
+                                            <option value="">Pilih JK</option>
+                                            <option value="Laki-Laki">Laki-Laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                            <option value="">SEMUA</option>
+                                            <!-- <option value="5">SMA</option> -->
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Tingkat</label>
+                                        <select class="form-control datatable-input" data-col-index="4">
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="DC">DC</option>
+                                            <option value="KB/TK">KB</option>
+                                            <option value="SD">SD</option>
+                                            <option value="SMP">SMP</option>
+                                            <option value="UMUM">UMUM</option>
+                                            <option value="">SEMUA</option>
+                                            <!-- <option value="5">SMA</option> -->
+                                        </select>
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
                                         <label>Tahun Ajaran:</label>
-                                        <select class="form-control datatable-input" data-col-index="6">
+                                        <select class="form-control datatable-input" data-col-index="5">
                                             <option value="">Pilih Tahun Ajaran</option>
                                             <?php
 if (!empty($schoolyear)) {
     foreach ($schoolyear as $key => $value) {
         ?>
                                             <option
-                                                value="<?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>">
+                                                value="<?php echo $value->tahun_awal . "/" . $value->tahun_akhir; ?>">
                                                 <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                             </option>
                                             <?php
 } //ngatur nomor urut
 }
 ?>
-                                            <option value="">SEMUA</option>
+                                            <option value="">Semua</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Tingkat</label>
-                                        <select class="form-control datatable-input" data-col-index="7">
-                                            <option value="">Pilih Tingkat</option>
-                                            <option value="DC">DC</option>
-                                            <option value="KB">KB</option>
-                                            <option value="TK">TK</option>
-                                            <option value="SD">SD</option>
-                                            <option value="SMP">SMP</option>
+                                        <label>Status Pegawai</label>
+                                        <select type="text" class="form-control datatable-input" data-col-index="6">
+                                            <option value="">Pilih Status</option>
+                                            <option value="TETAP">TETAP</option>
+                                            <option value="TIDAK TETAP">TIDAK TETAP</option>
+                                            <option value="HONORER">HONORER</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
+                                    </div>
+                                    <div class="col-lg-3 mb-lg-0 mb-6">
+                                        <label class="font-weight-bolder">Tampilkan Perhitungan Dari Tanggal:</label>
+                                        <div class="input-group" id="kt_daterangepicker_6">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i
+                                                        class="la la-calendar-check-o"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control font-weight-bolder" readonly=""
+                                                placeholder="Select date range">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row mt-8">
@@ -152,17 +180,10 @@ if (!empty($schoolyear)) {
                                     </div>
                                     <div class="row col-lg-5">
                                         <div class="col-lg-4 mb-lg-0 mb-6 text-right">
-                                            <span class="font-weight-bolder">Tampilkan Perhitungan Dari Tanggal</span>
+
                                         </div>
                                         <div class="col-lg-6 mb-lg-0 mb-6">
-                                            <div class="input-group" id="kt_daterangepicker_6">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i
-                                                            class="la la-calendar-check-o"></i></span>
-                                                </div>
-                                                <input type="text" class="form-control font-weight-bolder" readonly=""
-                                                    placeholder="Select date range">
-                                            </div>
+
                                         </div>
                                         <div class="col-lg-2 mb-lg-0 mb-6">
                                             <div class="btn-group">
@@ -189,21 +210,21 @@ if (!empty($schoolyear)) {
                                 <!--begin: Datatable-->
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-separate table-hover table-light-dark table-checkable"
+                                <table class="table table-separate table-hover table-light-default table-checkable"
                                     id="table_transcation">
                                     <thead>
                                         <tr>
                                             <th class="text-center"></th>
-                                            <th>No. Rekening</th>
-                                            <th>Nama Tabungan</th>
-                                            <th>Penanggung Jawab</th>
-                                            <th>No. Handphone</th>
-                                            <th>Email</th>
-                                            <th>Tahun Ajaran</th>
+                                            <th>NIP</th>
+                                            <th>Nama Nasabah/Pegawai</th>
+                                            <th>JK</th>
                                             <th>Tingkat</th>
-                                            <th>Kredit (Rp)</th>
-                                            <th>Debet (Rp)</th>
-                                            <th>Saldo (Rp)</th>
+                                            <th>TA</th>
+                                            <th>Nomor HP</th>
+                                            <th>Status Pegawai</th>
+                                            <th>Kredit</th>
+                                            <th>Debet</th>
+                                            <th>Saldo</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -218,9 +239,10 @@ if (!empty($schoolyear)) {
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                             <th class="font-weight-bolder">TOTAL TRANSAKSI</th>
                                             <th class="font-weight-bolder text-success">-</th>
-                                            <th class="font-weight-bolder text-danger">-</th>
+                                            <th class="font-weight-bolder text-success">-</th>
                                             <th class="font-weight-bolder text-dark">-</th>
                                             <th></th>
                                         </tr>
@@ -238,50 +260,93 @@ if (!empty($schoolyear)) {
 </div>
 <!--end::Content-->
 
+
 <!-- Modal Debet  -->
-<div class="modal fade" tabindex="" role="dialog" id="modalEditJoint">
+<div class="modal fade" tabindex="" role="dialog" id="modalEditNasabah">
     <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
         value="<?php echo $this->security->get_csrf_hash(); ?>">
-    <div class="modal-dialog modal-lg" role="document" id="kt_form_edit_joint">
+    <div class="modal-dialog modal-lg" role="document" id="kt_form_edit_employee">
         <div class="modal-content">
             <div class="modal-header bg-default">
-                <h5 class="modal-title font-weight-bolder">Edit Tabungan Bersama</h5>
+                <h5 class="modal-title font-weight-bolder">Edit Profil Nasabah</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form needs-validation" novalidate="novalidate" action="#" id="kt_form_edit_joint">
+            <form class="form needs-validation" novalidate="novalidate" action="#" id="kt_form_edit_employee">
                 <div class="modal-body">
-                    <input type="hidden" class="hidden" name="id_tabungan_bersama">
+                    <input type="hidden" class="hidden" name="id_pegawai">
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label> Nomor Rekening Bersama</label>
-                                <input class="form-control form-control-lg nomor_rekening_bersama form-control-solid"
-                                    name="nomor_rekening_bersama" readonly>
+                                <label> NIP Pegawai</label>
+                                <input class="form-control form-control-lg nip_pegawai" name="nip_pegawai" disabled>
                                 </input>
                             </div>
                         </div>
-                        <div class="col-lg-9">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <label> Nama Tabungan Bersama</label>
-                                <input type="text" name="nama_tabungan_bersama"
-                                    class="form-control form-control-lg nama_tabungan_bersama"
-                                    placeholder="Inputkan Nama Tabungan Bersama" />
+                                <label> Nama Pegawai/Nasabah</label>
+                                <input type="text" name="nama_pegawai" class="form-control form-control-lg nama_pegawai"
+                                    placeholder="Inputkan Nama Lengkap Pegawai" />
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan Nama
-                                    Tabungan Bersama</span>
+                                    Pegawai/Nasabah</span>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="id_tingkat" class="form-control form-control-lg id_tingkat">
+                                <select name="level_tingkat" class="form-control form-control-lg level_tingkat">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="7">DC</option>
+                                    <option value="1">KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
+                                </select>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label> Email Nasabah </label>
+                                <input type="text" name="email_nasabah"
+                                    class="form-control form-control-lg email_nasabah"
+                                    placeholder="Inputkan Email Nasabah" />
+                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
+                                    Email Nasabah</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label> Nomor Handphone </label>
+                                <input type="text" name="nomor_handphone_pegawai"
+                                    class="form-control form-control-lg nomor_handphone_pegawai"
+                                    placeholder="Inputkan Nomor Handphone" />
+                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
+                                    Nomor Handphone Nasabah</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label> Jenis Kelamin </label>
+                                <select name="jenis_kelamin" class="form-control form-control-lg jenis_kelamin">
+                                    <option value="">Pilih Jenis Kelamin</option>
+                                    <option value="1">Laki-Laki</option>
+                                    <option value="2">Perempuan</option>
+                                </select>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label> Status Pegawai </label>
+                                <select name="status_pegawai" class="form-control form-control-lg status_pegawai">
+                                    <option value="">Pilih Status Pegawai</option>
+                                    <option value="1">Tetap</option>
+                                    <option value="2">Tidak Tetap</option>
+                                    <option value="3">Honorer</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -289,65 +354,21 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Tahun Ajaran</label>
-                                <select name="id_th_ajaran" class="form-control form-control-lg id_th_ajaran">
-                                    <option value="">Pilih TA</option>
+                                <select name="th_ajaran" class="form-control form-control-lg th_ajaran">
                                     <?php
 if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value) {
+    foreach ($schoolyear as $key => $value_sch) {
+
         ?>
-                                    <option value="<?php echo $value->id_tahun_ajaran; ?>">
-                                        <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
+                                    <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
+                                        <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-} //ngatur nomor urut
+}
 }
 ?>
                                 </select>
-                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,
-                                    </b>isikan Tahun Ajaran</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Nama Siswa Penanggung Jawab</label>
-                                <select name="id_siswa_penanggung_jawab" id="id_siswa_penanggung_jawab"
-                                    class="form-control form-control-lg select2 id_siswa_penanggung_jawab">
-                                </select>
-                                <span class="form-text text-dark"><b class="text-danger">*WAJIB
-                                        DIISI,
-                                    </b>isikan Siswa Penanggung Jawab, Perwakilan salah satu
-                                    satu</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Nama Wali/Orang Tua Penanggung Jawab</label>
-                                <input type="text" name="nama_wali" class="form-control form-control-lg"
-                                    placeholder="Inputkan Nama Wali" />
-                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
-                                    Nama
-                                    Wali/Nasabah</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Nomor HP Wali/Orang Tua Penanggung Jawab</label>
-                                <input type="text" name="nomor_handphone_wali" class="form-control form-control-lg"
-                                    placeholder="Inputkan Nomor Handphone Wali" />
-                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
-                                    Nomor Handphone
-                                    Wali/Nasabah</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>Keterangan Tabungan Bersama</label>
-                                <textarea class="form-control" name="keterangan_tabungan_bersama"
-                                    placeholder="Isikan Keterangan Tabungan Bersama" rows="4"></textarea>
-                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
-                                        DIISI,
-                                    </b>Isikan
-                                    Keterangan Tabungan Bersama</span>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
                         </div>
                     </div>
@@ -355,7 +376,7 @@ if (!empty($schoolyear)) {
 
                 <div class="modal-footer bg-whitesmoke ">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-success font-weight-bolder" id="btnUpdateTabungan">Simpan
+                    <button class="btn btn-success font-weight-bolder" id="btnUpdateNasabah">Simpan
                         !</button>
                 </div>
             </form>
@@ -369,34 +390,33 @@ if (!empty($schoolyear)) {
     <div class="modal-dialog modal-lg" role="document" id="kt_form_recap">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h5 class="modal-title font-weight-bolder"> Lihat Rekap Tabungan Bersama</h5>
+                <h5 class="modal-title font-weight-bolder"> Lihat Rekap Tabungan Pegawai</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form class="form" novalidate="novalidate"
-                action="<?php echo site_url('finance/savings/get_joint_transaction_recap'); ?>"
+                action="<?php echo site_url('finance/savings/get_student_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
-                <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
-                    value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">
-                            <label> Input Nomor Rekeming Bersama</label>
-                            <select name="nomor_rekening_bersama" class="form-control select2 findRekapTabungan"
-                                id="findRekapTabungan">
+                            <label> Input NIP Pegawai</label>
+                            <select name="nip_pegawai" class="form-control select2 findRekapNasabah"
+                                id="findRekapNasabah">
                             </select>
-                            <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Inpukan
-                                Nomor Rekening Bersama</span>
+                            <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> inputkan
+                                NIP Pegawai</span>
                         </div>
                         <div class="col-md-12">
                             <div class="alert alert-secondary text-center" role="alert">
-                                <b>INFO TABUNGAN BERSAMA</b>
+                                <b>INFO TABUNGAN PEGAWAI</b>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            Nama Tabungan: <label class="font-weight-bold" id="infoNamaTabunganRekap">-</label><br>
-                            PJ: <label class="font-weight-bold timeago" id="infoPenanggungJawabRekap">-</label><br>
+                            Nama Pegawai: <label class="font-weight-bold" id="infoNamaPegawaiRekap">-</label><br>
+                            Status Pegawai: <label class="font-weight-bold timeago"
+                                id="infoStatusPegawaiRekap">-</label><br>
                             Tingkat: <label class="font-weight-bold" id="infoTingkatRekap">-</label>
                         </div>
                         <div class="col-md-6">
@@ -406,6 +426,7 @@ if (!empty($schoolyear)) {
                             Saldo: <label class="font-weight-bold" id="infoSaldoRekap">-</label>
                         </div>
                     </div>
+
                 </div>
                 <div class="modal-footer bg-whitesmoke">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -417,19 +438,18 @@ if (!empty($schoolyear)) {
     </div>
 </div>
 
-<!-- End of Modal Rekap -->
-<div class="modal fade" id="modal_import_joint" tabindex="-1" aria-labelledby="exampleModalSizeLg" aria-hidden="true"
+<div class="modal fade" id="modal_import_nasabah" tabindex="-1" aria-labelledby="exampleModalSizeLg" aria-hidden="true"
     role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="kt_modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Import Nasabah Bersama</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Import Nasabah Pegawai</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
-            <form class="form" method="POST" action="<?php echo site_url('finance/savings/import_joint_saving'); ?>"
-                enctype="multipart/form-data" id="kt_upload_nasabah_joint">
+            <form class="form" method="POST" action="<?php echo site_url('finance/savings/import_personal_saving'); ?>"
+                enctype="multipart/form-data" id="kt_upload_nasabah_employee">
                 <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
                     value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
@@ -438,23 +458,23 @@ if (!empty($schoolyear)) {
                             <h5 class="modal-title text-center font-weight-bolder">SEBELUM MENGUPLOAD DIHARAPKAN
                                 MENGEDIT FILE SESUAI CONTOH
                                 FORMAT HEADER & ISI FILE DIBAWAH INI!</h5>
-                            <img class="mb-2 mt-5"
-                                src="<?php echo base_url() . "/uploads/data/format_excel_joint.png"; ?>" alt="format"
-                                height="" width="100%">
+                            <img class="mb-2 mt-5" src="<?php echo base_url() . "/uploads/data/format_excel.png"; ?>"
+                                alt="format" height="" width="100%">
                             <span class="form-text text-dark mb-5 text-center"><b class="text-danger"><a
-                                        href="<?php echo base_url() . "uploads/data/contoh_format_excel_joint.xlsx"; ?>">*KLIK
+                                        href="<?php echo base_url() . "uploads/data/contoh_format_excel.xlsx"; ?>">*KLIK
                                         DISINI</a>, </b>untuk mendownload
                                 file contoh format excel.</span>
                         </div>
                         <div class="col-xl-8">
                             <div class="form-group">
                                 <label>Upload File Excel Nasabah</label>
-                                <input type="file" class="dropify_import form-control" name="file_joint_saving"
+                                <input type="file" class="dropify_import form-control" name="file_employee_saving"
                                     data-max-file-size="10M" data-height="170"
                                     data-allowed-file-extensions="xls xlsx" />
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI, </b>format xls,
                                     xlsx dan ukuran < 10Mb</span>
                             </div>
+                            <input type="hidden" class="hidden" name="pin_verification">
                         </div>
                         <div class="col-xl-4">
                             <div class="col-lg-12">
@@ -495,7 +515,6 @@ if (!empty($schoolyear)) {
                         <div class="col-xl-6 text-center">
                             <div class="form-group">
                                 <label>PIN Anda</label>
-                                <input type="hidden" class="hidden" name="pin_verification">
                                 <div class="row col-12 d-flex justify-content-center" id="otp">
                                     <input
                                         class="col-2 ml-8 mr-2 text-center form-control form-control-lg form-control-solid font-weight-bolder"
@@ -541,7 +560,7 @@ if (!empty($schoolyear)) {
         </div>
     </div>
 </div>
-
+<!-- End of Modal Rekap -->
 <script>
 <?php if ($user[0]->id_role_struktur == 5) {?>
 var id_role = 5;
@@ -549,10 +568,12 @@ var id_role = 5;
 var id_role = 7;
 <?php }?>
 </script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-joint-saving.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-joint-saving.js"></script>
+
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-personal-saving.js">
+</script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-personal.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/blur.pin.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/import-joint.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/import-personal.js"></script>
 <script>
 $(document).ready(function() {
     $('.dropify_import').dropify({
@@ -565,29 +586,3 @@ $(document).ready(function() {
     });
 });
 </script>
-
-<?php
-if ($this->session->flashdata('print_transaction')) {
-    $resutl = $this->session->flashdata('print_transaction');
-
-    $nama_tingkat = "";
-    if ($resutl['tingkat'] == 1) {
-        $nama_tingkat = "KB";
-    } else if ($resutl['tingkat'] = 2) {
-        $nama_tingkat = "TK";
-    } else if ($resutl['tingkat'] = 3) {
-        $nama_tingkat = "SD";
-    } else if ($resutl['tingkat'] = 4) {
-        $nama_tingkat = "SMP";
-    } else if ($resutl['tingkat'] = 6) {
-        $nama_tingkat = "DC";
-    }
-
-    echo "<script>" .
-    "window.bundle.getPrint('RUMAH AMANAH - SEKOLAH UTSMAN', HOST_URL + 'uploads/data/rumah_amanah.png','Jln. Lakarsantri Selatan 31-35',
-		 'Surabaya, Jawa Timur', '031-99424800','" . $resutl['nomor_rekening'] . "','" . $resutl['nomor_transaksi'] . "', 'BERSAMA', 'KREDIT',
-		  '" . $resutl['waktu_transaksi'] . "', '" . number_format((double) $resutl['saldo'], 0, ',', '.') . "','0','" . number_format((double) $resutl['saldo'], 0, ',', '.') . "', 'SIMPAN STRUK INI', 'UNTUK BUKTI TRANSAKSI',
-		  '" . $resutl['nama_tabungan'] . "', '" . $nama_tingkat . "', 'www.sekolahutsman.sch.id')"
-        . "</script>";
-}
-?>

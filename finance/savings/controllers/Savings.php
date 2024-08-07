@@ -175,6 +175,27 @@ class Savings extends MX_Controller
         }
     }
 
+    public function check_number_joint_saving()
+    {
+
+        $param = $this->input->post('input_nomor_rekening_bersama');
+        $number = $this->security->xss_clean($param);
+
+        $check = $this->SavingsModel->get_number_joint_saving($number);
+
+        if ($check) {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        } else {
+            $isAvailable = true;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        }
+    }
+
     public function check_number_import_personal_saving()
     {
 
@@ -238,27 +259,6 @@ class Savings extends MX_Controller
                     'valid' => $isAvailable,
                 ));
             }
-        }
-    }
-
-    public function check_number_joint_saving()
-    {
-
-        $param = $this->input->post('input_nomor_rekening_bersama');
-        $number = $this->security->xss_clean($param);
-
-        $check = $this->SavingsModel->get_number_joint_saving($number);
-
-        if ($check) {
-            $isAvailable = false;
-            echo json_encode(array(
-                'valid' => $isAvailable,
-            ));
-        } else {
-            $isAvailable = true;
-            echo json_encode(array(
-                'valid' => $isAvailable,
-            ));
         }
     }
 
@@ -385,7 +385,7 @@ class Savings extends MX_Controller
         }
     }
 
-	public function get_all_import_joint_customer()
+    public function get_all_import_joint_customer()
     {
         $data = $this->SavingsModel->get_all_import_joint_customer();
 
@@ -703,7 +703,7 @@ class Savings extends MX_Controller
                     $status_qurban = "";
                     $status_wisata = "";
 
-                    if ($data['input_saldo_tabungan_umum'] >= 5000) {
+                    if ($data['input_saldo_tabungan_umum'] >= 2000) {
 
                         $data_umum = array(
                             'nomor_transaksi_umum' => "TU01" . $random_number . "/" . date('YmdHis'),
@@ -720,7 +720,7 @@ class Savings extends MX_Controller
 
                         $input_umum = $this->SavingsModel->insert_credit_saving($this->user_finance[0]->id_akun_keuangan, $data_umum);
 
-                        if (!$input_umum) {
+                        if (!$input_umum['status']) {
                             $status_umum = "<b>Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b>";
                         } else {
                             $status_umum = "<b>Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-success'>BERHASIL</b>";
@@ -733,13 +733,13 @@ class Savings extends MX_Controller
                         $keterangan_umum = "";
                     } else {
 
-                        $keterangan_umum = "<b>->TRANSAKSI DI TABUNGAN UMUM SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 5000)</b><br>";
+                        $keterangan_umum = "<b>->TRANSAKSI DI TABUNGAN UMUM SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
                     }
 
-                    if ($data['input_saldo_tabungan_qurban'] >= 5000) {
+                    if ($data['input_saldo_tabungan_qurban'] >= 2000) {
 
                         $data_qurban = array(
-                            'nomor_transaksi_qurban' => "TQ01/" . date('YmdHis'),
+                            'nomor_transaksi_qurban' => "TQ01/" . $random_number . "/" . date('YmdHis'),
                             'id_tingkat' => $data['input_tingkat'],
                             'nis' => $data['input_nomor_rekening'],
                             'nominal' => $data['input_saldo_tabungan_qurban'],
@@ -753,7 +753,7 @@ class Savings extends MX_Controller
 
                         $input_qurban = $this->SavingsModel->insert_qurban_credit_saving($this->user_finance[0]->id_akun_keuangan, $data_qurban);
 
-                        if (!$input_qurban) {
+                        if (!$input_qurban['status']) {
                             $status_qurban = "<b>Rp. $data[input_saldo_tabungan_qurban], STATUS:</b> <b class='text-danger'>GAGAL</b>";
                         } else {
                             $status_qurban = "<b>Rp. $data[input_saldo_tabungan_qurban], STATUS:</b> <b class='text-success'>BERHASIL</b>";
@@ -765,13 +765,13 @@ class Savings extends MX_Controller
                         $keterangan_qurban = "";
                     } else {
 
-                        $keterangan_qurban = "<b>->TRANSAKSI DI TABUNGAN QURBAN SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 5000)</b><br>";
+                        $keterangan_qurban = "<b>->TRANSAKSI DI TABUNGAN QURBAN SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
                     }
 
-                    if ($data['input_saldo_tabungan_qurban'] >= 5000) {
+                    if ($data['input_saldo_tabungan_wisata'] >= 2000) {
 
                         $data_wisata = array(
-                            'nomor_transaksi_wisata' => "TW01/" . date('YmdHis'),
+                            'nomor_transaksi_wisata' => "TW01/" . $random_number . "/" . date('YmdHis'),
                             'id_tingkat' => $data['input_tingkat'],
                             'nis' => $data['input_nomor_rekening'],
                             'nominal' => $data['input_saldo_tabungan_wisata'],
@@ -785,10 +785,10 @@ class Savings extends MX_Controller
 
                         $input_wisata = $this->SavingsModel->insert_tour_credit_saving($this->user_finance[0]->id_akun_keuangan, $data_wisata);
 
-                        if (!$input_wisata) {
-                            $input_wisata = "<b>Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-danger'>GAGAL</b>";
+                        if (!$input_wisata['status']) {
+                            $status_wisata = "<b>Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-danger'>GAGAL</b>";
                         } else {
-                            $input_wisata = "<b>Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-success'>BERHASIL</b>";
+                            $status_wisata = "<b>Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-success'>BERHASIL</b>";
                         }
                         $keterangan_wisata = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR </b>$status_wisata<br>";
 
@@ -797,9 +797,39 @@ class Savings extends MX_Controller
                         $keterangan_wisata = "";
                     } else {
 
-                        $keterangan_wisata = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 5000)</b><br>";
+                        $keterangan_wisata = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
                     }
 
+                    $transaction = array(
+                        array(
+                            "jenis_tabungan" => "UMUM",
+                            "nomor_transaksi" => @$input_umum['data']->nomor_transaksi_umum,
+                            "waktu_transaksi" => @date('d/m/Y H:i:s', strtotime(@$input_umum['data']->waktu_transaksi)),
+                            "saldo" => @number_format((double) @$input_umum['data']->saldo, 0, ',', '.'),
+                        ),
+                        array(
+                            "jenis_tabungan" => "QURBAN",
+                            "nomor_transaksi" => @$input_qurban['data']->nomor_transaksi_qurban,
+                            "waktu_transaksi" => @date('d/m/Y H:i:s', strtotime($input_qurban['data']->waktu_transaksi)),
+                            "saldo" => @number_format((double) @$input_qurban['data']->saldo, 0, ',', '.'),
+                        ),
+                        array(
+                            "jenis_tabungan" => "WISATA",
+                            "nomor_transaksi" => $input_wisata['data']->nomor_transaksi_wisata,
+                            "waktu_transaksi" => @date('d/m/Y H:i:s', strtotime(@$input_wisata['data']->waktu_transaksi)),
+                            "saldo" => @number_format((double) @$input_wisata['data']->saldo, 0, ',', '.'),
+                        ),
+                    );
+
+                    $trans_msg = array("nama_nasabah" => $data['input_nama_nasabah'],
+                        "nomor_rekening" => $data['input_nomor_rekening'],
+                        "tingkat" => $data['input_tingkat'],
+                        "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_umum['data']->waktu_transaksi)),
+                        "array_transaction" => $transaction);
+
+                    $trans_msg_json = json_encode($trans_msg);
+
+                    $this->session->set_flashdata('print_transaction', $trans_msg_json);
                     $this->session->set_flashdata('flash_message', succ_msg("Data Nasabah/Siswa Baru <b>'ATAS NAMA: " . strtoupper($data['input_nama_nasabah']) . ", NIS/NOREK: $data[input_nomor_rekening]'</b> telah ditambahakan dengan Rincian Transaksi berikut: <br>$keterangan_umum $keterangan_qurban $keterangan_wisata <br> <b class='text-danger'>*Silahkan cek Data Nasabah di menu Daftar Nasabah, Terima Kasih.</b>"));
                     redirect('finance/savings/list_personal_saving');
                 } else {
@@ -847,13 +877,13 @@ class Savings extends MX_Controller
 
                 if ($input == true) {
 
-                    if ($data['input_nominal_saldo'] != "" or $data['input_nominal_saldo'] >= 5000 or $data['input_nominal_saldo'] != null) {
+                    if ($data['input_nominal_saldo'] != "" or $data['input_nominal_saldo'] >= 2000 or $data['input_nominal_saldo'] != null) {
 
                         $data['saldo_akhir'] = $data['input_nominal_saldo'];
 
                         $transaksi = $this->SavingsModel->insert_joint_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
 
-                        if (!$transaksi) {
+                        if (!$transaksi['status']) {
                             $status_transaksi = "<b>Rp. $data[input_nominal_saldo], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(SYSTEM ERROR!)</b>";
                         } else {
                             $status_transaksi = "<b>Rp. $data[input_nominal_saldo], STATUS:</b> <b class='text-success'>BERHASIL</b>";
@@ -862,14 +892,23 @@ class Savings extends MX_Controller
                         $transaksi_bersama = "<b>TRANSAKSI DI TABUNGAN BERSAMA SEBESAR </b>$status_transaksi<br>";
                     } else {
 
-                        $transaksi_bersama = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_nominal_saldo], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 5000)</b><br>";
+                        $transaksi_bersama = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_nominal_saldo], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
                     }
 
+                    $trans_msg = array("nama_tabungan" => strtoupper($data['input_nama_tabungan_bersama']),
+                        "nomor_rekening" => $data['input_nomor_rekening_bersama'],
+                        "tingkat" => $data['input_tingkat'],
+                        "nomor_transaksi" => $transaksi['data']->nomor_transaksi_bersama,
+                        "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($transaksi['data']->waktu_transaksi)),
+                        "saldo" => $transaksi['data']->saldo);
+
+                    $this->session->set_flashdata('print_transaction', $trans_msg);
                     $this->session->set_flashdata('flash_message', succ_msg("Data Tabungan Bersama Baru <b>'ATAS NAMA: " . strtoupper($data['input_nama_tabungan_bersama']) . ", NOREK: $data[input_nomor_rekening_bersama]'</b> telah ditambahakan dengan Rincian Transaksi berikut: <br>$transaksi_bersama <br><b class='text-danger'>*Silahkan cek Data Nasabah Bersama di menu Daftar Tabungan Bersama, Terima Kasih.</b>"));
+
                     redirect('finance/savings/list_joint_saving');
                 } else {
 
-                    $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan lakukan input ulang..'));
+                    $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan lakukan input ulang.'));
                     redirect('finance/savings/add_joint_saving');
                 }
 
@@ -878,464 +917,6 @@ class Savings extends MX_Controller
                 redirect('finance/savings/add_joint_saving');
             }
         }
-    }
-
-    public function post_joint_saving_credit()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-
-        $data['input_status_kredit_debet'] = "1";
-        $data['input_nomor_transaksi_bersama'] = "TB01" . $random_number . "/" . date('YmdHis');
-        $get_balance = $this->SavingsModel->get_joint_saving_balance($data['input_nomor_rekening_bersama']);
-
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data == false or empty($data['input_nomor_rekening_bersama'])) {
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                if ($get_balance[0]->saldo_tabungan_bersama == 0) {
-
-                    $data['saldo_akhir'] = $data['input_nominal_saldo'];
-
-                } else if ($data['input_nominal_saldo'] < 5000) {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
-
-                    echo json_encode($output);
-                    exit();
-
-                } else {
-
-                    $data['saldo_akhir'] = $data['input_nominal_saldo'] + $get_balance[0]->saldo_tabungan_bersama;
-                }
-
-                $input_credit = $this->SavingsModel->insert_joint_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Disetor!, Setor Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Bersama.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
-    }
-
-    public function post_credit()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-        $data['status_kredit_debet'] = "1";
-        $data['nomor_transaksi_umum'] = "TU01" . $random_number . "/" . date('YmdHis');
-        $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
-
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data == false or empty($data['nis'])) {
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                if ($get_balance[0]->saldo_tabungan_umum == 0) {
-
-                    $data['saldo_akhir'] = $data['nominal'];
-
-                } else if ($data['nominal'] < 5000) {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
-
-                    echo json_encode($output);
-                    exit();
-
-                } else {
-
-                    $data['saldo_akhir'] = $data['nominal'] + $get_balance[0]->saldo_tabungan_umum;
-
-                }
-
-                $input_credit = $this->SavingsModel->insert_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Disetor!, Setor Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Umum.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
-    }
-
-    public function post_qurban_credit()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-        $data['status_kredit_debet'] = "1";
-        $data['nomor_transaksi_qurban'] = "TQ01" . $random_number . "/" . date('YmdHis');
-        $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
-
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data == false or empty($data['nis'])) {
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                if ($get_balance[0]->saldo_tabungan_qurban == 0) {
-
-                    $data['saldo_akhir'] = $data['nominal'];
-
-                } else if ($data['nominal'] < 5000) {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
-
-                    echo json_encode($output);
-                    exit();
-
-                } else {
-
-                    $data['saldo_akhir'] = $data['nominal'] + $get_balance[0]->saldo_tabungan_qurban;
-
-                }
-
-                $input_credit = $this->SavingsModel->insert_qurban_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Disetor!, Setor Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Qurban.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
-    }
-
-    public function post_tour_credit()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-        $data['status_kredit_debet'] = "1";
-        $data['nomor_transaksi_wisata'] = "TW01" . $random_number . "/" . date('YmdHis');
-        $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
-
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data == false or empty($data['nis'])) {
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                if ($get_balance[0]->saldo_tabungan_wisata == 0) {
-
-                    $data['saldo_akhir'] = $data['nominal'];
-
-                } else if ($data['nominal'] < 5000) {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
-
-                    echo json_encode($output);
-                    exit();
-
-                } else {
-
-                    $data['saldo_akhir'] = $data['nominal'] + $get_balance[0]->saldo_tabungan_wisata;
-
-                }
-
-                $input_credit = $this->SavingsModel->insert_tour_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Disetor!, Setor Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Wisata.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
-    }
-
-    public function post_credit_new_client()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-        $data['status_kredit_debet'] = "1";
-        $data['nomor_transaksi_umum'] = "TU01" . $random_number . "/" . date('YmdHis');
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data == false or empty($data['nis'])) {
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                $data['saldo_akhir'] = $data['nominal'];
-
-                $input_client = $this->SavingsModel->insert_client($data);
-                $input_credit = $this->SavingsModel->insert_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
-
-                if ($input_client == true && $input_credit == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Disetor!, Setor Tabungan Umum Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Umum.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
-    }
-
-    public function post_qurban_credit_new_client()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-        $data['status_kredit_debet'] = "1";
-        $data['nomor_transaksi_qurban'] = "TQ01" . $random_number . "/" . date('YmdHis');
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data == false or empty($data['nis'])) {
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                $data['saldo_akhir'] = $data['nominal'];
-
-                $input_client = $this->SavingsModel->insert_qurban_client($data);
-                $input_credit = $this->SavingsModel->insert_qurban_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
-
-                if ($input_client == true && $input_credit == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Disetor!, Setor Tabungan Qurban Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Qurban.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
-    }
-
-    public function post_tour_credit_new_client()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-        $data['status_kredit_debet'] = "1";
-        $data['nomor_transaksi_wisata'] = "TW01" . $random_number . "/" . date('YmdHis');
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data == false or empty($data['nis'])) {
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                $data['saldo_akhir'] = $data['nominal'];
-
-                $input_client = $this->SavingsModel->insert_tour_client($data);
-                $input_credit = $this->SavingsModel->insert_tour_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
-
-                if ($input_client == true && $input_credit == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Disetor!, Setor Tabungan Wisata Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Wisata.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
     }
 
     public function update_personal_saving()
@@ -1357,7 +938,6 @@ class Savings extends MX_Controller
             } else {
 
                 $update_personal = $this->SavingsModel->update_personal_saving($data['id_siswa'], $data);
-
                 if ($update_personal == true) {
 
                     $output = array("status" => true,
@@ -1388,69 +968,6 @@ class Savings extends MX_Controller
 
     }
 
-    public function update_import_personal_saving()
-    {
-        $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
-
-        $token = $this->security->get_csrf_hash();
-
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
-
-            if ($data['id_nasabah'] == "" or empty($data['id_nasabah']) or $data['id_nasabah'] == null) {
-
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
-                );
-
-            } else {
-
-                $check = $this->SavingsModel->get_number_personal_saving($data['nis']);
-
-                if ($check) {
-                    $data['status_nasabah'] = '1';
-                } else {
-                    $check_import = $this->SavingsModel->get_number_import_personal_saving($data['nis']);
-
-                    if ($check_import && ($data['old_nis'] != $check_import->nis)) {
-                        $data['status_nasabah'] = '1';
-                    } else {
-                        $data['status_nasabah'] = '2';
-                    }
-                }
-
-                $update_personal = $this->SavingsModel->update_import_personal_saving($data['id_nasabah'], $data);
-
-                if ($update_personal == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Diubah!, Perubahan Data Import Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah diubah. Silahkan cek Hasil Data Import.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                    );
-                }
-
-            }
-
-            echo json_encode($output);
-
-        } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
-
-            echo json_encode($output);
-        }
-
-    }
     public function update_joint_saving()
     {
         $param = $this->input->post();
@@ -1490,7 +1007,548 @@ class Savings extends MX_Controller
             }
 
             echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
 
+            echo json_encode($output);
+        }
+
+    }
+
+    public function post_joint_saving_credit()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+
+        $data['input_status_kredit_debet'] = "1";
+        $data['input_nomor_transaksi_bersama'] = "TB01" . $random_number . "/" . date('YmdHis');
+        $get_balance = $this->SavingsModel->get_joint_saving_balance($data['input_nomor_rekening_bersama']);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['input_nomor_rekening_bersama'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit'], $check_pin[0]->pin_akun)) {
+
+                    if ($get_balance[0]->saldo_tabungan_bersama == 0) {
+
+                        $data['saldo_akhir'] = $data['input_nominal_saldo'];
+
+                    } else if ($data['input_nominal_saldo'] < 2000) {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['input_nominal_saldo'] + $get_balance[0]->saldo_tabungan_bersama;
+                    }
+
+                    $input_credit = $this->SavingsModel->insert_joint_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                    $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
+
+                    if ($input_credit['status'] == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $input_credit['data']->nomor_transaksi_bersama,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_credit['data']->waktu_transaksi)),
+                            "saldo_akhir" => $input_credit['data']->saldo,
+                            "messages" => "Berhasil Disetor!, Setor Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Bersama.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
+                    );
+                }
+            }
+
+            echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
+    public function post_credit()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+        $data['status_kredit_debet'] = "1";
+        $data['nomor_transaksi_umum'] = "TU01" . $random_number . "/" . date('YmdHis');
+        $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['nis'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit'], $check_pin[0]->pin_akun)) {
+
+                    if ($get_balance[0]->saldo_tabungan_umum == 0) {
+
+                        $data['saldo_akhir'] = $data['nominal'];
+
+                    } else if ($data['nominal'] < 2000) {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['nominal'] + $get_balance[0]->saldo_tabungan_umum;
+
+                    }
+
+                    $input_credit = $this->SavingsModel->insert_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                    $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
+
+                    if ($input_credit['status'] == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $input_credit['data']->nomor_transaksi_umum,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_credit['data']->waktu_transaksi)),
+                            "saldo_akhir" => $input_credit['data']->saldo,
+                            "messages" => "Berhasil Disetor!, Setor Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Umum.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
+                    );
+
+                }
+            }
+
+            echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
+    public function post_qurban_credit()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+        $data['status_kredit_debet'] = "1";
+        $data['nomor_transaksi_qurban'] = "TQ01" . $random_number . "/" . date('YmdHis');
+        $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['nis'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+
+                if (password_verify($data['pin_verification_kredit'], $check_pin[0]->pin_akun)) {
+
+                    if ($get_balance[0]->saldo_tabungan_qurban == 0) {
+
+                        $data['saldo_akhir'] = $data['nominal'];
+
+                    } else if ($data['nominal'] < 2000) {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['nominal'] + $get_balance[0]->saldo_tabungan_qurban;
+
+                    }
+
+                    $input_credit = $this->SavingsModel->insert_qurban_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                    $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
+
+                    if ($input_credit['status'] == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $input_credit['data']->nomor_transaksi_qurban,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_credit['data']->waktu_transaksi)),
+                            "saldo_akhir" => $input_credit['data']->saldo,
+                            "messages" => "Berhasil Disetor!, Setor Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Qurban.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
+                    );
+                }
+
+            }
+            echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
+    public function post_tour_credit()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+        $data['status_kredit_debet'] = "1";
+        $data['nomor_transaksi_wisata'] = "TW01" . $random_number . "/" . date('YmdHis');
+        $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['nis'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+
+                if (password_verify($data['pin_verification_kredit'], $check_pin[0]->pin_akun)) {
+
+                    if ($get_balance[0]->saldo_tabungan_wisata == 0) {
+
+                        $data['saldo_akhir'] = $data['nominal'];
+
+                    } else if ($data['nominal'] < 2000) {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['nominal'] + $get_balance[0]->saldo_tabungan_wisata;
+
+                    }
+
+                    $input_credit = $this->SavingsModel->insert_tour_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                    $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
+
+                    if ($input_credit['status'] == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $input_credit['data']->nomor_transaksi_wisata,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_credit['data']->waktu_transaksi)),
+                            "saldo_akhir" => $input_credit['data']->saldo,
+                            "messages" => "Berhasil Disetor!, Setor Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Wisata.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
+                    );
+                }
+
+            }
+            echo json_encode($output);
+
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
+    public function post_credit_new_client()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+        $data['status_kredit_debet'] = "1";
+        $data['nomor_transaksi_umum'] = "TU01" . $random_number . "/" . date('YmdHis');
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['nis'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit'], $check_pin[0]->pin_akun)) {
+
+                    $data['saldo_akhir'] = $data['nominal'];
+
+                    $input_client = $this->SavingsModel->insert_client($data);
+                    $input_credit = $this->SavingsModel->insert_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+
+                    if ($input_client == true && $input_credit['status'] == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $input_credit['data']->nomor_transaksi_umum,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_credit['data']->waktu_transaksi)),
+                            "saldo_akhir" => $input_credit['data']->saldo,
+                            "messages" => "Berhasil Disetor!, Setor Tabungan Umum Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Umum.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
+                    );
+                }
+
+            }
+            echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
+    public function post_qurban_credit_new_client()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+        $data['status_kredit_debet'] = "1";
+        $data['nomor_transaksi_qurban'] = "TQ01" . $random_number . "/" . date('YmdHis');
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['nis'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit'], $check_pin[0]->pin_akun)) {
+
+                    $data['saldo_akhir'] = $data['nominal'];
+
+                    $input_client = $this->SavingsModel->insert_qurban_client($data);
+                    $input_credit = $this->SavingsModel->insert_qurban_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+
+                    if ($input_client == true && $input_credit['status'] == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $input_credit['data']->nomor_transaksi_qurban,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_credit['data']->waktu_transaksi)),
+                            "saldo_akhir" => $input_credit['data']->saldo,
+                            "messages" => "Berhasil Disetor!, Setor Tabungan Qurban Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Qurban.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
+                    );
+                }
+            }
+
+            echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
+    public function post_tour_credit_new_client()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+        $data['status_kredit_debet'] = "1";
+        $data['nomor_transaksi_wisata'] = "TW01" . $random_number . "/" . date('YmdHis');
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data == false or empty($data['nis'])) {
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit'], $check_pin[0]->pin_akun)) {
+
+                    $data['saldo_akhir'] = $data['nominal'];
+
+                    $input_client = $this->SavingsModel->insert_tour_client($data);
+                    $input_credit = $this->SavingsModel->insert_tour_credit_saving($this->user_finance[0]->id_akun_keuangan, $data);
+
+                    if ($input_client == true && $input_credit['status'] == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $input_credit['data']->nomor_transaksi_qurban,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_credit['data']->waktu_transaksi)),
+                            "saldo_akhir" => $input_credit['data']->saldo,
+                            "messages" => "Berhasil Disetor!, Setor Tabungan Wisata Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah ditambahkan. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Wisata.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
+                    );
+                }
+
+            }
+
+            echo json_encode($output);
         } else {
             $output = array("status" => false,
                 "token" => $token,
@@ -1523,41 +1581,53 @@ class Savings extends MX_Controller
 
             } else {
 
-                if (($get_balance[0]->saldo_tabungan_bersama - $get_transaction[0]->nominal) == 0) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit_edit'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = $data['input_nominal_saldo'];
+                    if (($get_balance[0]->saldo_tabungan_bersama - $get_transaction[0]->nominal) == 0) {
 
-                } else if ($data['input_nominal_saldo'] < 5000) {
+                        $data['saldo_akhir'] = $data['input_nominal_saldo'];
 
+                    } else if ($data['input_nominal_saldo'] < 2000) {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['input_nominal_saldo'] + ($get_balance[0]->saldo_tabungan_bersama - $get_transaction[0]->nominal);
+
+                    }
+
+                    $update_credit = $this->SavingsModel->update_credit_joint_saving($data['input_id_transaksi_bersama'], $data);
+                    $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
+
+                    if ($update_credit == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_bersama,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                            "saldo_akhir" => $data['saldo_akhir'],
+                            "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Bersama.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
-
-                    echo json_encode($output);
-                    exit();
-
-                } else {
-
-                    $data['saldo_akhir'] = $data['input_nominal_saldo'] + ($get_balance[0]->saldo_tabungan_bersama - $get_transaction[0]->nominal);
-
-                }
-
-                $input_credit = $this->SavingsModel->update_credit_joint_saving($data['input_id_transaksi_bersama'], $data);
-                $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Bersama.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
                 }
 
@@ -1595,41 +1665,54 @@ class Savings extends MX_Controller
 
             } else {
 
-                if (($get_balance[0]->saldo_tabungan_umum - $get_transaction[0]->nominal) == 0) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit_edit'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = $data['nominal'];
+                    if (($get_balance[0]->saldo_tabungan_umum - $get_transaction[0]->nominal) == 0) {
 
-                } else if ($data['nominal'] < 5000) {
+                        $data['saldo_akhir'] = $data['nominal'];
 
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
+                    } else if ($data['nominal'] < 2000) {
 
-                    echo json_encode($output);
-                    exit();
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['nominal'] + ($get_balance[0]->saldo_tabungan_umum - $get_transaction[0]->nominal);
+
+                    }
+
+                    $update_credit = $this->SavingsModel->update_credit_saving($data['id_transaksi'], $data);
+                    $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
+
+                    if ($update_credit == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_umum,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                            "saldo_akhir" => $data['saldo_akhir'],
+                            "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Umum.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
 
                 } else {
-
-                    $data['saldo_akhir'] = $data['nominal'] + ($get_balance[0]->saldo_tabungan_umum - $get_transaction[0]->nominal);
-
-                }
-
-                $input_credit = $this->SavingsModel->update_credit_saving($data['id_transaksi'], $data);
-                $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Umum.",
-                    );
-
-                } else {
-
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
                 }
 
@@ -1667,41 +1750,54 @@ class Savings extends MX_Controller
 
             } else {
 
-                if (($get_balance[0]->saldo_tabungan_qurban - $get_transaction[0]->nominal) == 0) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit_edit'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = $data['nominal'];
+                    if (($get_balance[0]->saldo_tabungan_qurban - $get_transaction[0]->nominal) == 0) {
 
-                } else if ($data['nominal'] < 5000) {
+                        $data['saldo_akhir'] = $data['nominal'];
 
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
+                    } else if ($data['nominal'] < 2000) {
 
-                    echo json_encode($output);
-                    exit();
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['nominal'] + ($get_balance[0]->saldo_tabungan_qurban - $get_transaction[0]->nominal);
+
+                    }
+
+                    $update_credit = $this->SavingsModel->update_qurban_credit_saving($data['id_transaksi'], $data);
+                    $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
+
+                    if ($update_credit == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_qurban,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                            "saldo_akhir" => $data['saldo_akhir'],
+                            "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Qurban.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
 
                 } else {
-
-                    $data['saldo_akhir'] = $data['nominal'] + ($get_balance[0]->saldo_tabungan_qurban - $get_transaction[0]->nominal);
-
-                }
-
-                $input_credit = $this->SavingsModel->update_qurban_credit_saving($data['id_transaksi'], $data);
-                $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Qurban.",
-                    );
-
-                } else {
-
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
                 }
 
@@ -1738,41 +1834,53 @@ class Savings extends MX_Controller
 
             } else {
 
-                if (($get_balance[0]->saldo_tabungan_wisata - $get_transaction[0]->nominal) == 0) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_kredit_edit'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = $data['nominal'];
+                    if (($get_balance[0]->saldo_tabungan_wisata - $get_transaction[0]->nominal) == 0) {
 
-                } else if ($data['nominal'] < 5000) {
+                        $data['saldo_akhir'] = $data['nominal'];
 
+                    } else if ($data['nominal'] < 2000) {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                        echo json_encode($output);
+                        exit();
+
+                    } else {
+
+                        $data['saldo_akhir'] = $data['nominal'] + ($get_balance[0]->saldo_tabungan_wisata - $get_transaction[0]->nominal);
+
+                    }
+
+                    $update_credit = $this->SavingsModel->update_tour_credit_saving($data['id_transaksi'], $data);
+                    $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
+
+                    if ($update_credit == true && $update_balance == true) {
+
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_wisata,
+                            "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                            "saldo_akhir" => $data['saldo_akhir'],
+                            "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Wisata.",
+                        );
+
+                    } else {
+
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        );
+                    }
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 5000, Silahkan input ulang.",
-                    );
-
-                    echo json_encode($output);
-                    exit();
-
-                } else {
-
-                    $data['saldo_akhir'] = $data['nominal'] + ($get_balance[0]->saldo_tabungan_wisata - $get_transaction[0]->nominal);
-
-                }
-
-                $input_credit = $this->SavingsModel->update_tour_credit_saving($data['id_transaksi'], $data);
-                $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
-
-                if ($input_credit == true && $update_balance == true) {
-
-                    $output = array("status" => true,
-                        "token" => $token,
-                        "messages" => "Berhasil Diubah!, Perubahan Setor Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Wisata.",
-                    );
-
-                } else {
-
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
                 }
 
@@ -1811,48 +1919,59 @@ class Savings extends MX_Controller
 
             } else {
 
-                if (($get_balance[0]->saldo_tabungan_bersama > 0) && ($data['input_nominal_saldo'] <= $get_balance[0]->saldo_tabungan_bersama)) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_bersama - $data['input_nominal_saldo'];
+                    if (($get_balance[0]->saldo_tabungan_bersama > 0) && ($data['input_nominal_saldo'] <= $get_balance[0]->saldo_tabungan_bersama)) {
 
-                    $input_debet = $this->SavingsModel->insert_debet_joint_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                    $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_bersama - $data['input_nominal_saldo'];
 
-                    if ($input_debet == true && $update_balance == true) {
+                        $input_debet = $this->SavingsModel->insert_debet_joint_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                        $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Ditarik!, Penarikan Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan Bersama menu Daftar Tabungan Bersama.",
-                        );
+                        if ($input_debet['status'] == true && $update_balance == true) {
 
-                    } else {
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $input_debet['data']->nomor_transaksi_bersama,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_debet['data']->waktu_transaksi)),
+                                "saldo_akhir" => $input_debet['data']->saldo,
+                                "messages" => "Berhasil Ditarik!, Penarikan Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan Bersama  di Menu Daftar Tabungan Bersama.",
+                            );
+
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_balance[0]->saldo_tabungan_bersama <= 0)) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
+                    } else if (($data['input_nominal_saldo'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['input_nominal_saldo'] > $get_balance[0]->saldo_tabungan_bersama)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
+                        );
+
                     }
-
-                } else if (($get_balance[0]->saldo_tabungan_bersama <= 0)) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['input_nominal_saldo'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['input_nominal_saldo'] > $get_balance[0]->saldo_tabungan_bersama)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
-
             }
 
             echo json_encode($output);
@@ -1890,49 +2009,59 @@ class Savings extends MX_Controller
                 );
 
             } else {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet'], $check_pin[0]->pin_akun)) {
 
-                if (($get_balance[0]->saldo_tabungan_umum > 0) && ($data['nominal'] <= $get_balance[0]->saldo_tabungan_umum)) {
+                    if (($get_balance[0]->saldo_tabungan_umum > 0) && ($data['nominal'] <= $get_balance[0]->saldo_tabungan_umum)) {
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_umum - $data['nominal'];
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_umum - $data['nominal'];
 
-                    $input_debet = $this->SavingsModel->insert_debet_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                    $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $input_debet = $this->SavingsModel->insert_debet_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                        $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
 
-                    if ($input_debet == true && $update_balance == true) {
+                        if ($input_debet['status'] == true && $update_balance == true) {
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Ditarik!, Penarikan Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Umum.",
-                        );
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $input_debet['data']->nomor_transaksi_umum,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_debet['data']->waktu_transaksi)),
+                                "saldo_akhir" => $input_debet['data']->saldo,
+                                "messages" => "Berhasil Ditarik!, Penarikan Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Umum.",
+                            );
 
-                    } else {
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_balance[0]->saldo_tabungan_umum <= 0)) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
+                    } else if (($data['nominal'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_umum)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
+                        );
+
                     }
-
-                } else if (($get_balance[0]->saldo_tabungan_umum <= 0)) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['nominal'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_umum)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
-
             }
             echo json_encode($output);
         } else {
@@ -1970,46 +2099,57 @@ class Savings extends MX_Controller
 
             } else {
 
-                if (($get_balance[0]->saldo_tabungan_qurban > 0) && ($data['nominal'] <= $get_balance[0]->saldo_tabungan_qurban)) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_qurban - $data['nominal'];
+                    if (($get_balance[0]->saldo_tabungan_qurban > 0) && ($data['nominal'] <= $get_balance[0]->saldo_tabungan_qurban)) {
 
-                    $input_debet = $this->SavingsModel->insert_qurban_debet_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                    $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_qurban - $data['nominal'];
 
-                    if ($input_debet == true && $update_balance == true) {
+                        $input_debet = $this->SavingsModel->insert_qurban_debet_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                        $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Ditarik!, Penarikan Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Qurban.",
-                        );
+                        if ($input_debet['status'] == true && $update_balance == true) {
 
-                    } else {
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $input_debet['data']->nomor_transaksi_qurban,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_debet['data']->waktu_transaksi)),
+                                "saldo_akhir" => $input_debet['data']->saldo,
+                                "messages" => "Berhasil Ditarik!, Penarikan Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Qurban.",
+                            );
+
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_balance[0]->saldo_tabungan_qurban <= 0)) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        );
+                    } else if (($data['nominal'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_qurban)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
                         );
                     }
-
-                } else if (($get_balance[0]->saldo_tabungan_qurban <= 0)) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['nominal'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_qurban)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
 
             }
@@ -2049,46 +2189,58 @@ class Savings extends MX_Controller
 
             } else {
 
-                if (($get_balance[0]->saldo_tabungan_wisata > 0) && ($data['nominal'] <= $get_balance[0]->saldo_tabungan_wisata)) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_wisata - $data['nominal'];
+                    if (($get_balance[0]->saldo_tabungan_wisata > 0) && ($data['nominal'] <= $get_balance[0]->saldo_tabungan_wisata)) {
 
-                    $input_debet = $this->SavingsModel->insert_tour_debet_saving($this->user_finance[0]->id_akun_keuangan, $data);
-                    $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_wisata - $data['nominal'];
 
-                    if ($input_debet == true && $update_balance == true) {
+                        $input_debet = $this->SavingsModel->insert_tour_debet_saving($this->user_finance[0]->id_akun_keuangan, $data);
+                        $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Ditarik!, Penarikan Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Wisata.",
-                        );
+                        if ($input_debet['status'] == true && $update_balance == true) {
 
-                    } else {
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $input_debet['data']->nomor_transaksi_wisata,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($input_debet['data']->waktu_transaksi)),
+                                "saldo_akhir" => $input_debet['data']->saldo,
+                                "messages" => "Berhasil Ditarik!, Penarikan Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah ditarik. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Wisata.",
+                            );
+
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_balance[0]->saldo_tabungan_wisata <= 0)) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
+                    } else if (($data['nominal'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_wisata)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
+                        );
+
                     }
-
-                } else if (($get_balance[0]->saldo_tabungan_wisata <= 0)) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['nominal'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_wisata)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
 
             }
@@ -2125,46 +2277,58 @@ class Savings extends MX_Controller
 
             } else {
 
-                if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['input_nominal_saldo'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet_edit'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['input_nominal_saldo'];
+                    if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['input_nominal_saldo'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
 
-                    $update_debet = $this->SavingsModel->update_debet_joint_saving($data['input_id_transaksi_bersama'], $data);
-                    $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
+                        $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['input_nominal_saldo'];
 
-                    if ($update_debet == true && $update_balance == true) {
+                        $update_debet = $this->SavingsModel->update_debet_joint_saving($data['input_id_transaksi_bersama'], $data);
+                        $update_balance = $this->SavingsModel->update_balance_joint_saving($data['input_nomor_rekening_bersama'], $data['saldo_akhir']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Bersama.",
-                        );
+                        if ($update_debet == true && $update_balance == true) {
 
-                    } else {
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_bersama,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                                "saldo_akhir" => $data['saldo_akhir'],
+                                "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Bersama Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Bersama.",
+                            );
+
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
+                    } else if (($data['input_nominal_saldo'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['input_nominal_saldo'] > $get_balance[0]->saldo_tabungan_bersama)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
+                        );
+
                     }
-
-                } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['input_nominal_saldo'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['input_nominal_saldo'] > $get_balance[0]->saldo_tabungan_bersama)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
             }
             echo json_encode($output);
@@ -2198,47 +2362,58 @@ class Savings extends MX_Controller
                 );
 
             } else {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet_edit'], $check_pin[0]->pin_akun)) {
 
-                if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['nominal'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
+                    if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['nominal'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
 
-                    $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['nominal'];
+                        $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['nominal'];
 
-                    $update_debet = $this->SavingsModel->update_debet_saving($data['id_transaksi'], $data);
-                    $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $update_debet = $this->SavingsModel->update_debet_saving($data['id_transaksi'], $data);
+                        $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
 
-                    if ($update_debet == true && $update_balance == true) {
+                        if ($update_debet == true && $update_balance == true) {
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Umum.",
-                        );
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_umum,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                                "saldo_akhir" => $data['saldo_akhir'],
+                                "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Umum Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Umum.",
+                            );
 
-                    } else {
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
+                    } else if (($data['nominal'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_umum)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
+                        );
+
                     }
-
-                } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['nominal'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_umum)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
 
             }
@@ -2274,46 +2449,59 @@ class Savings extends MX_Controller
 
             } else {
 
-                if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['nominal'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet_edit'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['nominal'];
+                    if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['nominal'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
 
-                    $update_debet = $this->SavingsModel->update_qurban_debet_saving($data['id_transaksi'], $data);
-                    $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['nominal'];
 
-                    if ($update_debet == true && $update_balance == true) {
+                        $update_debet = $this->SavingsModel->update_qurban_debet_saving($data['id_transaksi'], $data);
+                        $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Qurban.",
-                        );
+                        if ($update_debet == true && $update_balance == true) {
 
-                    } else {
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_qurban,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                                "saldo_akhir" => $data['saldo_akhir'],
+                                "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Qurban Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Qurban.",
+                            );
+
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
+                    } else if (($data['nominal'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_qurban)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
+                        );
+
                     }
 
-                } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['nominal'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_qurban)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
 
             }
@@ -2349,46 +2537,59 @@ class Savings extends MX_Controller
 
             } else {
 
-                if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['nominal'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
+                $check_pin = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['pin_verification_debet_edit'], $check_pin[0]->pin_akun)) {
 
-                    $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['nominal'];
+                    if ((($get_transaction[0]->saldo + $get_transaction[0]->nominal) > 0) && ($data['nominal'] <= ($get_transaction[0]->saldo + $get_transaction[0]->nominal))) {
 
-                    $update_debet = $this->SavingsModel->update_tour_debet_saving($data['id_transaksi'], $data);
-                    $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $data['saldo_akhir'] = ($get_transaction[0]->saldo + $get_transaction[0]->nominal) - $data['nominal'];
 
-                    if ($update_debet == true && $update_balance == true) {
+                        $update_debet = $this->SavingsModel->update_tour_debet_saving($data['id_transaksi'], $data);
+                        $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Wisata.",
-                        );
+                        if ($update_debet == true && $update_balance == true) {
 
-                    } else {
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "nomor_transaksi" => $get_transaction[0]->nomor_transaksi_wisata,
+                                "waktu_transaksi" => date('d/m/Y H:i:s', strtotime($get_transaction[0]->waktu_transaksi)),
+                                "saldo_akhir" => $data['saldo_akhir'],
+                                "messages" => "Berhasil Diubah!, Perubahan Penarikan Tabungan Wisata Atas Nama <b>" . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ")</b> telah diubah. Silahkan cek Rekap/Histori Tabungan di Menu Daftar Tabungan Wisata.",
+                            );
+
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            );
+                        }
+
+                    } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
+                    } else if (($data['nominal'] < 2000)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                        );
+
+                    } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_wisata)) {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
+                        );
+
                     }
 
-                } else if (($get_transaction[0]->saldo + $get_transaction[0]->nominal) <= 0) {
-
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf., PIN Anda salah!",
                     );
-                } else if (($data['nominal'] < 2000)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
-                    );
-
-                } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_wisata)) {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Opps!, Inputan Penarikan Tidak Boleh Lebih dari Saldo Tabungan, Silahkan input ulang.",
-                    );
-
                 }
 
             }
@@ -2413,37 +2614,48 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nomor_rekening_bersama'] && $data['id_transaksi_bersama']) {
+            if ($data['nomor_rekening_bersama'] && $data['id_transaksi_bersama'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_joint_transaction_last($data['id_transaksi_bersama']);
-                $get_balance = $this->SavingsModel->get_joint_saving_balance($data['nomor_rekening_bersama']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_joint_transaction_last($data['id_transaksi_bersama']);
+                    $get_balance = $this->SavingsModel->get_joint_saving_balance($data['nomor_rekening_bersama']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_bersama - $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_balance_joint_saving($data['nomor_rekening_bersama'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_joint_transaction($data['id_transaksi_bersama']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_bersama - $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_balance_joint_saving($data['nomor_rekening_bersama'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_joint_transaction($data['id_transaksi_bersama']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Kredit Tabungan Bersama <b>" . $data['nomor_transaksi'] . "</b> Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Bersama.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Kredit Tabungan Bersama <b>" . $data['nomor_transaksi'] . "</b> Atas Nama <b>" . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ")</b> telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Bersama.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/Nomor Rekening Bersama tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
+
                 } else {
 
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/Nomor Rekening Bersama tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
 
@@ -2476,37 +2688,47 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi']) {
+            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_student_transaction_last($data['id_transaksi']);
-                $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_student_transaction_last($data['id_transaksi']);
+                    $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_umum - $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_transaction($data['id_transaksi']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_umum - $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_transaction($data['id_transaksi']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Transaksi Kredit Tabungan Umum <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Umum.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Transaksi Kredit Tabungan Umum <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Umum.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Transaksi Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Transaksi Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
                 } else {
 
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
 
@@ -2540,49 +2762,56 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi']) {
+            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_student_transaction_qurban_last($data['id_transaksi']);
-                $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_student_transaction_qurban_last($data['id_transaksi']);
+                    $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_qurban - $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_qurban_transaction($data['id_transaksi']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_qurban - $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_qurban_transaction($data['id_transaksi']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Transaksi Kredit Tabungan Qurban <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Qurban.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Transaksi Kredit Tabungan Qurban <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Qurban.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Transaksi Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Transaksi Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
-                } else {
 
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
-
             } else {
-
                 $output = array("status" => false,
                     "token" => $token,
                     "messages" => "Opps!, ID transaksi/NIS belum diinputkan, Silahkan coba lagi.",
                 );
 
             }
-
             echo json_encode($output);
         } else {
             $output = array("status" => false,
@@ -2604,37 +2833,47 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi']) {
+            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_student_transaction_tour_last($data['id_transaksi']);
-                $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_student_transaction_tour_last($data['id_transaksi']);
+                    $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_wisata - $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_tour_transaction($data['id_transaksi']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_wisata - $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_tour_transaction($data['id_transaksi']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Transaksi Kredit Tabungan Wisata <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Wisata.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Transaksi Kredit Tabungan Wisata <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan Wisata.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Transaksi Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Transaksi Kredit Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
-                } else {
 
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
 
@@ -2668,37 +2907,47 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nomor_rekening_bersama'] && $data['id_transaksi_bersama']) {
+            if ($data['nomor_rekening_bersama'] && $data['id_transaksi_bersama'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_joint_transaction_last($data['id_transaksi_bersama']);
-                $get_balance = $this->SavingsModel->get_joint_saving_balance($data['nomor_rekening_bersama']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_joint_transaction_last($data['id_transaksi_bersama']);
+                    $get_balance = $this->SavingsModel->get_joint_saving_balance($data['nomor_rekening_bersama']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_bersama + $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_balance_saving($data['nomor_rekening_bersama'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_transaction($data['id_transaksi_bersama']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_bersama + $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_balance_saving($data['nomor_rekening_bersama'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_transaction($data['id_transaksi_bersama']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Debet Tabungan Bersama <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Debet Tabungan Bersama <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_tabungan_bersama . " (" . $get_balance[0]->nomor_rekening_bersama . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/Nomor Rekening Bersama tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
-                } else {
 
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/Nomor Rekening Bersama tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
 
@@ -2732,37 +2981,47 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi']) {
+            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_student_transaction_last($data['id_transaksi']);
-                $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_student_transaction_last($data['id_transaksi']);
+                    $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_umum + $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_transaction($data['id_transaksi']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_umum + $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_transaction($data['id_transaksi']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Transaksi Debet Tabungan Umum <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Transaksi Debet Tabungan Umum <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Transaksi Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Transaksi Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
-                } else {
 
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
 
@@ -2795,37 +3054,47 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi']) {
+            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_student_transaction_qurban_last($data['id_transaksi']);
-                $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_student_transaction_qurban_last($data['id_transaksi']);
+                    $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_qurban + $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_qurban_transaction($data['id_transaksi']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_qurban + $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_qurban_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_qurban_transaction($data['id_transaksi']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Transaksi Debet Tabungan Qurban <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Transaksi Debet Tabungan Qurban <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Transaksi Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Transaksi Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
-                } else {
 
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
 
@@ -2859,37 +3128,47 @@ class Savings extends MX_Controller
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
-            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi']) {
+            if ($data['nis'] && $data['id_transaksi'] && $data['nomor_transaksi'] && $data['password']) {
 
-                $get_transaction = $this->SavingsModel->get_student_transaction_tour_last($data['id_transaksi']);
-                $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
+                $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($data['password'], $check_pass[0]->password)) {
 
-                if ($get_transaction == true && $get_balance == true) {
+                    $get_transaction = $this->SavingsModel->get_student_transaction_tour_last($data['id_transaksi']);
+                    $get_balance = $this->SavingsModel->get_student_balance($data['nis']);
 
-                    $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_wisata + $get_transaction[0]->nominal;
+                    if ($get_transaction == true && $get_balance == true) {
 
-                    $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
-                    $delete = $this->SavingsModel->delete_tour_transaction($data['id_transaksi']);
+                        $data['saldo_akhir'] = $get_balance[0]->saldo_tabungan_wisata + $get_transaction[0]->nominal;
 
-                    if ($update_balance == true && $delete == true) {
+                        $update_balance = $this->SavingsModel->update_tour_balance_saving($data['nis'], $data['saldo_akhir']);
+                        $delete = $this->SavingsModel->delete_tour_transaction($data['id_transaksi']);
 
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil Dihapus!, Transaksi Debet Tabungan Wisata <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
-                        );
+                        if ($update_balance == true && $delete == true) {
+
+                            $output = array("status" => true,
+                                "token" => $token,
+                                "messages" => "Berhasil Dihapus!, Transaksi Debet Tabungan Wisata <b>" . $data['nomor_transaksi'] . "</b> Atas Nama " . $get_balance[0]->nama_lengkap . " (" . $get_balance[0]->nis . ") telah dihapus. Silahkan cek Rekap/Histori Tabungan menu Daftar Tabungan.",
+                            );
+                        } else {
+
+                            $output = array("status" => false,
+                                "token" => $token,
+                                "messages" => "Opps!, Transaksi Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            );
+
+                        }
                     } else {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Transaksi Debet Tabungan tidak dapat dihapus oleh sistem, Silahkan coba lagi.",
+                            "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
                         );
-
                     }
-                } else {
 
+                } else {
                     $output = array("status" => false,
                         "token" => $token,
-                        "messages" => "Opps!, ID transaksi/NIS tidak ditemukan didalam sistem, Silahkan coba lagi.",
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
                     );
                 }
 
@@ -2965,6 +3244,70 @@ class Savings extends MX_Controller
 
     }
 
+    public function update_import_personal_saving()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data['id_nasabah'] == "" or empty($data['id_nasabah']) or $data['id_nasabah'] == null) {
+
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check = $this->SavingsModel->get_number_personal_saving($data['nis']);
+
+                if ($check) {
+                    $data['status_nasabah'] = '1';
+                } else {
+                    $check_import = $this->SavingsModel->get_number_import_personal_saving($data['nis']);
+
+                    if ($check_import && ($data['old_nis'] != $check_import[0]->nis)) {
+                        $data['status_nasabah'] = '1';
+                    } else {
+                        $data['status_nasabah'] = '2';
+                    }
+                }
+
+                $update_personal = $this->SavingsModel->update_import_personal_saving($data['id_nasabah'], $data);
+
+                if ($update_personal == true) {
+
+                    $output = array("status" => true,
+                        "token" => $token,
+                        "messages" => "Berhasil Diubah!, Perubahan Data Import Atas Nama <b>" . $data['nama_nasabah'] . " (" . $data['nis'] . ")</b> telah diubah. Silahkan cek Hasil Data Import.",
+                    );
+
+                } else {
+
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                    );
+                }
+
+            }
+
+            echo json_encode($output);
+
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
+    }
+
     public function import_personal_saving()
     {
         $param = $this->input->post();
@@ -3025,6 +3368,7 @@ class Savings extends MX_Controller
 
                         $status_nis = '';
                         $tingkat = '';
+                        $password = '';
 
                         $data_array = array();
                         for ($i = 1; $i < count($sheetData); $i++) {
@@ -3032,8 +3376,10 @@ class Savings extends MX_Controller
                             $student = $this->SavingsModel->get_student_nis($sheetData[$i]['0']);
                             if (!$student) {
                                 $status_nis = '2';
+                                $password = password_hash(paramEncrypt(trim($sheetData[$i]['0'])), PASSWORD_DEFAULT, array('cost' => 12));
                             } else {
                                 $status_nis = '1';
+                                $password = $student[0]->password;
                             }
 
                             if (strtoupper($sheetData[$i]['2']) == 'DC') {
@@ -3051,7 +3397,7 @@ class Savings extends MX_Controller
                             if ($sheetData[$i]['0']) {
                                 $data_array[$i] = array(
                                     'nis' => (filter_var(trim($sheetData[$i]['0']), FILTER_SANITIZE_STRING)),
-                                    'password' => (password_hash(trim($sheetData[$i]['0']), PASSWORD_DEFAULT, array('cost' => 12))),
+                                    'password' => (trim($password)),
                                     'nama_nasabah' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
                                     'tanggal_transaksi' => (filter_var(trim($data['input_tanggal_transaksi']), FILTER_SANITIZE_STRING)),
                                     'tahun_ajaran' => (filter_var(trim($data['input_tahun_ajaran']), FILTER_SANITIZE_STRING)),
@@ -3089,10 +3435,79 @@ class Savings extends MX_Controller
                     redirect('finance/savings/list_personal_saving');
                 }
             } else {
-                $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf., Password Anda salah!'));
+                $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf., PIN Anda salah!'));
                 redirect('finance/savings/list_personal_saving');
             }
         }
+    }
+
+    public function update_import_joint_saving()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $token = $this->security->get_csrf_hash();
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($data['id_nasabah_bersama'] == "" or empty($data['id_nasabah_bersama']) or $data['id_nasabah_bersama'] == null) {
+
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar, Silahkan input ulang.",
+                );
+
+            } else {
+
+                $check_norek = $this->SavingsModel->get_number_joint_saving($data['nomor_rekening_bersama']);
+                if ($check_norek) {
+                    $data['status_nasabah'] = '1';
+                } else {
+                    $check_import = $this->SavingsModel->get_number_import_joint_saving($data['nomor_rekening_bersama']);
+
+                    if ($check_import && ($data['old_nomor_rekening_bersama'] != $check_import[0]->nomor_rekening_bersama)) {
+                        $data['status_nasabah'] = '1';
+                    } else {
+                        $data['status_nasabah'] = '2';
+                    }
+                }
+
+                $check_pj = $this->SavingsModel->get_number_personal_saving($data['id_siswa_penanggung_jawab']);
+                if ($check_pj) {
+                    $data['status_pj'] = '1';
+                } else {
+                    $data['status_pj'] = '2';
+                }
+
+                $update_joint = $this->SavingsModel->update_import_joint_saving($data['id_nasabah_bersama'], $data);
+
+                if ($update_joint == true) {
+
+                    $output = array("status" => true,
+                        "token" => $token,
+                        "messages" => "Berhasil Diubah!, Perubahan Data Import Tabungan Bersama Atas Nama <b>" . $data['nama_tabungan_bersama'] . " (" . $data['nomor_rekening_bersama'] . ")</b> telah diubah. Silahkan cek Hasil Data Import.",
+                    );
+
+                } else {
+
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                    );
+                }
+
+            }
+
+            echo json_encode($output);
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            );
+
+            echo json_encode($output);
+        }
+
     }
 
     public function import_joint_saving()
@@ -3188,6 +3603,7 @@ class Savings extends MX_Controller
 
                             if ($sheetData[$i]['0']) {
                                 $data_array[$i] = array(
+                                    'id_pegawai' => (filter_var(trim($this->user_finance[0]->id_akun_keuangan), FILTER_SANITIZE_STRING)),
                                     'nomor_rekening_bersama' => (filter_var(trim($sheetData[$i]['0']), FILTER_SANITIZE_STRING)),
                                     'id_siswa_penanggung_jawab' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
                                     'nama_tabungan_bersama' => (filter_var(trim($sheetData[$i]['2']), FILTER_SANITIZE_STRING)),
@@ -3197,6 +3613,7 @@ class Savings extends MX_Controller
                                     'tanggal_transaksi' => (filter_var(trim($data['input_tanggal_transaksi']), FILTER_SANITIZE_STRING)),
                                     'nama_wali' => (filter_var(trim($sheetData[$i]['5']), FILTER_SANITIZE_STRING)),
                                     'nomor_hp_wali' => (filter_var(trim($sheetData[$i]['6']), FILTER_SANITIZE_STRING)),
+                                    'keterangan_bersama' => ("tabungan bersama penanggung jawab nis: " . trim($sheetData[$i]['1'])),
                                     'status_nasabah_bersama' => (filter_var(trim($status_norek), FILTER_SANITIZE_STRING)),
                                     'status_penanggung_jawab' => (filter_var(trim($status_nis), FILTER_SANITIZE_STRING)),
                                 );
@@ -3225,7 +3642,7 @@ class Savings extends MX_Controller
                     redirect('finance/savings/list_joint_saving');
                 }
             } else {
-                $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf., Password Anda salah!'));
+                $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf.,PIN Anda salah!'));
                 redirect('finance/savings/list_joint_saving');
             }
         }
@@ -3357,6 +3774,104 @@ class Savings extends MX_Controller
             $output = array("status" => true,
                 "token" => $token,
                 "messages" => "Pemberitahuan!, Seluruh Data Nasabah batal diimport ke database. Terima Kasih.",
+            );
+
+        } else {
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan import ulang..",
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function accept_import_joint_saving()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $token = $this->security->get_csrf_hash();
+
+        $check_pass = $this->SavingsModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+
+            $output = array("status" => false,
+                "token" => $token,
+                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            );
+
+        } else {
+            // pass verify
+            if (password_verify(($data['password']), $check_pass[0]->password)) {
+
+                $input = $this->SavingsModel->accept_import_data_joint_saving($data['data_check']);
+
+                if ($input == true) {
+
+                    $transaksi_bersama = array();
+
+                    $result_import = $this->SavingsModel->get_import_joint_saving($data['data_check'], 2);
+
+                    for ($i = 0; $i < count($result_import); $i++) {
+
+                        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+
+                        if ($result_import[$i]['saldo_bersama'] != 0 && $result_import[$i]['saldo_bersama'] != null && $result_import[$i]['saldo_bersama'] != "" && !empty($result_import[$i]['saldo_bersama'])) {
+
+                            $transaksi_bersama[$i] = array(
+                                'nomor_transaksi_bersama' => "TB01" . $random_number . "/" . date('YmdHis'),
+                                'nomor_rekening_bersama' => $result_import[$i]['nomor_rekening_bersama'],
+                                'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
+                                'id_tingkat' => $result_import[$i]['tingkat'],
+                                'saldo' => $result_import[$i]['saldo_bersama'],
+                                'catatan' => "transaksi import awal",
+                                'nominal' => $result_import[$i]['saldo_bersama'],
+                                'status_kredit_debet' => "1",
+                                'th_ajaran' => $result_import[$i]['tahun_ajaran'],
+                                'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
+                            );
+                        }
+                    }
+
+                    $this->db2->insert_batch('transaksi_tabungan_bersama', $transaksi_bersama);
+
+                    $this->SavingsModel->clear_import_data_joint_saving();
+
+                    $output = array("status" => true,
+                        "token" => $token,
+                        "messages" => "Berhasil!, Seluruh Data Nasabah Tabungan Bersama telah diimport ke database. Dimohon untuk melakukan <b>PENGECEKAN ULANG</b>. Terima Kasih.",
+                    );
+
+                } else {
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan import ulang..",
+                    );
+                }
+
+            } else {
+
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opss!, Password Anda salah, Coba ulangi sekali lagi..",
+                );
+            }
+        }
+        echo json_encode($output);
+    }
+
+    public function reject_import_joint_saving()
+    {
+
+        $token = $this->security->get_csrf_hash();
+        $input = $this->SavingsModel->clear_import_data_joint_saving();
+
+        if ($input == true) {
+
+            $output = array("status" => true,
+                "token" => $token,
+                "messages" => "Pemberitahuan!, Seluruh Data Nasabah Bersama batal diimport ke database. Terima Kasih.",
             );
 
         } else {

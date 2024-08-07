@@ -47,7 +47,7 @@
                         <div class="alert alert-custom alert-light-info shadow-sm alert-shadow fade show" role="alert">
                             <div class="alert-text font-weight-bolder text-center text-dark">
                                 <h1 class="font-weight-boldest text-danger">
-                                    <li class="fas fa-exclamation-triangle"></li> RECAP BALANCE TABUNGAN SISWA <li
+                                    <li class="fas fa-exclamation-triangle"></li> RECAP BALANCE TABUNGAN PEGAWAI <li
                                         class="fas fa-exclamation-triangle">
                                 </h1>
                                 MOHON UNTUK DIPERHATIKAN!!.<br> Silahkan
@@ -63,16 +63,12 @@
                                     <i class="flaticon2-layers-1 text-primary"></i>
                                 </span>
                                 <h3 class="card-label">Rekap Keseluruhan Transaksi Tabungan Sekolah
-                                    "<?php echo ucwords(($info_siswa[0]->nama_lengkap)); ?>
-                                    (<?php echo ucwords(($info_siswa[0]->nis)); ?>)"</h3>
+                                    "<?php echo ucwords(($info_pegawai[0]->nama_lengkap)); ?>
+                                    (<?php echo ucwords(($info_pegawai[0]->nip)); ?>)"</h3>
                             </div>
                             <div class="card-toolbar">
-                                <div class=" text-right mt-5 mr-5 font-weight-bolder">
-                                    Status Printer: <p class="text-right" id="error_print_connection">
-                                    </p>
-                                </div>
-                                <input type="hidden" class="hidden" id="nis_siswa"
-                                    value="<?php echo $info_siswa[0]->nis; ?>">
+                                <input type="hidden" class="hidden" id="nip_pegawai"
+                                    value="<?php echo $info_pegawai[0]->nip; ?>">
                                 <div class="buttons">
                                     <button class="btn btn-success mr-2" data-toggle="modal" data-target="#modalKredit"
                                         id="btnKredit">
@@ -95,18 +91,18 @@
                                             placeholder="Inputkan Nomor Transaksi" data-col-index="1" />
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>NIS Siswa:</label>
+                                        <label>NIP Pegawai:</label>
                                         <input type="text"
                                             class="form-control datatable-input-disable form-control-solid"
-                                            placeholder="Inputkan NIS Siswa" data-col-index="2"
-                                            value="<?php echo ucwords(($info_siswa[0]->nis)); ?>" readonly />
+                                            placeholder="Inputkan NIP Pegawai" data-col-index="2"
+                                            value="<?php echo ucwords(($info_pegawai[0]->nip)); ?>" readonly />
                                     </div>
                                     <div class="col-lg-4 mb-lg-0 mb-6">
-                                        <label>Nama Siswa:</label>
+                                        <label>Nama Pegawai:</label>
                                         <input type="text"
                                             class="form-control datatable-input-disable form-control-solid"
-                                            placeholder="Inputkan Nama Siswa" data-col-index="5"
-                                            value="<?php echo ucwords(strtoupper($info_siswa[0]->nama_lengkap)); ?>"
+                                            placeholder="Inputkan Nama Pegawai" data-col-index="5"
+                                            value="<?php echo ucwords(strtoupper($info_pegawai[0]->nama_lengkap)); ?>"
                                             readonly />
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
@@ -230,7 +226,7 @@ if (!empty($schoolyear)) {
                                         <tr>
                                             <th class="text-center"></th>
                                             <th>Nomor Transaksi</th>
-                                            <th>Nama Siswa</th>
+                                            <th>Nama Pegawai</th>
                                             <th>Waktu Transaksi</th>
                                             <th>TA</th>
                                             <th>Tingkat</th>
@@ -291,11 +287,11 @@ if (!empty($schoolyear)) {
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label>NIS & Nama Siswa</label>
+                            <label>NIP & Nama Pegawai</label>
                             <select class="form-control select2 findNasabahKredit" id="findNasabahKredit"
-                                name="inputCariSiswaKredit" disabled>
-                                <option selected value="<?php echo (($info_siswa[0]->nis)); ?>">
-                                    <?php echo "(" . $info_siswa[0]->nis . ") " . strtoupper($info_siswa[0]->nama_lengkap); ?>
+                                name="inputCariPegawaiKredit" disabled>
+                                <option selected value="<?php echo (($info_pegawai[0]->nip)); ?>">
+                                    <?php echo "(" . $info_pegawai[0]->nip . ") " . strtoupper($info_pegawai[0]->nama_lengkap); ?>
                                 </option>
                             </select>
                         </div>
@@ -428,7 +424,7 @@ if (!empty($schoolyear)) {
                         </div>
 
                         <div class="col-md-6">
-                            NIS : <label class="font-weight-bold" id="userNisKredit">-</label><br>
+                            NIP : <label class="font-weight-bold" id="userNipKredit">-</label><br>
                             Nama : <label class="font-weight-bold" id="userNamaKredit">-</label><br>
                             Jenis Tabungan : <label class="font-weight-bold" id="userJenisTabunganKredit">-</label><br>
                             Tingkat : <label class="font-weight-bold" id="userTingkatKredit">-</label>
@@ -470,8 +466,8 @@ if (!empty($schoolyear)) {
                     <input type="hidden" class="hidden" name="id_transaksi_kredit">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label> Nama & NIS Siswa</label>
-                            <select class="form-control select2 findNasabahKreditEdit" name="nis_kredit" disabled>
+                            <label> Nama & NIP Pegawai</label>
+                            <select class="form-control select2 findNasabahKreditEdit" name="nip_kredit" disabled>
                             </select>
                         </div>
                         <div class="form-group col-6">
@@ -587,7 +583,7 @@ if (!empty($schoolyear)) {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            NIS : <label class="font-weight-bold" id="userNisKreditEdit">-</label><br>
+                            NIP : <label class="font-weight-bold" id="userNipKreditEdit">-</label><br>
                             Nama : <label class="font-weight-bold" id="userNamaKreditEdit">-</label><br>
                             Tingkat : <label class="font-weight-bold" id="userTingkatKreditEdit">-</label>
                         </div>
@@ -624,11 +620,11 @@ if (!empty($schoolyear)) {
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label>NIS & Nama Siswa</label>
+                            <label>NIP & Nama Pegawai</label>
                             <select class="form-control select2 findNasabahDebet" id="findNasabahDebet"
-                                name="inputCariSiswaDebet" disabled>
-                                <option selected value="<?php echo (($info_siswa[0]->nis)); ?>">
-                                    <?php echo "(" . $info_siswa[0]->nis . ") " . strtoupper($info_siswa[0]->nama_lengkap); ?>
+                                name="inputCariPegawaiDebet" disabled>
+                                <option selected value="<?php echo (($info_pegawai[0]->nip)); ?>">
+                                    <?php echo "(" . $info_pegawai[0]->nip . ") " . strtoupper($info_pegawai[0]->nama_lengkap); ?>
                             </select>
 
                         </div>
@@ -760,7 +756,7 @@ if (!empty($schoolyear)) {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            NIS : <label class="font-weight-bold" id="userNisDebet">-</label><br>
+                            NIP : <label class="font-weight-bold" id="userNipDebet">-</label><br>
                             Nama : <label class="font-weight-bold" id="userNamaDebet">-</label><br>
                             Jenis Tabungan : <label class="font-weight-bold" id="userJenisTabunganDebet">-</label><br>
                             Tingkat : <label class="font-weight-bold" id="userTingkatDebet">-</label>
@@ -802,8 +798,8 @@ if (!empty($schoolyear)) {
                     <input type="hidden" class="hidden" name="id_transaksi_debet">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label> Nama & NIS Siswa</label>
-                            <select class="form-control select2 findNasabahDebetEdit" name="nis_debet" disabled>
+                            <label> Nama & NIP Pegawai</label>
+                            <select class="form-control select2 findNasabahDebetEdit" name="nip_debet" disabled>
                             </select>
                         </div>
                         <div class="form-group col-6">
@@ -920,7 +916,7 @@ if (!empty($schoolyear)) {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            NIS : <label class="font-weight-bold" id="userNisDebetEdit">-</label><br>
+                            NIP : <label class="font-weight-bold" id="userNipDebetEdit">-</label><br>
                             Nama : <label class="font-weight-bold" id="userNamaDebetEdit">-</label><br>
                             Tingkat : <label class="font-weight-bold" id="userTingkatDebetEdit">-</label>
                         </div>

@@ -165,17 +165,8 @@
 													</select>
 												</div>
 												<div class="col-lg-2 mb-lg-0 mb-6">
-													<label>Semester:</label>
-													<select class="form-control datatable-input" data-col-index="10">
-														<option value="">Pilih Semester</option>
-														<option value="ganjil">Ganjil</option>
-														<option value="genap">Genap</option>
-														<option value="">Semua</option>
-													</select>
-												</div>
-												<div class="col-lg-2 mb-lg-0 mb-6">
 													<label>Bulan:</label>
-													<select class="form-control datatable-input" data-col-index="11">
+													<select class="form-control datatable-input" data-col-index="10">
 														<option value="">Pilih Bulan</option>
 														<option value="Januari">Januari</option>
 														<option value="Februari">Februari</option>
@@ -241,7 +232,7 @@
 										<th>Invoice</th>
 										<th>Tgl Invoice</th>
 										<th>Nama Siswa</th>
-										<th>No. Pembayaran</th>
+										<th>No. Bayar</th>
 										<th>Tingkat</th>
 										<th>Kelas</th>
 										<th>Nominal Tagihan</th>
@@ -290,7 +281,7 @@
 														</a>
 														<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 															<ul class="nav nav-hover flex-column">
-																<li class="nav-item"><a class="nav-link" href="<?php echo site_url("/finance/income/detail_income_du/" . paramEncrypt($value->id_tagihan_pembayaran_dpb)); ?>"><i class="nav-icon fas fa-eye"></i><span class="nav-text text-hover-primary font-weight-bold">Lihat Detail</span></a></li>
+																<li class="nav-item"><a class="nav-link" href="<?php echo site_url("/finance/income/detail_income_dpb/" . paramEncrypt($value->id_tagihan_pembayaran_dpb)); ?>"><i class="nav-icon fas fa-eye"></i><span class="nav-text text-hover-primary font-weight-bold">Lihat Detail</span></a></li>
 															</ul>
 															<?php if ($value->status_pembayaran == "MENUNGGU") { ?>
 																<ul class="nav nav-hover flex-column">

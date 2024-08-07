@@ -95,7 +95,7 @@
                                     <div class="col-lg-3 mb-lg-0 mb-6">
                                         <label>Nama Siswa:</label>
                                         <input type="text" class="form-control datatable-input"
-                                            placeholder="Inputkan Nama Tabungan" data-col-index="2" />
+                                            placeholder="Inputkan Nama Siswa" data-col-index="2" />
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
                                         <label>Tingkat</label>
@@ -386,12 +386,12 @@ if (!empty($schoolyear)) {
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">
-                            <label> Cari Siswa</label>
+                            <label> Input NIS Siswa</label>
                             <select name="nis_siswa" class="form-control select2 findRekapNasabah"
                                 id="findRekapNasabah">
                             </select>
                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> inputkan
-                                nama siswa</span>
+                                NIS Siswa</span>
                         </div>
                         <div class="col-4">
                             <div class="alert alert-secondary text-center" role="alert">
@@ -451,8 +451,7 @@ if (!empty($schoolyear)) {
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
-            <form class="form" method="POST"
-                action="<?php echo site_url('finance/savings/import_personal_saving'); ?>"
+            <form class="form" method="POST" action="<?php echo site_url('finance/savings/import_personal_saving'); ?>"
                 enctype="multipart/form-data" id="kt_upload_nasabah_personal">
                 <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
                     value="<?php echo $this->security->get_csrf_hash(); ?>">
@@ -478,9 +477,9 @@ if (!empty($schoolyear)) {
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI, </b>format xls,
                                     xlsx dan ukuran < 10Mb</span>
                             </div>
-							<input type="hidden" class="hidden" name="pin_verification">
+                            <input type="hidden" class="hidden" name="pin_verification">
                         </div>
-						<div class="col-xl-4">
+                        <div class="col-xl-4">
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Tanggal Transaksi</label>
@@ -527,15 +526,15 @@ if (!empty($schoolyear)) {
 
                                     <input
                                         class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
-										name="input_two" type="text" id="second" maxlength="1" />
+                                        name="input_two" type="text" id="second" maxlength="1" />
 
                                     <input
                                         class="col-2 mr-2 text-center form-control  form-control-lg  form-control-solid font-weight-bolder"
-										name="input_three" type="text" id="third" maxlength="1" />
+                                        name="input_three" type="text" id="third" maxlength="1" />
 
                                     <input
                                         class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
-										name="input_four" type="text" id="fourth" maxlength="1" />
+                                        name="input_four" type="text" id="fourth" maxlength="1" />
 
                                     <input
                                         class="col-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
@@ -591,3 +590,20 @@ $(document).ready(function() {
     });
 });
 </script>
+
+<?php
+if ($this->session->flashdata('print_transaction')) {
+    $result = $this->session->flashdata('print_transaction');
+    ?>
+
+<script>
+var trans_msg_json = <?php echo $result ?>;
+window.bundle.getPrintBulk('RUMAH AMANAH - SEKOLAH UTSMAN', HOST_URL + 'uploads/data/rumah_amanah.png',
+    'Jln. Lakarsantri Selatan 31-35',
+    'Surabaya, Jawa Timur', '031-99424800', trans_msg_json, 'SIMPAN STRUK INI', 'UNTUK BUKTI TRANSAKSI',
+    'www.sekolahutsman.sch.id');
+</script>
+
+<?php
+}
+?>

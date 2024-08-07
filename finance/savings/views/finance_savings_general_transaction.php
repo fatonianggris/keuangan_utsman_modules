@@ -23,6 +23,7 @@
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
+
             <!--begin::Toolbar-->
             <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="top">
                 <a onclick="window.history.back();" class="btn btn-light-danger btn-sm font-weight-bold"
@@ -65,7 +66,12 @@
                                 </span>
                                 <h3 class="card-label">Transaksi Tabungan Umum</h3>
                             </div>
+
                             <div class="card-toolbar">
+                                <div class=" text-right mt-5 mr-5 font-weight-bolder">
+                                    Status Printer: <p class="text-right" id="error_print_connection">
+                                    </p>
+                                </div>
                                 <div class="buttons">
                                     <button class="btn btn-success mr-2" data-toggle="modal" data-target="#modalKredit"
                                         id="btnKredit">
@@ -83,6 +89,7 @@
                             </div>
                         </div>
                         <div class="card-body" id="paper">
+
                             <div class="card-body">
                                 <!--begin: Search Form-->
                                 <div class="row mb-6">
@@ -378,6 +385,33 @@ if (!empty($schoolyear)) {
                                     Catatan Kredit singkat</span>
                             </div>
                         </div>
+                        <div class="col-xl-3"></div>
+                        <div class="col-xl-6 text-center">
+                            <div class="form-group">
+                                <label>PIN Anda</label>
+                                <input type="hidden" class="hidden" name="pin_verification_kredit">
+                                <div class="row col-12 d-flex justify-content-center" id="otp_kredit">
+                                    <input
+                                        class="col-2 ml-8 mr-2 text-center form-control form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_one" type="text" id="first" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_two" type="text" id="second" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg  form-control-solid font-weight-bolder"
+                                        name="input_three" type="text" id="third" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_four" type="text" id="fourth" maxlength="1" />
+                                    <input
+                                        class="col-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_five" type="text" id="fifth" maxlength="1" />
+                                </div>
+                                <span class="form-text text-dark mt-2"><b class="text-danger">*WAJIB DIISI, </b>Inputkan
+                                    PIN Anda</span>
+                            </div>
+                        </div>
+                        <div class="col-xl-3"></div>
                         <div id="add_new_nasabah" style="display:none;">
                             <div class="col-12 ">
                                 <div class="alert alert-success text-center" role="alert">
@@ -564,6 +598,33 @@ if (!empty($schoolyear)) {
                                     Catatan Kredit singkat</span>
                             </div>
                         </div>
+                        <div class="col-xl-3"></div>
+                        <div class="col-xl-6 text-center">
+                            <div class="form-group">
+                                <label>PIN Anda</label>
+                                <input type="hidden" class="hidden" name="pin_verification_kredit_edit">
+                                <div class="row col-12 d-flex justify-content-center" id="otp_kredit_edit">
+                                    <input
+                                        class="col-2 ml-8 mr-2 text-center form-control form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_one" type="text" id="first" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_two" type="text" id="second" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg  form-control-solid font-weight-bolder"
+                                        name="input_three" type="text" id="third" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_four" type="text" id="fourth" maxlength="1" />
+                                    <input
+                                        class="col-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_five" type="text" id="fifth" maxlength="1" />
+                                </div>
+                                <span class="form-text text-dark mt-2"><b class="text-danger">*WAJIB DIISI, </b>Inputkan
+                                    PIN Anda</span>
+                            </div>
+                        </div>
+                        <div class="col-xl-3"></div>
                         <div class="col-12">
                             <div class="alert alert-secondary text-center" role="alert">
                                 <b>-- INFORMASI --</b>
@@ -603,7 +664,8 @@ if (!empty($schoolyear)) {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form needs-validation" novalidate="novalidate" action="#" id="kt_add_transaction_debet">
+            <form class="form needs-validation" novalidate="novalidate" action="#" id="kt_add_transaction_debet"
+                onsubmit="return false">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-6">
@@ -703,6 +765,33 @@ if (!empty($schoolyear)) {
                                     Catatan Debet singkat</span>
                             </div>
                         </div>
+                        <div class="col-xl-3"></div>
+                        <div class="col-xl-6 text-center">
+                            <div class="form-group">
+                                <label>PIN Anda</label>
+                                <input type="hidden" class="hidden" name="pin_verification_debet">
+                                <div class="row col-12 d-flex justify-content-center" id="otp_debet">
+                                    <input
+                                        class="col-2 ml-8 mr-2 text-center form-control form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_one" type="text" id="first" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_two" type="text" id="second" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg  form-control-solid font-weight-bolder"
+                                        name="input_three" type="text" id="third" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_four" type="text" id="fourth" maxlength="1" />
+                                    <input
+                                        class="col-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_five" type="text" id="fifth" maxlength="1" />
+                                </div>
+                                <span class="form-text text-dark mt-2"><b class="text-danger">*WAJIB DIISI, </b>Inputkan
+                                    PIN Anda</span>
+                            </div>
+                        </div>
+                        <div class="col-xl-3"></div>
                         <div class="col-12">
                             <div class="alert alert-secondary text-center" role="alert">
                                 <b>-- INFORMASI --</b>
@@ -832,6 +921,33 @@ if (!empty($schoolyear)) {
                                     Catatan Debet singkat</span>
                             </div>
                         </div>
+                        <div class="col-xl-3"></div>
+                        <div class="col-xl-6 text-center">
+                            <div class="form-group">
+                                <label>PIN Anda</label>
+                                <input type="hidden" class="hidden" name="pin_verification_debet_edit">
+                                <div class="row col-12 d-flex justify-content-center" id="otp_debet_edit">
+                                    <input
+                                        class="col-2 ml-8 mr-2 text-center form-control form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_one" type="text" id="first" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_two" type="text" id="second" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg  form-control-solid font-weight-bolder"
+                                        name="input_three" type="text" id="third" maxlength="1" />
+                                    <input
+                                        class="col-2 mr-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_four" type="text" id="fourth" maxlength="1" />
+                                    <input
+                                        class="col-2 text-center form-control  form-control-lg form-control-solid font-weight-bolder"
+                                        name="input_five" type="text" id="fifth" maxlength="1" />
+                                </div>
+                                <span class="form-text text-dark mt-2"><b class="text-danger">*WAJIB DIISI, </b>Inputkan
+                                    PIN Anda</span>
+                            </div>
+                        </div>
+                        <div class="col-xl-3"></div>
                         <div class="col-12">
                             <div class="alert alert-secondary text-center" role="alert">
                                 <b>-- INFORMASI --</b>
@@ -945,6 +1061,7 @@ var id_role = 7;
 <?php }?>
 </script>
 
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/config.pin.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction.js"></script>
