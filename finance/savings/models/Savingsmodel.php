@@ -57,6 +57,16 @@ class SavingsModel extends CI_Model
 
         $sql = $this->db2->get($this->table_import_personal_saving);
 
+        return $sql->num_rows();
+    }
+
+	public function check_student_by_name_and_number($number = '', $name = '')
+    {
+        $this->db2->select('nis, nama_lengkap, password');
+        $this->db2->where('nis', $number);
+        $this->db2->where('nama_lengkap', $name);
+
+        $sql = $this->db2->get($this->table_student);
         return $sql->result();
     }
 
@@ -548,6 +558,50 @@ class SavingsModel extends CI_Model
         $this->db2->limit(1);
 
         $sql = $this->db2->get();
+        return $sql->result();
+    }
+
+	public function check_match_name($name = '')
+    {
+        $searchWords = explode(' ', $name);
+        $soundexConditions = [];
+
+        foreach ($searchWords as $index => $word) {
+            // Generate dynamic SOUNDEX condition for each word in the name
+            $soundexConditions[] = "SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(ss.nama_lengkap, ' ', " . ($index + 1) . "), ' ', -1)) = SOUNDEX('$word')";
+        }
+
+        $soundexQueryPart = implode(' OR ', $soundexConditions);
+
+        $sql = $this->db2->query("SELECT
+										s.nis,
+										s.nomor_pembayaran_du,
+										s.nomor_pembayaran_dpb,
+										s.nama_lengkap,
+										s.level_tingkat,
+										s.email,
+										s.nomor_handphone,
+										s.saldo_tabungan_umum,
+										s.saldo_tabungan_qurban,
+										s.saldo_tabungan_wisata,
+										CONCAT(ta.tahun_awal,'/',ta.tahun_akhir) AS tahun_ajaran
+									FROM
+										siswa s
+									LEFT JOIN tahun_ajaran ta ON s.th_ajaran = ta.id_tahun_ajaran
+									WHERE
+										MATCH(s.nama_lengkap) AGAINST(
+											'$name' IN NATURAL LANGUAGE MODE
+										)
+										AND s.nama_lengkap IN (
+													SELECT
+														ss.nama_lengkap
+													FROM
+														siswa ss
+													WHERE
+														$soundexQueryPart
+														OR SOUNDEX(REPLACE(ss.nama_lengkap,' ','')) = SOUNDEX('$name')
+										)");
+
         return $sql->result();
     }
 
@@ -1824,7 +1878,7 @@ class SavingsModel extends CI_Model
 
         $data = array(
             'nis' => $value['nis'],
-			'password' => password_hash(paramEncrypt($value['nis']), PASSWORD_DEFAULT, array('cost' => 12)),
+			'password' => $value['password'],
             'nama_nasabah' => $value['nama_nasabah'],
             'tanggal_transaksi' => $value['tanggal_transaksi'],
             'tahun_ajaran' => $value['tahun_ajaran'],

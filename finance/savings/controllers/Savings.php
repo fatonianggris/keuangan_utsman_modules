@@ -211,14 +211,22 @@ class Savings extends MX_Controller
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "NIS Nasabah telah digunakan sebelumnya",
             ));
         } else {
             $check_import = $this->SavingsModel->get_number_import_personal_saving($number);
 
-            if ($check_import && ($number_old != $check_import[0]->nis)) {
+            if ($check_import >= 2) {
                 $isAvailable = false;
                 echo json_encode(array(
                     'valid' => $isAvailable,
+                    'message' => "ID Invoice <b>Duplikat</b> di File Excel",
+                ));
+            } else if ($check_import && ($number_old != $check_import[0]->nis)) {
+                $isAvailable = false;
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "NIS Nasabah duplikat di file Excel",
                 ));
             } else {
                 $isAvailable = true;
@@ -3276,6 +3284,13 @@ class Savings extends MX_Controller
                     }
                 }
 
+                $check_student_name_and_number = $this->SavingsModel->check_student_by_name_and_number(trim($data['nis']), trim($data['nama_nasabah']));
+                if ($check_student_name_and_number) {
+                    $data['password'] = $check_student_name_and_number[0]->password;
+                } else {
+                    $data['password'] = password_hash(paramEncrypt(trim($data['nis'])), PASSWORD_DEFAULT, array('cost' => 12));
+                }
+
                 $update_personal = $this->SavingsModel->update_import_personal_saving($data['id_nasabah'], $data);
 
                 if ($update_personal == true) {
@@ -3369,18 +3384,61 @@ class Savings extends MX_Controller
                         $status_nis = '';
                         $tingkat = '';
                         $password = '';
+						$status_nama = "";
 
                         $data_array = array();
+                        // Initialize arrays for tracking
+
+						$seenNIS = [];
+                        $duplicatNIS = [];
+
+                        $seenName = [];
+                        $duplicateName = [];
+
                         for ($i = 1; $i < count($sheetData); $i++) {
+
+                            $currentName = trim($sheetData[$i]['1']);
+							$currentNIS = trim($sheetData[$i]['0']);
 
                             $student = $this->SavingsModel->get_student_nis($sheetData[$i]['0']);
                             if (!$student) {
-                                $status_nis = '2';
+								if (isset($seenNIS[$currentNIS])) {
+                                    $duplicatNIS[$currentNIS] = true;
+                                    $status_nis = 1;
+                                } else {
+                                    $seenNIS[$currentNIS] = true;
+                                    $status_nis = 2;
+                                }
                                 $password = password_hash(paramEncrypt(trim($sheetData[$i]['0'])), PASSWORD_DEFAULT, array('cost' => 12));
                             } else {
-                                $status_nis = '1';
-                                $password = $student[0]->password;
+                                $status_nis = 1;
+                                $check_student_name_and_number = $this->SavingsModel->check_student_by_name_and_number(trim($sheetData[$i]['0']), trim($sheetData[$i]['1']));
+                                if ($check_student_name_and_number) {
+                                    $password = $student[0]->password;
+                                } else {
+                                    $password = password_hash(paramEncrypt(trim($data['nis'])), PASSWORD_DEFAULT, array('cost' => 12));
+                                }
                             }
+
+                            $result = $this->SavingsModel->check_match_name(trim($sheetData[$i]['1']));
+                            if ($result) {
+                                for ($j = 0; $j < count($result); $j++) {
+                                    if ($this->matching->single_text_match(strtoupper(trim($sheetData[$j]['1'])), strtoupper($result[$j]->nama_lengkap)) >= 83) {
+                                        $status_nama = 1;
+                                    } else {
+                                        $status_nama = 2;
+                                    }
+                                }
+                            } else {
+                                $status_nama = 2;
+                            }
+
+							if (isset($seenName[$currentName])) {
+								$duplicateName[$currentName] = true;
+								$status_nama = 3;
+							} else {
+								$seenName[$currentName] = true;
+							}
 
                             if (strtoupper($sheetData[$i]['2']) == 'DC') {
                                 $tingkat = '6';
@@ -3409,6 +3467,7 @@ class Savings extends MX_Controller
                                     'saldo_qurban' => (filter_var(trim($sheetData[$i]['7']), FILTER_SANITIZE_STRING)),
                                     'saldo_wisata' => (filter_var(trim($sheetData[$i]['8']), FILTER_SANITIZE_STRING)),
                                     'status_nasabah' => (filter_var(trim($status_nis), FILTER_SANITIZE_STRING)),
+									'status_nama_nasabah' => (filter_var(trim($status_nama), FILTER_SANITIZE_STRING)),
                                 );
                             }
                         }
@@ -3861,6 +3920,8 @@ class Savings extends MX_Controller
         echo json_encode($output);
     }
 
+
+
     public function reject_import_joint_saving()
     {
 
@@ -3906,6 +3967,61 @@ class Savings extends MX_Controller
             return 0;
         }
     }
+
+	public function get_name_similliar($names = '')
+    {
+        $name = $this->security->xss_clean(urldecode(str_replace('_', '-', $names)));
+        $name = preg_replace("/'/", "", $name);
+
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+            $transaction = array();
+            $result = $this->SavingModel->check_match_name(trim($name));
+
+            if ($result) {
+                foreach ($result as $index => $item) {
+                    // Perform the text match and check if it's above the threshold
+                    $score = $this->matching->single_text_match(strtoupper(trim(preg_replace("/'/", "", $item->nama_lengkap))), strtoupper(trim($name)));
+                    if ($score >= 80 && $score < 100) {
+                        $transaction[$index] = array(
+                            'nis' => $item->nis,
+                            'nama_lengkap' => $item->nama_lengkap,
+                            'level_tingkat' => $item->level_tingkat,
+                            'email' => $item->email,
+                            'nomor_handphone' => $item->nomor_handphone,
+                            'tahun_ajaran' => $item->tahun_ajaran,
+							'saldo_tabungan_umum' => $item->saldo_tabungan_umum,
+                            'saldo_tabungan_qurban' => $item->saldo_tabungan_qurban,
+							'saldo_tabungan_wisata' => $item->saldo_tabungan_wisata,
+                            'score' => $score,
+                        );
+                    }
+                }
+                if ($transaction) {
+                    $output = array(
+                        "status" => true,
+                        "data" => $transaction,
+                        "messages" => "Opps!, Nama tersebut kemungkinan terdapat kesalahan penulisan atau telah dipakai dengan berbeda Nomor Bayar karena terdapat kesamaan dengan Nama Lainnya, Silahkan cek kesamaan Nama dibawah ini!. *ABAIKAN JIKA MEMANG BERBEDA & REVISI JIKA SALAH*",
+                    );
+                } else {
+                    $output = array(
+                        "status" => false,
+                        "messages" => "Ok!, Nama dengan Nomor Bayar tersebut telah sesuai.",
+                    );
+                }
+            } else {
+                $output = array(
+                    "status" => false,
+                    "messages" => "Ok!, Nama dengan Nomor Bayar tersebut telah sesuai.",
+                );
+            }
+        } else {
+            $output = array("status" => false,
+                "messages" => "Ok!, Nama Tidak Terdaftar, Silahkan coba lagi.",
+            );
+        }
+        echo json_encode($output);
+    }
+
 
     //-----------------------------------------------------------------------//
 //

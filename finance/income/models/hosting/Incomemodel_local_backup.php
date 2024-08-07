@@ -155,6 +155,16 @@ class IncomeModel extends CI_Model
         return $sql->result();
     }
 
+	public function check_student_by_name_and_number($number = '', $name = '')
+    {
+        $this->db2->select('nis, nama_lengkap');
+        $this->db2->where('nis', $number);
+        $this->db2->where('nama_lengkap', $name);
+
+        $sql = $this->db2->get($this->table_vstudent);
+        return $sql->result();
+    }
+
     public function check_invoice_dpb_duplicate($kode = '')
     {
         $this->db2->select('*');
@@ -200,6 +210,7 @@ class IncomeModel extends CI_Model
         $sql = $this->db2->get($this->table_vstudent);
         return $sql->result();
     }
+	
 
     public function check_invoice_dpb_duplicate_by_name_and_number($number = '', $name = '')
     {

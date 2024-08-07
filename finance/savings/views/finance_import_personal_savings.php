@@ -357,6 +357,30 @@ if (!empty($schoolyear)) {
                                     Nominal Saldo Wisata</span>
                             </div>
                         </div>
+						<div class="col-12">
+                            <div class="alert alert-secondary text-center" role="alert">
+                                <b>-- INFORMASI --</b>
+                            </div>
+                            <div class="mt-5 row">
+                                <div class="col-lg-6 text-center">
+                                    <div class="text-center">
+                                        <label class="font-weight-bolder font-size-h6 ">Status NIS Nasabah</label>
+                                    </div>
+                                    <div id="status_nis">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 text-center">
+                                    <div class="text-center">
+                                        <label class="font-weight-bolder font-size-h6 ">Status Nama Nasabah</label>
+                                    </div>
+                                    <div id="status_nama">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" id="modal_ps">
+
+                        </div>
                     </div>
                 </div>
 

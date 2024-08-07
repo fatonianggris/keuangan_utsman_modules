@@ -724,9 +724,14 @@ class Income extends MX_Controller
 
         $new_nis = "9" . substr($data['nomor_bayar'], 1);
         $check_student = $this->IncomeModel->get_student_by_id($new_nis);
-
         if ($check_student) {
-            $data['password'] = $check_student[0]->password;
+
+            $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($new_nis), trim($data['nama']));
+            if ($check_student_name_and_number) {
+                $data['password'] = $check_student[0]->password;
+            } else {
+                $data['password'] = password_hash(paramEncrypt(trim($new_nis)), PASSWORD_DEFAULT, array('cost' => 12));
+            }
         } else {
             $data['password'] = password_hash(paramEncrypt($new_nis), PASSWORD_DEFAULT, array('cost' => 12));
         }
@@ -826,7 +831,13 @@ class Income extends MX_Controller
         $check_student = $this->IncomeModel->get_student_by_id($data['nomor_bayar']);
 
         if ($check_student) {
-            $data['password'] = $check_student[0]->password;
+            $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($data['nomor_bayar']), trim($data['nama']));
+
+            if ($check_student_name_and_number) {
+                $data['password'] = $check_student[0]->password;
+            } else {
+                $data['password'] = password_hash(paramEncrypt(trim($data['nomor_bayar'])), PASSWORD_DEFAULT, array('cost' => 12));
+            }
         } else {
             $data['password'] = password_hash(paramEncrypt($data['nomor_bayar']), PASSWORD_DEFAULT, array('cost' => 12));
         }
@@ -1036,6 +1047,11 @@ class Income extends MX_Controller
             redirect('finance/income/income/list_income_dpb');
         } else {
             $check_pass = $this->IncomeModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+			
+			$this->db->query('SET SESSION interactive_timeout = 28000');
+			$this->db->query('SET SESSION wait_timeout = 28000');
+			$this->db2->query('SET SESSION interactive_timeout = 28000');
+			$this->db2->query('SET SESSION wait_timeout = 28000');
             // pass verify
             if (password_verify(($data['pass_verification']), $check_pass[0]->password)) {
                 // gcaptha verify
@@ -1106,6 +1122,8 @@ class Income extends MX_Controller
                         $seenName = [];
                         $duplicateName = [];
 
+						$tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
+
                         for ($i = 1; $i < count($sheetData); $i++) {
 
                             $rincian = "";
@@ -1118,7 +1136,6 @@ class Income extends MX_Controller
 
                             $student = $this->IncomeModel->check_student_by_nomor_pembayaran_dpb($sheetData[$i]['1']);
                             $invoice = $this->IncomeModel->check_invoice_dpb_duplicate($sheetData[$i]['0']);
-                            $tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
 
                             if ($student) {
 
@@ -1145,7 +1162,13 @@ class Income extends MX_Controller
                                 } else {
                                     $seenName[$currentName] = true;
                                 }
-                                $password = $student[0]->password;
+
+                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($sheetData[$i]['1']), trim($sheetData[$i]['3']));
+                                if ($check_student_name_and_number) {
+                                    $password = $student[0]->password;
+                                } else {
+                                    $password = password_hash(paramEncrypt(trim($sheetData[$i]['1'])), PASSWORD_DEFAULT, array('cost' => 12));
+                                }
 
                             } else {
 
@@ -1387,13 +1410,22 @@ class Income extends MX_Controller
                                         $status_nama = 2;
                                     }
                                 }
+								
                                 if (isset($seenName[$currentName])) {
                                     $duplicateName[$currentName] = true;
                                     $status_nama = 3; //nis tidak terdaftar dan nama tidak mirip
                                 } else {
                                     $seenName[$currentName] = true;
                                 }
-                                $password = $student[0]->password;
+
+                                $new_nis = "9" . substr(trim($sheetData[$i]['1']), 1);
+                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($new_nis), trim($sheetData[$i]['3']));
+
+                                if ($check_student_name_and_number) {
+                                    $password = $student[0]->password;
+                                } else {
+                                    $password = password_hash(paramEncrypt(trim($new_nis)), PASSWORD_DEFAULT, array('cost' => 12));
+                                }
 
                             } else {
 
