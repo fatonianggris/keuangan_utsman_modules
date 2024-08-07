@@ -244,7 +244,7 @@
 
 
             <form class="form needs-validation" method="POST" enctype="multipart/form-data" novalidate="novalidate"
-                id="kt_edit_income_dPB_transaction">
+                id="kt_edit_income_dpb_transaction">
                 <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>"
                     value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
