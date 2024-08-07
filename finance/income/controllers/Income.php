@@ -1307,6 +1307,11 @@ class Income extends MX_Controller
             redirect('finance/income/income/list_income_du');
         } else {
             $check_pass = $this->IncomeModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+
+			$this->db->query('SET SESSION interactive_timeout = 28000');
+			$this->db->query('SET SESSION wait_timeout = 28000');
+			$this->db2->query('SET SESSION interactive_timeout = 28000');
+			$this->db2->query('SET SESSION wait_timeout = 28000');
             // pass verify
             if (password_verify(($data['pass_verification']), $check_pass[0]->password)) {
                 // gcaptha verify

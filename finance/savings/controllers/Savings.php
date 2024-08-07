@@ -3341,6 +3341,11 @@ class Savings extends MX_Controller
             redirect('finance/savings/list_personal_saving');
         } else {
             $check_pass = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+
+			$this->db->query('SET SESSION interactive_timeout = 28000');
+			$this->db->query('SET SESSION wait_timeout = 28000');
+			$this->db2->query('SET SESSION interactive_timeout = 28000');
+			$this->db2->query('SET SESSION wait_timeout = 28000');
             // pass verify
             if (password_verify(($data['pin_verification']), $check_pass[0]->pin_akun)) {
                 // gcaptha verify
@@ -3587,6 +3592,11 @@ class Savings extends MX_Controller
             redirect('finance/savings/list_joint_saving');
         } else {
             $check_pass = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
+
+			$this->db->query('SET SESSION interactive_timeout = 28000');
+			$this->db->query('SET SESSION wait_timeout = 28000');
+			$this->db2->query('SET SESSION interactive_timeout = 28000');
+			$this->db2->query('SET SESSION wait_timeout = 28000');
             // pass verify
             if (password_verify(($data['pin_verification']), $check_pass[0]->pin_akun)) {
                 // gcaptha verify
