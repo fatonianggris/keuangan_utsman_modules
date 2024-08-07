@@ -21,7 +21,7 @@ class SavingsModel extends CI_Model
     private $table_vstudent = 'view_siswa';
     private $table_account = 'akun_keuangan';
     private $table_import_personal_saving = 'import_nasabah_personal';
-    private $table_import_joint_saving = 'import_nasabah_joint';
+    private $table_import_joint_saving = 'import_nasabah_bersama';
 
     //
     //------------------------------COUNT--------------------------------//
@@ -38,6 +38,17 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function get_number_joint_saving($number = '')
+    {
+
+        $this->db2->select('nomor_rekening_bersama');
+        $this->db2->where('nomor_rekening_bersama', $number);
+
+        $sql = $this->db2->get($this->table_joint_saving);
+
+        return $sql->result();
+    }
+
     public function get_number_import_personal_saving($number = '')
     {
 
@@ -45,6 +56,17 @@ class SavingsModel extends CI_Model
         $this->db2->where('nis', $number);
 
         $sql = $this->db2->get($this->table_import_personal_saving);
+
+        return $sql->result();
+    }
+
+    public function get_number_import_joint_saving($number = '')
+    {
+
+        $this->db2->select('nomor_rekening_bersama');
+        $this->db2->where('nomor_rekening_bersama', $number);
+
+        $sql = $this->db2->get($this->table_import_joint_saving);
 
         return $sql->result();
     }
@@ -60,15 +82,15 @@ class SavingsModel extends CI_Model
         return $sql->result_array();
     }
 
-    public function get_number_joint_saving($number = '')
+    public function get_import_joint_saving($id = '', $status = '')
     {
-
-        $this->db2->select('nomor_rekening_bersama');
-        $this->db2->where('nomor_rekening_bersama', $number);
-
-        $sql = $this->db2->get($this->table_joint_saving);
-
-        return $sql->result();
+        $sql = $this->db2->query("SELECT
+										*
+									FROM
+										import_nasabah_bersama
+									WHERE
+										id_nasabah_bersama IN ($id) AND status_nasabah_bersama = $status");
+        return $sql->result_array();
     }
 
     public function get_new_transaction()
@@ -447,8 +469,8 @@ class SavingsModel extends CI_Model
 
     public function get_student_nis($nis_student = '')
     {
-        $this->db2->select('s.nis');
-        $this->db2->from('view_siswa s');
+        $this->db2->select('s.nis, s.password');
+        $this->db2->from('siswa s');
         $this->db2->where('s.nis', $nis_student);
         $this->db2->limit(1);
 
@@ -778,6 +800,7 @@ class SavingsModel extends CI_Model
 										");
         return $sql->result();
     }
+
     public function get_all_import_personal_customer()
     {
         $sql = $this->db2->query("SELECT
@@ -969,6 +992,43 @@ class SavingsModel extends CI_Model
 									DESC");
         return $sql->result();
     }
+
+    public function get_all_import_joint_customer()
+    {
+        $sql = $this->db2->query("SELECT
+										panel_utsman.tb.id_nasabah_bersama,
+										panel_utsman.tb.id_siswa_penanggung_jawab,
+										panel_utsman.tb.nomor_rekening_bersama,
+										panel_utsman.tb.nama_tabungan_bersama,
+										panel_utsman.tb.tingkat,
+										panel_utsman.tb.tahun_ajaran,
+										panel_utsman.tb.nama_wali,
+										panel_utsman.tb.nama_tabungan_bersama,
+										panel_utsman.tb.saldo_bersama,
+										panel_utsman.tb.nomor_hp_wali,
+										panel_utsman.tb.tanggal_transaksi,
+										panel_utsman.tb.status_nasabah_bersama,
+										panel_utsman.tb.status_penanggung_jawab,
+										panel_utsman.s.nama_lengkap,
+										CONCAT(
+                                        panel_utsman.ta.tahun_awal,
+                                        '/',
+                                        panel_utsman.ta.tahun_akhir
+                                    	) AS nama_tahun_ajaran
+									FROM
+										panel_utsman.import_nasabah_bersama tb
+									LEFT JOIN panel_utsman.siswa s
+                                	ON
+                                   		 panel_utsman.s.nis = panel_utsman.tb.id_siswa_penanggung_jawab
+									LEFT JOIN panel_utsman.tahun_ajaran ta
+                                	ON
+                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.tahun_ajaran
+									ORDER BY
+										panel_utsman.tb.id_nasabah_bersama
+									DESC");
+        return $sql->result();
+    }
+
     public function get_all_joint_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
@@ -1296,7 +1356,7 @@ class SavingsModel extends CI_Model
     public function get_student_transaction_last($id_transaction = '')
     {
 
-        $this->db2->select("nis_siswa, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
+        $this->db2->select("nis_siswa, nomor_transaksi_umum, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
         $this->db2->from('transaksi_tabungan_umum');
         $this->db2->where('id_transaksi_umum', $id_transaction);
 
@@ -1307,7 +1367,7 @@ class SavingsModel extends CI_Model
     public function get_student_transaction_qurban_last($id_transaction = '')
     {
 
-        $this->db2->select("nis_siswa, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
+        $this->db2->select("nis_siswa, nomor_transaksi_qurban, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
         $this->db2->from('transaksi_tabungan_qurban');
         $this->db2->where('id_transaksi_qurban', $id_transaction);
 
@@ -1318,7 +1378,7 @@ class SavingsModel extends CI_Model
     public function get_student_transaction_tour_last($id_transaction = '')
     {
 
-        $this->db2->select("nis_siswa, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
+        $this->db2->select("nis_siswa, nomor_transaksi_wisata, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
         $this->db2->from('transaksi_tabungan_wisata');
         $this->db2->where('id_transaksi_wisata', $id_transaction);
 
@@ -1329,7 +1389,7 @@ class SavingsModel extends CI_Model
     public function get_joint_transaction_last($id_transaction = '')
     {
 
-        $this->db2->select("nomor_rekening_bersama, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
+        $this->db2->select("nomor_rekening_bersama, nomor_transaksi_bersama, catatan, saldo, nominal ,th_ajaran, status_kredit_debet, DATE_FORMAT(waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi, tanggal_transaksi");
         $this->db2->from('transaksi_tabungan_bersama');
         $this->db2->where('id_transaksi_bersama', $id_transaction);
 
@@ -1356,12 +1416,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_joint_saving_transaction, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_joint_saving_transaction, array('id_transaksi_bersama' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
     public function insert_credit_saving($id = '', $value = '')
@@ -1384,12 +1447,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_savings_transaction_general, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_savings_transaction_general, array('id_transaksi_umum' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
 
@@ -1413,12 +1479,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_savings_transaction_qurban, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_savings_transaction_qurban, array('id_transaksi_qurban' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
 
@@ -1442,12 +1511,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_savings_transaction_tour, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_savings_transaction_tour, array('id_transaksi_wisata' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
 
@@ -1460,7 +1532,7 @@ class SavingsModel extends CI_Model
             'nis' => $value['input_nomor_rekening'],
             'nomor_pembayaran_dpb' => $value['input_nomor_rekening'],
             'nomor_pembayaran_du' => "8" . substr($value['input_nomor_rekening'], 1),
-            'password' => password_hash('12345', PASSWORD_DEFAULT, array('cost' => 12)),
+            'password' => password_hash(paramEncrypt($value['input_nomor_rekening']), PASSWORD_DEFAULT, array('cost' => 12)),
             'nama_wali' => @$value['input_nama_wali'],
             'nomor_handphone' => @$value['input_nomor_hp_wali'],
             'email' => @$value['input_email_nasabah'],
@@ -1517,7 +1589,7 @@ class SavingsModel extends CI_Model
             'nis' => $value['nis'],
             'nomor_pembayaran_dpb' => $value['nis'],
             'nomor_pembayaran_du' => "8" . substr($value['nis'], 1),
-            'password' => password_hash('12345', PASSWORD_DEFAULT, array('cost' => 12)),
+            'password' => password_hash(paramEncrypt($value['nis']), PASSWORD_DEFAULT, array('cost' => 12)),
             'nama_wali' => @$value['nama_orangtua'],
             'nomor_handphone' => @$value['nomor_hp_aktif'],
             'email' => @$value['email_orangtua'],
@@ -1546,7 +1618,7 @@ class SavingsModel extends CI_Model
             'nis' => $value['nis'],
             'nomor_pembayaran_dpb' => $value['nis'],
             'nomor_pembayaran_du' => "8" . substr($value['nis'], 1),
-            'password' => password_hash('12345', PASSWORD_DEFAULT, array('cost' => 12)),
+            'password' => password_hash(paramEncrypt($value['nis']), PASSWORD_DEFAULT, array('cost' => 12)),
             'nama_wali' => @$value['nama_orangtua'],
             'nomor_handphone' => @$value['nomor_hp_aktif'],
             'email' => @$value['email_orangtua'],
@@ -1574,7 +1646,7 @@ class SavingsModel extends CI_Model
             'nis' => $value['nis'],
             'nomor_pembayaran_dpb' => $value['nis'],
             'nomor_pembayaran_du' => "8" . substr($value['nis'], 1),
-            'password' => password_hash('12345', PASSWORD_DEFAULT, array('cost' => 12)),
+            'password' => password_hash(paramEncrypt($value['nis']), PASSWORD_DEFAULT, array('cost' => 12)),
             'nama_wali' => @$value['nama_orangtua'],
             'nomor_handphone' => @$value['nomor_hp_aktif'],
             'email' => @$value['email_orangtua'],
@@ -1612,12 +1684,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_joint_saving_transaction, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_joint_saving_transaction, array('id_transaksi_bersama' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
 
@@ -1641,12 +1716,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_savings_transaction_general, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_savings_transaction_general, array('id_transaksi_umum' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
 
@@ -1670,12 +1748,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_savings_transaction_qurban, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_savings_transaction_qurban, array('id_transaksi_qurban' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
 
@@ -1699,12 +1780,15 @@ class SavingsModel extends CI_Model
 
         $this->db2->insert($this->table_savings_transaction_tour, $data);
 
+        $id = $this->db2->insert_id();
+        $query = $this->db2->get_where($this->table_savings_transaction_tour, array('id_transaksi_wisata' => $id));
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array('status' => true, 'data' => $query->row());
         }
     }
 
@@ -1740,6 +1824,7 @@ class SavingsModel extends CI_Model
 
         $data = array(
             'nis' => $value['nis'],
+			'password' => password_hash(paramEncrypt($value['nis']), PASSWORD_DEFAULT, array('cost' => 12)),
             'nama_nasabah' => $value['nama_nasabah'],
             'tanggal_transaksi' => $value['tanggal_transaksi'],
             'tahun_ajaran' => $value['tahun_ajaran'],
@@ -1765,6 +1850,36 @@ class SavingsModel extends CI_Model
         }
     }
 
+    public function update_import_joint_saving($id = '', $value = '')
+    {
+        $this->db2->trans_begin();
+
+        $data = array(
+            'nomor_rekening_bersama' => $value['nomor_rekening_bersama'],
+            'id_siswa_penanggung_jawab' => $value['id_siswa_penanggung_jawab'],
+            'nama_tabungan_bersama' => $value['nama_tabungan_bersama'],
+            'tingkat' => $value['id_tingkat'],
+            'tahun_ajaran' => $value['id_th_ajaran'],
+            'saldo_bersama' => $value['saldo_bersama'],
+            'tanggal_transaksi' => $value['tanggal_transaksi'],
+            'nama_wali' => @$value['nama_wali'],
+            'nomor_hp_wali' => @$value['nomor_handphone'],
+            'status_nasabah_bersama' => $value['status_nasabah'],
+            'status_penanggung_jawab' => $value['status_pj'],
+        );
+
+        $this->db2->where('id_nasabah_bersama', $id);
+        $this->db2->update($this->table_import_joint_saving, $data);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
     public function accept_import_data_personal_saving($id = '')
     {
         $this->db2->trans_begin();
@@ -1773,6 +1888,7 @@ class SavingsModel extends CI_Model
 											nis,
 											nomor_pembayaran_dpb,
 											nomor_pembayaran_du,
+											password,
 											level_tingkat,
 											nama_lengkap,
 											nomor_handphone,
@@ -1790,6 +1906,7 @@ class SavingsModel extends CI_Model
 												'8',
 												SUBSTRING(panel_utsman.inp.nis, 2)
 											) AS nomor_du,
+											panel_utsman.inp.password,
 											panel_utsman.inp.tingkat,
 											panel_utsman.inp.nama_nasabah,
 											panel_utsman.inp.nomor_hp_wali,
@@ -1803,6 +1920,54 @@ class SavingsModel extends CI_Model
 											panel_utsman.import_nasabah_personal inp
 										WHERE
 											panel_utsman.inp.id_nasabah IN ($id)");
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function accept_import_data_joint_saving($id = '')
+    {
+        $this->db2->trans_begin();
+
+        $this->db2->query("REPLACE INTO tabungan_bersama (
+											id_siswa_penanggung_jawab,
+											id_pegawai,
+											id_tingkat,
+											id_th_ajaran,
+											nomor_rekening_bersama,
+											nama_tabungan_bersama,
+											saldo_tabungan_bersama,
+											keterangan_tabungan_bersama
+										)
+										SELECT
+											panel_utsman.inb.id_siswa_penanggung_jawab,
+											panel_utsman.inb.id_pegawai,
+											panel_utsman.inb.tingkat,
+											panel_utsman.inb.tahun_ajaran,
+											panel_utsman.inb.nomor_rekening_bersama,
+											panel_utsman.inb.nama_tabungan_bersama,
+											panel_utsman.inb.saldo_bersama,
+											panel_utsman.inb.keterangan_bersama
+										FROM
+											panel_utsman.import_nasabah_bersama inb
+										WHERE
+											panel_utsman.inb.id_nasabah_bersama IN ($id)");
+
+        $this->db2->query("UPDATE
+								panel_utsman.siswa AS s,
+								panel_utsman.import_nasabah_bersama AS inb
+							SET
+								panel_utsman.s.nama_wali = panel_utsman.inb.nama_wali,
+								panel_utsman.s.nomor_handphone = panel_utsman.inb.nomor_hp_wali
+							WHERE
+								panel_utsman.s.nis = panel_utsman.inb.id_siswa_penanggung_jawab
+								AND
+								panel_utsman.inb.id_nasabah_bersama IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();

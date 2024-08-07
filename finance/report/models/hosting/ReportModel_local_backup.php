@@ -36,160 +36,160 @@ class ReportModel extends CI_Model
     public function get_data_personal_saving_excel_all($id = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-									s.id_siswa,
-									s.nis,
-									s.level_tingkat,
-									s.nama_lengkap,
-									s.jenis_kelamin,
-									s.nomor_handphone,
-									s.email,
-									s.jalur,
+									panel_utsman.s.id_siswa,
+									panel_utsman.s.nis,
+									panel_utsman.s.level_tingkat,
+									panel_utsman.s.nama_lengkap,
+									panel_utsman.s.jenis_kelamin,
+									panel_utsman.s.nomor_handphone,
+									panel_utsman.s.email,
+									panel_utsman.s.jalur,
 									(
 									SELECT
-										COALESCE(SUM(ttu.nominal),
+										COALESCE(SUM(panel_utsman.ttu.nominal),
 										0)
 									FROM
-										transaksi_tabungan_umum ttu
+										panel_utsman.transaksi_tabungan_umum ttu
 									WHERE
-										ttu.nis_siswa = s.nis AND ttu.status_kredit_debet = 1 AND(
+										panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 1 AND(
 											STR_TO_DATE(
-												ttu.tanggal_transaksi,
+												panel_utsman.ttu.tanggal_transaksi,
 												'%d/%m/%Y'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_umum,
 									(
 										SELECT
-											COALESCE(SUM(ttu.nominal),
+											COALESCE(SUM(panel_utsman.ttu.nominal),
 											0)
 										FROM
-											transaksi_tabungan_umum ttu
+											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
-											ttu.nis_siswa = s.nis AND ttu.status_kredit_debet = 2 AND(
+											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttu.tanggal_transaksi,
+													panel_utsman.ttu.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_umum,
 									(
 										SELECT
-											COALESCE(ttu.nominal, 0)
+											COALESCE(panel_utsman.ttu.nominal, 0)
 										FROM
-											transaksi_tabungan_umum ttu
+											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
-											ttu.nis_siswa = s.nis AND(
+											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
 												STR_TO_DATE(
-													ttu.tanggal_transaksi,
+													panel_utsman.ttu.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttu.id_transaksi_umum
+											panel_utsman.ttu.id_transaksi_umum
 										DESC LIMIT 1
 									) AS saldo_umum,
 									(
 									SELECT
-										COALESCE(SUM(ttq.nominal),
+										COALESCE(SUM(panel_utsman.ttq.nominal),
 										0)
 									FROM
-										transaksi_tabungan_qurban ttq
+										panel_utsman.transaksi_tabungan_qurban ttq
 									WHERE
-										ttq.nis_siswa = s.nis AND ttq.status_kredit_debet = 1 AND(
+										panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 1 AND(
 											STR_TO_DATE(
-												ttq.tanggal_transaksi,
+												panel_utsman.ttq.tanggal_transaksi,
 												'%d/%m/%Y'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_qurban,
 									(
 										SELECT
-											COALESCE(SUM(ttq.nominal),
+											COALESCE(SUM(panel_utsman.ttq.nominal),
 											0)
 										FROM
-											transaksi_tabungan_qurban ttq
+											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
-											ttq.nis_siswa = s.nis AND ttq.status_kredit_debet = 2 AND(
+											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttq.tanggal_transaksi,
+													panel_utsman.ttq.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_qurban,
 									(
 										SELECT
-											COALESCE(ttq.nominal, 0)
+											COALESCE(panel_utsman.ttq.nominal, 0)
 										FROM
-											transaksi_tabungan_qurban ttq
+											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
-											ttq.nis_siswa = s.nis AND(
+											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND(
 												STR_TO_DATE(
-													ttq.tanggal_transaksi,
+													panel_utsman.ttq.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttq.id_transaksi_qurban
+											panel_utsman.ttq.id_transaksi_qurban
 										DESC LIMIT 1
 									) AS saldo_qurban,
 									(
 									SELECT
-										COALESCE(SUM(ttw.nominal),
+										COALESCE(SUM(panel_utsman.ttw.nominal),
 										0)
 									FROM
-										transaksi_tabungan_wisata ttw
+										panel_utsman.transaksi_tabungan_wisata ttw
 									WHERE
-										ttw.nis_siswa = s.nis AND ttw.status_kredit_debet = 1 AND(
+										panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 1 AND(
 											STR_TO_DATE(
-												ttw.tanggal_transaksi,
+												panel_utsman.ttw.tanggal_transaksi,
 												'%d/%m/%Y'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_wisata,
 									(
 										SELECT
-											COALESCE(SUM(ttw.nominal),0)
+											COALESCE(SUM(panel_utsman.ttw.nominal),0)
 										FROM
-											transaksi_tabungan_wisata ttw
+											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
-											ttw.nis_siswa = s.nis AND ttw.status_kredit_debet = 2 AND(
+											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttw.tanggal_transaksi,
+													panel_utsman.ttw.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_wisata,
 									(
 										SELECT
-											COALESCE(ttw.nominal, 0)
+											COALESCE(panel_utsman.ttw.nominal, 0)
 										FROM
-											transaksi_tabungan_wisata ttw
+											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
-											ttw.nis_siswa = s.nis AND(
+											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND(
 												STR_TO_DATE(
-													ttw.tanggal_transaksi,
+													panel_utsman.ttw.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttw.id_transaksi_wisata
+											panel_utsman.ttw.id_transaksi_wisata
 										DESC LIMIT 1
 									) AS saldo_wisata,
-									s.nama_wali,
+									panel_utsman.s.nama_wali,
 									CONCAT(
 									panel_utsman.ta.tahun_awal,
 									'/',
 									panel_utsman.ta.tahun_akhir
 									) AS tahun_ajaran,
-									s.th_ajaran
+									panel_utsman.s.th_ajaran
 								FROM
-									siswa s
+									panel_utsman.siswa s
 								LEFT JOIN panel_utsman.tahun_ajaran ta
 								ON
 									panel_utsman.ta.id_tahun_ajaran = panel_utsman.s.th_ajaran
 								WHERE panel_utsman.s.id_siswa IN ($id)
 								ORDER BY
-									s.id_siswa
+									panel_utsman.s.id_siswa
 								DESC");
 
         return $sql->result_array();
@@ -197,60 +197,60 @@ class ReportModel extends CI_Model
 	public function get_data_joint_saving_excel_all($id = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										tb.id_tabungan_bersama,
-										tb.id_siswa_penanggung_jawab,
-										tb.nomor_rekening_bersama,
-										tb.nama_tabungan_bersama,
-										tb.keterangan_tabungan_bersama,
-										tb.id_tingkat,
-										tb.id_th_ajaran,
-										s.nama_wali,
-										s.nis,
-										s.nama_lengkap,
-										s.nomor_handphone,
-										s.email,
+										panel_utsman.tb.id_tabungan_bersama,
+										panel_utsman.tb.id_siswa_penanggung_jawab,
+										panel_utsman.tb.nomor_rekening_bersama,
+										panel_utsman.tb.nama_tabungan_bersama,
+										panel_utsman.tb.keterangan_tabungan_bersama,
+										panel_utsman.tb.id_tingkat,
+										panel_utsman.tb.id_th_ajaran,
+										panel_utsman.s.nama_wali,
+										panel_utsman.s.nis,
+										panel_utsman.s.nama_lengkap,
+										panel_utsman.s.nomor_handphone,
+										panel_utsman.s.email,
 										(
 										SELECT
-											COALESCE(SUM(ttb.nominal),
+											COALESCE(SUM(panel_utsman.ttb.nominal),
 											0)
 										FROM
-											transaksi_tabungan_bersama ttb
+											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											ttb.nomor_rekening_bersama = tb.nomor_rekening_bersama AND ttb.status_kredit_debet = 1 AND(
+											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 1 AND(
 												STR_TO_DATE(
-													ttb.tanggal_transaksi,
+													panel_utsman.ttb.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS kredit_bersama,
 									(
 										SELECT
-											COALESCE(SUM(ttb.nominal),
+											COALESCE(SUM(panel_utsman.ttb.nominal),
 											0)
 										FROM
-											transaksi_tabungan_bersama ttb
+											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											ttb.nomor_rekening_bersama = tb.nomor_rekening_bersama AND ttb.status_kredit_debet = 2 AND(
+											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttb.tanggal_transaksi,
+													panel_utsman.ttb.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_bersama,
 									(
 										SELECT
-											COALESCE(ttb.nominal, 0)
+											COALESCE(panel_utsman.ttb.nominal, 0)
 										FROM
-											transaksi_tabungan_bersama ttb
+											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											ttb.nomor_rekening_bersama = tb.nomor_rekening_bersama AND(
+											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
 												STR_TO_DATE(
-													ttb.tanggal_transaksi,
+													panel_utsman.ttb.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttb.id_transaksi_bersama
+											panel_utsman.ttb.id_transaksi_bersama
 										DESC
 									LIMIT 1
 									) AS saldo_bersama, 
@@ -260,7 +260,7 @@ class ReportModel extends CI_Model
 										panel_utsman.ta.tahun_akhir
 									) AS tahun_ajaran
 									FROM
-										tabungan_bersama tb
+										panel_utsman.tabungan_bersama tb
 									LEFT JOIN panel_utsman.siswa s
 									ON
 										panel_utsman.s.nis = panel_utsman.tb.id_siswa_penanggung_jawab
@@ -269,167 +269,167 @@ class ReportModel extends CI_Model
 										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.id_th_ajaran
 									WHERE panel_utsman.tb.id_tabungan_bersama IN ($id)
 									ORDER BY
-										tb.id_tabungan_bersama
+										panel_utsman.tb.id_tabungan_bersama
 									DESC");
         return $sql->result_array();
     }
     public function get_data_personal_saving_pdf_all($id = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-									s.id_siswa,
-									s.nis,
-									s.level_tingkat,
-									s.nama_lengkap,
-									s.jenis_kelamin,
-									s.nomor_handphone,
-									s.email,
-									s.jalur,
+									panel_utsman.s.id_siswa,
+									panel_utsman.s.nis,
+									panel_utsman.s.level_tingkat,
+									panel_utsman.s.nama_lengkap,
+									panel_utsman.s.jenis_kelamin,
+									panel_utsman.s.nomor_handphone,
+									panel_utsman.s.email,
+									panel_utsman.s.jalur,
 									(
 									SELECT
-										COALESCE(SUM(ttu.nominal),
+										COALESCE(SUM(panel_utsman.ttu.nominal),
 										0)
 									FROM
-										transaksi_tabungan_umum ttu
+										panel_utsman.transaksi_tabungan_umum ttu
 									WHERE
-										ttu.nis_siswa = s.nis AND ttu.status_kredit_debet = 1 AND(
+										panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 1 AND(
 											STR_TO_DATE(
-												ttu.tanggal_transaksi,
+												panel_utsman.ttu.tanggal_transaksi,
 												'%d/%m/%Y'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_umum,
 									(
 										SELECT
-											COALESCE(SUM(ttu.nominal),
+											COALESCE(SUM(panel_utsman.ttu.nominal),
 											0)
 										FROM
-											transaksi_tabungan_umum ttu
+											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
-											ttu.nis_siswa = s.nis AND ttu.status_kredit_debet = 2 AND(
+											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttu.tanggal_transaksi,
+													panel_utsman.ttu.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_umum,
 									(
 										SELECT
-											COALESCE(ttu.nominal, 0)
+											COALESCE(panel_utsman.ttu.nominal, 0)
 										FROM
-											transaksi_tabungan_umum ttu
+											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
-											ttu.nis_siswa = s.nis AND(
+											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
 												STR_TO_DATE(
-													ttu.tanggal_transaksi,
+													panel_utsman.ttu.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttu.id_transaksi_umum
+											panel_utsman.ttu.id_transaksi_umum
 										DESC LIMIT 1
 									) AS saldo_umum,
 									(
 									SELECT
-										COALESCE(SUM(ttq.nominal),
+										COALESCE(SUM(panel_utsman.ttq.nominal),
 										0)
 									FROM
-										transaksi_tabungan_qurban ttq
+										panel_utsman.transaksi_tabungan_qurban ttq
 									WHERE
-										ttq.nis_siswa = s.nis AND ttq.status_kredit_debet = 1 AND(
+										panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 1 AND(
 											STR_TO_DATE(
-												ttq.tanggal_transaksi,
+												panel_utsman.ttq.tanggal_transaksi,
 												'%d/%m/%Y'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_qurban,
 									(
 										SELECT
-											COALESCE(SUM(ttq.nominal),
+											COALESCE(SUM(panel_utsman.ttq.nominal),
 											0)
 										FROM
-											transaksi_tabungan_qurban ttq
+											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
-											ttq.nis_siswa = s.nis AND ttq.status_kredit_debet = 2 AND(
+											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttq.tanggal_transaksi,
+													panel_utsman.ttq.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_qurban,
 									(
 										SELECT
-											COALESCE(ttq.nominal, 0)
+											COALESCE(panel_utsman.ttq.nominal, 0)
 										FROM
-											transaksi_tabungan_qurban ttq
+											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
-											ttq.nis_siswa = s.nis AND(
+											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND(
 												STR_TO_DATE(
-													ttq.tanggal_transaksi,
+													panel_utsman.ttq.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttq.id_transaksi_qurban
+											panel_utsman.ttq.id_transaksi_qurban
 										DESC LIMIT 1
 									) AS saldo_qurban,
 									(
 									SELECT
-										COALESCE(SUM(ttw.nominal),
+										COALESCE(SUM(panel_utsman.ttw.nominal),
 										0)
 									FROM
-										transaksi_tabungan_wisata ttw
+										panel_utsman.transaksi_tabungan_wisata ttw
 									WHERE
-										ttw.nis_siswa = s.nis AND ttw.status_kredit_debet = 1 AND(
+										panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 1 AND(
 											STR_TO_DATE(
-												ttw.tanggal_transaksi,
+												panel_utsman.ttw.tanggal_transaksi,
 												'%d/%m/%Y'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_wisata,
 									(
 										SELECT
-											COALESCE(SUM(ttw.nominal),0)
+											COALESCE(SUM(panel_utsman.ttw.nominal),0)
 										FROM
-											transaksi_tabungan_wisata ttw
+											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
-											ttw.nis_siswa = s.nis AND ttw.status_kredit_debet = 2 AND(
+											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttw.tanggal_transaksi,
+													panel_utsman.ttw.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_wisata,
 									(
 										SELECT
-											COALESCE(ttw.nominal, 0)
+											COALESCE(panel_utsman.ttw.nominal, 0)
 										FROM
-											transaksi_tabungan_wisata ttw
+											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
-											ttw.nis_siswa = s.nis AND(
+											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND(
 												STR_TO_DATE(
-													ttw.tanggal_transaksi,
+													panel_utsman.ttw.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttw.id_transaksi_wisata
+											panel_utsman.ttw.id_transaksi_wisata
 										DESC LIMIT 1
 									) AS saldo_wisata,
-									s.nama_wali,
+									panel_utsman.s.nama_wali,
 									CONCAT(
 									panel_utsman.ta.tahun_awal,
 									'/',
 									panel_utsman.ta.tahun_akhir
 									) AS tahun_ajaran,
-									s.th_ajaran
+									panel_utsman.s.th_ajaran
 								FROM
-									siswa s
+									panel_utsman.siswa s
 								LEFT JOIN panel_utsman.tahun_ajaran ta
 								ON
 									panel_utsman.ta.id_tahun_ajaran = panel_utsman.s.th_ajaran
 								WHERE panel_utsman.s.id_siswa IN ($id)
 								ORDER BY
-									s.id_siswa
+									panel_utsman.s.id_siswa
 								DESC");
 
         return $sql->result();
@@ -437,60 +437,60 @@ class ReportModel extends CI_Model
 	public function get_data_joint_saving_pdf_all($id = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										tb.id_tabungan_bersama,
-										tb.id_siswa_penanggung_jawab,
-										tb.nomor_rekening_bersama,
-										tb.nama_tabungan_bersama,
-										tb.keterangan_tabungan_bersama,
-										tb.id_tingkat,
-										tb.id_th_ajaran,
-										s.nama_wali,
-										s.nis,
-										s.nama_lengkap,
-										s.nomor_handphone,
-										s.email,
+										panel_utsman.tb.id_tabungan_bersama,
+										panel_utsman.tb.id_siswa_penanggung_jawab,
+										panel_utsman.tb.nomor_rekening_bersama,
+										panel_utsman.tb.nama_tabungan_bersama,
+										panel_utsman.tb.keterangan_tabungan_bersama,
+										panel_utsman.tb.id_tingkat,
+										panel_utsman.tb.id_th_ajaran,
+										panel_utsman.s.nama_wali,
+										panel_utsman.s.nis,
+										panel_utsman.s.nama_lengkap,
+										panel_utsman.s.nomor_handphone,
+										panel_utsman.s.email,
 										(
 										SELECT
-											COALESCE(SUM(ttb.nominal),
+											COALESCE(SUM(panel_utsman.ttb.nominal),
 											0)
 										FROM
-											transaksi_tabungan_bersama ttb
+											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											ttb.nomor_rekening_bersama = tb.nomor_rekening_bersama AND ttb.status_kredit_debet = 1 AND(
+											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 1 AND(
 												STR_TO_DATE(
-													ttb.tanggal_transaksi,
+													panel_utsman.ttb.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS kredit_bersama,
 									(
 										SELECT
-											COALESCE(SUM(ttb.nominal),
+											COALESCE(SUM(panel_utsman.ttb.nominal),
 											0)
 										FROM
-											transaksi_tabungan_bersama ttb
+											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											ttb.nomor_rekening_bersama = tb.nomor_rekening_bersama AND ttb.status_kredit_debet = 2 AND(
+											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 2 AND(
 												STR_TO_DATE(
-													ttb.tanggal_transaksi,
+													panel_utsman.ttb.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_bersama,
 									(
 										SELECT
-											COALESCE(ttb.nominal, 0)
+											COALESCE(panel_utsman.ttb.nominal, 0)
 										FROM
-											transaksi_tabungan_bersama ttb
+											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											ttb.nomor_rekening_bersama = tb.nomor_rekening_bersama AND(
+											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
 												STR_TO_DATE(
-													ttb.tanggal_transaksi,
+													panel_utsman.ttb.tanggal_transaksi,
 													'%d/%m/%Y'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											ttb.id_transaksi_bersama
+											panel_utsman.ttb.id_transaksi_bersama
 										DESC
 									LIMIT 1
 									) AS saldo_bersama,
@@ -500,7 +500,7 @@ class ReportModel extends CI_Model
 										panel_utsman.ta.tahun_akhir
 									) AS tahun_ajaran
 									FROM
-										tabungan_bersama tb
+										panel_utsman.tabungan_bersama tb
 									LEFT JOIN panel_utsman.siswa s
 									ON
 										panel_utsman.s.nis = panel_utsman.tb.id_siswa_penanggung_jawab
@@ -509,7 +509,7 @@ class ReportModel extends CI_Model
 										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.id_th_ajaran
 									WHERE panel_utsman.tb.id_tabungan_bersama IN ($id)
 									ORDER BY
-										tb.id_tabungan_bersama
+										panel_utsman.tb.id_tabungan_bersama
 									DESC");
         return $sql->result();
     }

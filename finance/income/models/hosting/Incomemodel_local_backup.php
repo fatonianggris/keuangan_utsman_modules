@@ -803,22 +803,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											u8514965_panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
 											CONCAT(
 												'9',
-												SUBSTRING(u8514965_panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_dpb,
-											u8514965_panel_utsman.ttp.nomor_siswa,
-											u8514965_panel_utsman.ttp.password,
-											u8514965_panel_utsman.ttp.level_tingkat,
-											u8514965_panel_utsman.ttp.nama,
-											u8514965_panel_utsman.ttp.nomor_hp,
-											u8514965_panel_utsman.ttp.email,
-											u8514965_panel_utsman.ttp.th_ajaran
+											panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.password,
+											panel_utsman.ttp.level_tingkat,
+											panel_utsman.ttp.nama,
+											panel_utsman.ttp.nomor_hp,
+											panel_utsman.ttp.email,
+											panel_utsman.ttp.th_ajaran
 										FROM
-											u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+											panel_utsman.transisi_tagihan_pembayaran ttp
 										WHERE
-											u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -845,22 +845,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											u8514965_panel_utsman.ttp.nomor_siswa,
-											u8514965_panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
 											CONCAT(
 												'8',
-												SUBSTRING(u8514965_panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_du,
-											u8514965_panel_utsman.ttp.password,
-											u8514965_panel_utsman.ttp.level_tingkat,
-											u8514965_panel_utsman.ttp.nama,
-											u8514965_panel_utsman.ttp.nomor_hp,
-											u8514965_panel_utsman.ttp.email,
-											u8514965_panel_utsman.ttp.th_ajaran
+											panel_utsman.ttp.password,
+											panel_utsman.ttp.level_tingkat,
+											panel_utsman.ttp.nama,
+											panel_utsman.ttp.nomor_hp,
+											panel_utsman.ttp.email,
+											panel_utsman.ttp.th_ajaran
 										FROM
-											u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+											panel_utsman.transisi_tagihan_pembayaran ttp
 										WHERE
-											u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -893,25 +893,25 @@ class IncomeModel extends CI_Model
                                         status_pembayaran
                                     )
                                     SELECT
-                                       	u8514965_panel_utsman.ttp.id_invoice,
-                                        u8514965_panel_utsman.ttp.level_tingkat,
-                                        u8514965_panel_utsman.ttp.tipe_tagihan,
-                                        u8514965_panel_utsman.ttp.tanggal_invoice,
-                                        u8514965_panel_utsman.ttp.nomor_siswa,
-                                        u8514965_panel_utsman.ttp.nama,
-                                        u8514965_panel_utsman.ttp.nominal_tagihan,
-                                        u8514965_panel_utsman.ttp.informasi,
-										u8514965_panel_utsman.ttp.nama_kelas,
-                                        u8514965_panel_utsman.ttp.rincian,
-                                        u8514965_panel_utsman.ttp.catatan,
-										u8514965_panel_utsman.ttp.email,
-                                        u8514965_panel_utsman.ttp.nomor_hp,
-                                        u8514965_panel_utsman.ttp.th_ajaran,
-                                        u8514965_panel_utsman.ttp.status_pembayaran
+                                       	panel_utsman.ttp.id_invoice,
+                                        panel_utsman.ttp.level_tingkat,
+                                        panel_utsman.ttp.tipe_tagihan,
+                                        panel_utsman.ttp.tanggal_invoice,
+                                        panel_utsman.ttp.nomor_siswa,
+                                        panel_utsman.ttp.nama,
+                                        panel_utsman.ttp.nominal_tagihan,
+                                        panel_utsman.ttp.informasi,
+										panel_utsman.ttp.nama_kelas,
+                                        panel_utsman.ttp.rincian,
+                                        panel_utsman.ttp.catatan,
+										panel_utsman.ttp.email,
+                                        panel_utsman.ttp.nomor_hp,
+                                        panel_utsman.ttp.th_ajaran,
+                                        panel_utsman.ttp.status_pembayaran
                                     FROM
-                                        u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+                                        panel_utsman.transisi_tagihan_pembayaran ttp
                                     WHERE
-                                        u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+                                        panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -944,25 +944,25 @@ class IncomeModel extends CI_Model
                                         status_pembayaran
                                     )
                                     SELECT
-                                       	u8514965_panel_utsman.ttp.id_invoice,
-                                        u8514965_panel_utsman.ttp.level_tingkat,
-                                        u8514965_panel_utsman.ttp.tipe_tagihan,
-                                        u8514965_panel_utsman.ttp.tanggal_invoice,
-                                        u8514965_panel_utsman.ttp.nomor_siswa,
-                                        u8514965_panel_utsman.ttp.nama,
-                                        u8514965_panel_utsman.ttp.nominal_tagihan,
-                                        u8514965_panel_utsman.ttp.informasi,
-										u8514965_panel_utsman.ttp.nama_kelas,
-                                        u8514965_panel_utsman.ttp.rincian,
-                                        u8514965_panel_utsman.ttp.catatan,
-										u8514965_panel_utsman.ttp.email,
-                                        u8514965_panel_utsman.ttp.nomor_hp,
-                                        u8514965_panel_utsman.ttp.th_ajaran,
-                                        u8514965_panel_utsman.ttp.status_pembayaran
+                                       	panel_utsman.ttp.id_invoice,
+                                        panel_utsman.ttp.level_tingkat,
+                                        panel_utsman.ttp.tipe_tagihan,
+                                        panel_utsman.ttp.tanggal_invoice,
+                                        panel_utsman.ttp.nomor_siswa,
+                                        panel_utsman.ttp.nama,
+                                        panel_utsman.ttp.nominal_tagihan,
+                                        panel_utsman.ttp.informasi,
+										panel_utsman.ttp.nama_kelas,
+                                        panel_utsman.ttp.rincian,
+                                        panel_utsman.ttp.catatan,
+										panel_utsman.ttp.email,
+                                        panel_utsman.ttp.nomor_hp,
+                                        panel_utsman.ttp.th_ajaran,
+                                        panel_utsman.ttp.status_pembayaran
                                     FROM
-                                        u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+                                        panel_utsman.transisi_tagihan_pembayaran ttp
                                     WHERE
-                                        u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+                                        panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
