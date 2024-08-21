@@ -155,10 +155,20 @@ class IncomeModel extends CI_Model
         return $sql->result();
     }
 
-	public function check_student_by_name_and_number($number = '', $name = '')
+    public function check_student_by_name_and_number_du($number = '', $name = '')
     {
-        $this->db2->select('nis, nama_lengkap');
-        $this->db2->where('nis', $number);
+        $this->db2->select('nomor_pembayaran_du, nama_lengkap');
+        $this->db2->where('nomor_pembayaran_du', $number);
+        $this->db2->where('nama_lengkap', $name);
+
+        $sql = $this->db2->get($this->table_vstudent);
+        return $sql->result();
+    }
+
+    public function check_student_by_name_and_number_dpb($number = '', $name = '')
+    {
+        $this->db2->select('nomor_pembayaran_dpb, nama_lengkap');
+        $this->db2->where('nomor_pembayaran_dpb', $number);
         $this->db2->where('nama_lengkap', $name);
 
         $sql = $this->db2->get($this->table_vstudent);
@@ -198,27 +208,6 @@ class IncomeModel extends CI_Model
         $this->db2->where('nomor_siswa', $pay);
 
         $sql = $this->db2->get($this->table_income_du);
-        return $sql->result();
-    }
-
-    public function check_invoice_du_duplicate_by_name_and_number($number = '', $name = '')
-    {
-        $this->db2->select('nis, nama_lengkap');
-        $this->db2->where('nomor_pembayaran_du', $number);
-        $this->db2->where('nama_lengkap', $name);
-
-        $sql = $this->db2->get($this->table_vstudent);
-        return $sql->result();
-    }
-	
-
-    public function check_invoice_dpb_duplicate_by_name_and_number($number = '', $name = '')
-    {
-        $this->db2->select('nis, nama_lengkap');
-        $this->db2->where('nomor_pembayaran_dpb', $number);
-        $this->db2->where('nama_lengkap', $name);
-
-        $sql = $this->db2->get($this->table_vstudent);
         return $sql->result();
     }
 
@@ -273,7 +262,7 @@ class IncomeModel extends CI_Model
     {
         $this->db2->select('*');
         $this->db2->where('nis', $nis_student);
-        $sql = $this->db2->get($this->table_vstudent);
+        $sql = $this->db2->get($this->table_student);
         return $sql->result();
     }
 
@@ -355,7 +344,7 @@ class IncomeModel extends CI_Model
                                 ta.semester,
                                 CONCAT(ta.tahun_awal,'/',ta.tahun_akhir) AS tahun_ajaran,
                                 DATE_FORMAT(p.waktu_transaksi, '%d/%m/%Y') AS tanggal_transaksi,
-                                DATE_FORMAT(p.tanggal_invoice, '%d/%m/%Y') AS tanggal_invoice,
+								DATE_FORMAT(p.tanggal_invoice, '%d/%m/%Y') AS tanggal_invoice,
                                 MONTH(p.inserted_at) AS bulan_invoice,
                                 TIME(p.inserted_at) AS waktu_invoice
                          ");
@@ -381,15 +370,13 @@ class IncomeModel extends CI_Model
                                 ta.semester,
                                 CONCAT(ta.tahun_awal,'/',ta.tahun_akhir) AS tahun_ajaran,
                                 DATE_FORMAT(p.waktu_transaksi, '%d/%m/%Y') AS tanggal_transaksi,
-                                DATE_FORMAT(p.tanggal_invoice, '%d/%m/%Y') AS tanggal_invoice,
+								DATE_FORMAT(p.tanggal_invoice, '%d/%m/%Y') AS tanggal_invoice,
                                 MONTH(p.inserted_at) AS bulan_invoice,
                                 TIME(p.inserted_at) AS waktu_invoice
                          ");
         $this->db2->from('tagihan_pembayaran_dpb p');
         $this->db2->join('tahun_ajaran ta', 'p.th_ajaran = ta.id_tahun_ajaran', 'left');
         $this->db2->join('siswa s', 's.nomor_pembayaran_dpb = p.nomor_siswa', 'left');
-        $this->db2->join('kelas k', 'k.id_kelas = s.id_kelas', 'left');
-        $this->db2->join('tingkat t', 't.id_tingkat = s.id_tingkat', 'left');
 
         $this->db2->where('p.id_tagihan_pembayaran_dpb', $id);
 
@@ -452,6 +439,28 @@ class IncomeModel extends CI_Model
         $this->db2->select("tp.id_tagihan_pembayaran, tp.id_invoice, tp.nomor_siswa");
         $this->db2->from('transisi_tagihan_pembayaran tp');
         $this->db2->where('tp.nama', $name);
+
+        $sql = $this->db2->get();
+        return $sql->num_rows();
+    }
+
+    public function get_transition_income_du_by_number_name($number = "", $name = '')
+    {
+        $this->db2->select("tp.id_tagihan_pembayaran, tp.id_invoice, tp.nomor_siswa");
+        $this->db2->from('transisi_tagihan_pembayaran tp');
+        $this->db2->where('tp.nama', $name);
+        $this->db2->where('tp.nomor_siswa', $number);
+
+        $sql = $this->db2->get();
+        return $sql->num_rows();
+    }
+
+    public function get_transition_income_dpb_by_number_name($number = "", $name = '')
+    {
+        $this->db2->select("tp.id_tagihan_pembayaran, tp.id_invoice, tp.nomor_siswa");
+        $this->db2->from('transisi_tagihan_pembayaran tp');
+        $this->db2->where('tp.nama', $name);
+        $this->db2->where('tp.nomor_siswa', $number);
 
         $sql = $this->db2->get();
         return $sql->num_rows();
@@ -730,7 +739,7 @@ class IncomeModel extends CI_Model
         $this->db2->from('transisi_tagihan_pembayaran p');
         $this->db2->join('tahun_ajaran ta', 'p.th_ajaran = ta.id_tahun_ajaran', 'left');
         $this->db2->join('siswa s', 's.nomor_pembayaran_du = p.nomor_siswa', 'left');
-        $this->db2->order_by('p.inserted_at', 'DESC');
+        $this->db2->order_by('p.id_tagihan_pembayaran', 'ASC');
 
         $sql = $this->db2->get();
         return $sql->result();
@@ -808,22 +817,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											u8514965_panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
 											CONCAT(
 												'9',
-												SUBSTRING(u8514965_panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_dpb,
-											u8514965_panel_utsman.ttp.nomor_siswa,
-											u8514965_panel_utsman.ttp.password,
-											u8514965_panel_utsman.ttp.level_tingkat,
-											u8514965_panel_utsman.ttp.nama,
-											u8514965_panel_utsman.ttp.nomor_hp,
-											u8514965_panel_utsman.ttp.email,
-											u8514965_panel_utsman.ttp.th_ajaran
+											panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.password,
+											panel_utsman.ttp.level_tingkat,
+											panel_utsman.ttp.nama,
+											panel_utsman.ttp.nomor_hp,
+											panel_utsman.ttp.email,
+											panel_utsman.ttp.th_ajaran
 										FROM
-											u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+											panel_utsman.transisi_tagihan_pembayaran ttp
 										WHERE
-											u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -850,22 +859,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											u8514965_panel_utsman.ttp.nomor_siswa,
-											u8514965_panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
 											CONCAT(
 												'8',
-												SUBSTRING(u8514965_panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_du,
-											u8514965_panel_utsman.ttp.password,
-											u8514965_panel_utsman.ttp.level_tingkat,
-											u8514965_panel_utsman.ttp.nama,
-											u8514965_panel_utsman.ttp.nomor_hp,
-											u8514965_panel_utsman.ttp.email,
-											u8514965_panel_utsman.ttp.th_ajaran
+											panel_utsman.ttp.password,
+											panel_utsman.ttp.level_tingkat,
+											panel_utsman.ttp.nama,
+											panel_utsman.ttp.nomor_hp,
+											panel_utsman.ttp.email,
+											panel_utsman.ttp.th_ajaran
 										FROM
-											u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+											panel_utsman.transisi_tagihan_pembayaran ttp
 										WHERE
-											u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -898,25 +907,25 @@ class IncomeModel extends CI_Model
                                         status_pembayaran
                                     )
                                     SELECT
-                                       	u8514965_panel_utsman.ttp.id_invoice,
-                                        u8514965_panel_utsman.ttp.level_tingkat,
-                                        u8514965_panel_utsman.ttp.tipe_tagihan,
-                                        u8514965_panel_utsman.ttp.tanggal_invoice,
-                                        u8514965_panel_utsman.ttp.nomor_siswa,
-                                        u8514965_panel_utsman.ttp.nama,
-                                        u8514965_panel_utsman.ttp.nominal_tagihan,
-                                        u8514965_panel_utsman.ttp.informasi,
-										u8514965_panel_utsman.ttp.nama_kelas,
-                                        u8514965_panel_utsman.ttp.rincian,
-                                        u8514965_panel_utsman.ttp.catatan,
-										u8514965_panel_utsman.ttp.email,
-                                        u8514965_panel_utsman.ttp.nomor_hp,
-                                        u8514965_panel_utsman.ttp.th_ajaran,
-                                        u8514965_panel_utsman.ttp.status_pembayaran
+                                       	panel_utsman.ttp.id_invoice,
+                                        panel_utsman.ttp.level_tingkat,
+                                        panel_utsman.ttp.tipe_tagihan,
+                                        panel_utsman.ttp.tanggal_invoice,
+                                        panel_utsman.ttp.nomor_siswa,
+                                        panel_utsman.ttp.nama,
+                                        panel_utsman.ttp.nominal_tagihan,
+                                        panel_utsman.ttp.informasi,
+										panel_utsman.ttp.nama_kelas,
+                                        panel_utsman.ttp.rincian,
+                                        panel_utsman.ttp.catatan,
+										panel_utsman.ttp.email,
+                                        panel_utsman.ttp.nomor_hp,
+                                        panel_utsman.ttp.th_ajaran,
+                                        panel_utsman.ttp.status_pembayaran
                                     FROM
-                                        u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+                                        panel_utsman.transisi_tagihan_pembayaran ttp
                                     WHERE
-                                        u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+                                        panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -949,25 +958,25 @@ class IncomeModel extends CI_Model
                                         status_pembayaran
                                     )
                                     SELECT
-                                       	u8514965_panel_utsman.ttp.id_invoice,
-                                        u8514965_panel_utsman.ttp.level_tingkat,
-                                        u8514965_panel_utsman.ttp.tipe_tagihan,
-                                        u8514965_panel_utsman.ttp.tanggal_invoice,
-                                        u8514965_panel_utsman.ttp.nomor_siswa,
-                                        u8514965_panel_utsman.ttp.nama,
-                                        u8514965_panel_utsman.ttp.nominal_tagihan,
-                                        u8514965_panel_utsman.ttp.informasi,
-										u8514965_panel_utsman.ttp.nama_kelas,
-                                        u8514965_panel_utsman.ttp.rincian,
-                                        u8514965_panel_utsman.ttp.catatan,
-										u8514965_panel_utsman.ttp.email,
-                                        u8514965_panel_utsman.ttp.nomor_hp,
-                                        u8514965_panel_utsman.ttp.th_ajaran,
-                                        u8514965_panel_utsman.ttp.status_pembayaran
+                                       	panel_utsman.ttp.id_invoice,
+                                        panel_utsman.ttp.level_tingkat,
+                                        panel_utsman.ttp.tipe_tagihan,
+                                        panel_utsman.ttp.tanggal_invoice,
+                                        panel_utsman.ttp.nomor_siswa,
+                                        panel_utsman.ttp.nama,
+                                        panel_utsman.ttp.nominal_tagihan,
+                                        panel_utsman.ttp.informasi,
+										panel_utsman.ttp.nama_kelas,
+                                        panel_utsman.ttp.rincian,
+                                        panel_utsman.ttp.catatan,
+										panel_utsman.ttp.email,
+                                        panel_utsman.ttp.nomor_hp,
+                                        panel_utsman.ttp.th_ajaran,
+                                        panel_utsman.ttp.status_pembayaran
                                     FROM
-                                        u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+                                        panel_utsman.transisi_tagihan_pembayaran ttp
                                     WHERE
-                                        u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+                                        panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -977,24 +986,141 @@ class IncomeModel extends CI_Model
             return true;
         }
     }
-    public function update_income_dpb($id = '', $value = '')
+
+    public function insert_income_dpb_and_student($value = '')
     {
         $this->db2->trans_begin();
 
-        $data = array(
+        $data_invoice = array(
             'id_invoice' => $value['nomor_invoice'],
+			'tipe_tagihan' => 2,
             'nomor_siswa' => $value['nomor_pembayaran'],
             'nominal_tagihan' => $value['nominal_tagihan'],
             'nama' => $value['nama_siswa'],
-            'rincian' => @$value['rincian'],
+            'level_tingkat' => $value['level_tingkat'],
             'tanggal_invoice' => $value['tanggal_invoice'],
+			'th_ajaran' => $value['tahun_ajaran'],
+            'nama_kelas' => @$value['nama_kelas'],
+            'email' => @$value['email'],
+            'nomor_hp' => @$value['nomor_hp'],
+            'rincian' => @$value['rincian'],
+            'informasi' => @$value['informasi'],
+            'catatan' => @$value['catatan'],
+			'status_pembayaran' => "MENUNGGU",
+        );
+
+        $data_profile = array(
+            'nis' => $value['nomor_pembayaran'],
+            'nomor_pembayaran_du' => "8" . substr($value['nomor_pembayaran'], 1),
+            'nomor_pembayaran_dpb' => $value['nomor_pembayaran'],
+            'password' => $value['password'],
+            'nama_lengkap' => $value['nama_siswa'],
+            'level_tingkat' => $value['level_tingkat'],
+			'th_ajaran' => $value['th_ajaran'],
+            'email' => @$value['email'],
+            'nomor_handphone' => @$value['nomor_hp'],
+        );
+
+        $this->db2->insert($this->table_income_dpb, $data_invoice);
+
+        $this->db2->where('nomor_pembayaran_dpb', $value['nomor_pembayaran']);
+        $this->db2->replace($this->table_student, $data_profile);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function insert_income_du_and_student($value = '')
+    {
+        $this->db2->trans_begin();
+
+        $data_invoice = array(
+            'id_invoice' => $value['nomor_invoice'],
+			'tipe_tagihan' => 1,
+            'nomor_siswa' => $value['nomor_pembayaran'],
+            'nominal_tagihan' => $value['nominal_tagihan'],
+            'nama' => $value['nama_siswa'],
+            'level_tingkat' => $value['level_tingkat'],
+            'tanggal_invoice' => $value['tanggal_invoice'],
+			'th_ajaran' => $value['tahun_ajaran'],
+            'nama_kelas' => @$value['nama_kelas'],
+            'email' => @$value['email'],
+            'nomor_hp' => @$value['nomor_hp'],
+            'rincian' => @$value['rincian'],
+            'informasi' => @$value['informasi'],
+            'catatan' => @$value['catatan'],
+			'status_pembayaran' => "MENUNGGU",
+        );
+
+        $data_profile = array(
+            'nis' => $value['nis'],
+            'nomor_pembayaran_du' => $value['nomor_pembayaran'],
+            'nomor_pembayaran_dpb' => "9" . substr($value['nomor_pembayaran'], 1),
+            'nama_lengkap' => $value['nama_siswa'],
+            'password' => $value['password'],
+            'level_tingkat' => $value['level_tingkat'],
+			'th_ajaran' => $value['th_ajaran'],
+            'email' => @$value['email'],
+            'nomor_handphone' => @$value['nomor_hp'],
+        );
+
+        $this->db2->insert($this->table_income_du, $data_invoice);
+
+        $this->db2->where('nomor_pembayaran_du', $value['nomor_pembayaran']);
+        $this->db2->replace($this->table_student, $data_profile);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function update_income_dpb_and_student($id = '', $value = '')
+    {
+        $this->db2->trans_begin();
+
+        $data_invoice = array(
+            'id_invoice' => $value['nomor_invoice'],
+			'tipe_tagihan' => 2,
+            'nomor_siswa' => $value['nomor_pembayaran'],
+            'nominal_tagihan' => $value['nominal_tagihan'],
+            'nama' => $value['nama_siswa'],
+            'level_tingkat' => $value['level_tingkat'],
+            'tanggal_invoice' => $value['tanggal_invoice'],
+            'nama_kelas' => @$value['nama_kelas'],
+            'email' => @$value['email'],
+            'nomor_hp' => @$value['nomor_hp'],
+            'rincian' => @$value['rincian'],
             'informasi' => @$value['informasi'],
             'catatan' => @$value['catatan'],
             'updated_at' => date("Y-m-d H:i:s"),
+        );
+
+        $data_profile = array(
+            'nis' => $value['nomor_pembayaran'],
+            'nomor_pembayaran_du' => "8" . substr($value['nomor_pembayaran'], 1),
+            'nomor_pembayaran_dpb' => $value['nomor_pembayaran'],
+            'password' => $value['password'],
+            'nama_lengkap' => $value['nama_siswa'],
+            'level_tingkat' => $value['level_tingkat'],
+            'email' => @$value['email'],
+            'nomor_handphone' => @$value['nomor_hp'],
+            'th_ajaran' => $value['th_ajaran'],
         );
 
         $this->db2->where('id_tagihan_pembayaran_dpb', $id);
-        $this->db2->update($this->table_income_dpb, $data);
+        $this->db2->update($this->table_income_dpb, $data_invoice);
+
+        $this->db2->where('nomor_pembayaran_dpb', $value['nomor_pembayaran']);
+        $this->db2->replace($this->table_student, $data_profile);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -1005,24 +1131,43 @@ class IncomeModel extends CI_Model
         }
     }
 
-    public function update_income_du($id = '', $value = '')
+    public function update_income_du_and_student($id = '', $value = '')
     {
         $this->db2->trans_begin();
 
-        $data = array(
+        $data_invoice = array(
             'id_invoice' => $value['nomor_invoice'],
             'nomor_siswa' => $value['nomor_pembayaran'],
             'nominal_tagihan' => $value['nominal_tagihan'],
             'nama' => $value['nama_siswa'],
-            'rincian' => @$value['rincian'],
+            'level_tingkat' => $value['level_tingkat'],
             'tanggal_invoice' => $value['tanggal_invoice'],
+            'nama_kelas' => @$value['nama_kelas'],
+            'email' => @$value['email'],
+            'nomor_hp' => @$value['nomor_hp'],
+            'rincian' => @$value['rincian'],
             'informasi' => @$value['informasi'],
             'catatan' => @$value['catatan'],
             'updated_at' => date("Y-m-d H:i:s"),
         );
 
+        $data_profile = array(
+            'nis' => $value['nis'],
+            'nomor_pembayaran_du' => $value['nomor_pembayaran'],
+            'nomor_pembayaran_dpb' => "9" . substr($value['nomor_pembayaran'], 1),
+            'nama_lengkap' => $value['nama_siswa'],
+            'password' => $value['password'],
+            'level_tingkat' => $value['level_tingkat'],
+            'email' => @$value['email'],
+            'nomor_handphone' => @$value['nomor_hp'],
+			'th_ajaran' => $value['th_ajaran'],
+        );
+
         $this->db2->where('id_tagihan_pembayaran_du', $id);
-        $this->db2->update($this->table_income_du, $data);
+        $this->db2->update($this->table_income_du, $data_invoice);
+
+        $this->db2->where('nomor_pembayaran_du', $value['nomor_pembayaran']);
+        $this->db2->replace($this->table_student, $data_profile);
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();

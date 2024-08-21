@@ -1,5 +1,5 @@
 <!--begin::Content-->
-<?php $user = $this->session->userdata('sias-finance'); ?>
+<?php $user = $this->session->userdata('sias-finance');?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -67,7 +67,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="font-weight-bolder">Nomor Invoice</label>
-                                            <input type="text" name="nomor_invoice"
+                                            <input type="text" name="nomor_invoice" id="nomor_invoice"
                                                 value="<?php echo $income_dpb[0]->id_invoice; ?>"
                                                 class="form-control form-control-lg" />
                                             <span class="form-text text-dark "><b class="text-danger">*WAJIB DIISI,
@@ -77,9 +77,11 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label class="font-weight-bolder">Nomor Pembayaran</label>
-                                            <input type="text" name="nomor_pembayaran"
+                                            <input type="text" name="nomor_pembayaran" id="nomor_pembayaran"
                                                 value="<?php echo $income_dpb[0]->nomor_siswa; ?>"
                                                 class="form-control form-control-lg" />
+                                            <input type="hidden" name="nomor_pembayaran_old"
+                                                value="<?php echo $income_dpb[0]->nomor_siswa; ?>" />
                                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,
                                                 </b>isikan Nomor Pembayaran</span>
 
@@ -127,46 +129,68 @@
                                                     </b>isikan Nama Siswa</span>
 
                                             </div>
-                                            <div class="form-group col-lg-6">
+                                            <div class="form-group col-lg-4">
                                                 <label class="font-weight-bold">NIS</label>
-                                                <input type="text" name="nis" disabled=""
+                                                <input type="text" name="nis" readonly id="nis"
                                                     value="<?php echo $income_dpb[0]->nis; ?>"
                                                     class="input-reset form-control-solid  form-control form-control-lg" />
                                                 <span class="form-text text-dark"><b class="text-dark">*OTOMATIS
                                                     </b></span>
                                             </div>
-                                            <div class="form-group col-lg-6">
-                                                <label class="font-weight-bold">Tingkat</label>
-                                                <input type="text" name="tahun_pajak" disabled="" value="<?php
-																											if ($income_dpb[0]->level_tingkat == '6') {
-																												echo 'DC';
-																											} else if ($income_dpb[0]->level_tingkat == '1') {
-																												echo'KB';
-																											} else if ($income_dpb[0]->level_tingkat == '2') {
-																												echo 'TK';
-																											} else if ($income_dpb[0]->level_tingkat == '3') {
-																												echo 'SD';
-																											} else if ($income_dpb[0]->level_tingkat == '4') {
-																												echo 'SMP';
-																											}
-																											?>" class="input-reset form-control-solid  form-control form-control-lg" />
-                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS
+                                            <div class="form-group col-lg-5">
+                                                <label class="font-weight-bold">Email</label>
+                                                <input type="text" name="email"
+                                                    value="<?php echo $income_dpb[0]->email; ?>"
+                                                    class="input-reset  form-control form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
+                                                        DIISI
                                                     </b></span>
                                             </div>
-                                            <div class="form-group col-lg-6">
-                                                <label class="font-weight-bold">Kelas</label>
-                                                <input type="text" name="kelas" disabled="" value="<?php $kelas = explode(" ", $income_dpb[0]->informasi);
-																											echo $kelas[1]." ".@$kelas[2]; 
-																											?>" class="input-reset form-control-solid  form-control form-control-lg" />
-                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS
-                                                    </b></span>
+                                            <div class="form-group col-lg-3">
+                                                <label class="font-weight-bold">Tingkat</label>
+                                                <select name="level_tingkat" class="form-control form-control-lg">
+                                                    <option value="<?php echo $income_dpb[0]->level_tingkat; ?>"
+                                                        selected>
+                                                        <?php
+if ($income_dpb[0]->level_tingkat == '6') {
+    echo 'DC';
+} else if ($income_dpb[0]->level_tingkat == '1') {
+    echo 'KB';
+} else if ($income_dpb[0]->level_tingkat == '2') {
+    echo 'TK';
+} else if ($income_dpb[0]->level_tingkat == '3') {
+    echo 'SD';
+} else if ($income_dpb[0]->level_tingkat == '4') {
+    echo 'SMP';
+}
+?>
+                                                    </option>
+                                                    <option value="6">DC</option>
+                                                    <option value="1">KB</option>
+                                                    <option value="2">TK</option>
+                                                    <option value="3">SD</option>
+                                                    <option value="4">SMP</option>
+                                                    <!-- <option value="5">SMA</option> -->
+                                                </select>
+                                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,
+                                                    </b>pilih Tingkat</span>
                                             </div>
                                             <div class="form-group col-lg-6">
                                                 <label class="font-weight-bold">Nama Kelas</label>
-                                                <input type="text" name="nama_kelas" disabled=""
-                                                    value="<?php echo $income_dpb[0]->nama_kelas; ?>"
-                                                    class="input-reset form-control-solid  form-control form-control-lg" />
-                                                <span class="form-text text-dark"><b class="text-dark">*OTOMATIS
+                                                <input type="text" name="nama_kelas"
+                                                    value="<?php echo $income_dpb[0]->nama_kelas;?>"
+                                                    class="input-reset  form-control form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
+                                                        DIISI
+                                                    </b></span>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="font-weight-bold">Nomor HP</label>
+                                                <input type="text" name="nomor_hp"
+                                                    value="<?php echo $income_dpb[0]->nomor_hp; ?>"
+                                                    class="input-reset  form-control form-control-lg" />
+                                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
+                                                        DIISI
                                                     </b></span>
                                             </div>
                                         </div>
@@ -191,7 +215,7 @@
                                             <div class="form-group col-lg-6">
                                                 <label class="font-weight-bold">Tanggal Invoice</label>
                                                 <input type="text" id="kt_datepicker_income" name="tanggal_invoice"
-                                                    readonly="" value="<?php echo $income_dpb[0]->tanggal_invoice; ?>"
+                                                    value="<?php echo $income_dpb[0]->tanggal_invoice; ?>"
                                                     class="form-control  form-control-lg" />
                                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,
                                                     </b>pilih Tanggal Invoice</span>
@@ -209,7 +233,7 @@
                                                 <textarea class="form-control" name="informasi"
                                                     rows="2"><?php echo $income_dpb[0]->informasi; ?></textarea>
                                                 <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
-                                                        DIISI, </b>isikan Rincian Tagihan (dilarang menghapus kata
+                                                        DIISI, </b>isikan Rincian Informasi (dilarang menghapus kata
                                                     atribut setelah ':', Contoh: Kelas:, Jalur:, dll)</span>
                                             </div>
                                             <div class="form-group col-lg-6">
@@ -229,22 +253,22 @@
                                         <div class="text-center">
                                             <label class="font-weight-bolder font-size-h6 ">Tipe Tagihan</label>
                                         </div>
-                                        <?php if ($income_dpb[0]->tipe_tagihan == 1) { ?>
+                                        <?php if ($income_dpb[0]->tipe_tagihan == 1) {?>
                                         <p class="font-weight-boldest display-3 mb-1 text-warning text-center">DPB</p>
-                                        <?php } elseif ($income_dpb[0]->tipe_tagihan == 2) { ?>
+                                        <?php } elseif ($income_dpb[0]->tipe_tagihan == 2) {?>
                                         <p class="font-weight-boldest display-3 mb-1 text-success text-center">DU</p>
-                                        <?php } ?>
+                                        <?php }?>
                                     </div>
                                     <div class="col-lg-3 text-center">
                                         <div class="text-center">
                                             <label class="font-weight-bolder font-size-h6 ">Chanel Pembayaran</label>
                                         </div>
                                         <p class="font-weight-boldest display-3 mb-1 text-warning text-center">
-                                            <?php if($income_dpb[0]->channel_pembayaran=="" || $income_dpb[0]->channel_pembayaran==null) {
-												echo "-";
-											} else {
-												echo strtoupper($income_dpb[0]->channel_pembayaran);
-											}?>
+                                            <?php if ($income_dpb[0]->channel_pembayaran == "" || $income_dpb[0]->channel_pembayaran == null) {
+    echo "-";
+} else {
+    echo strtoupper($income_dpb[0]->channel_pembayaran);
+}?>
                                         </p>
                                     </div>
                                     <div class="col-lg-3 text-center">
@@ -252,14 +276,14 @@
                                             <label class="font-weight-bolder font-size-h6">Status Pembayaran</label>
                                         </div>
                                         <div class=" text-center ">
-                                            <?php if ($income_dpb[0]->status_pembayaran == "MENUNGGU") { ?>
+                                            <?php if ($income_dpb[0]->status_pembayaran == "MENUNGGU") {?>
                                             <p class="font-weight-boldest display-3 mb-1 text-warning text-center">
                                                 MENUNGGU</p>
-                                            <?php } else if ($income_dpb[0]->status_pembayaran == "SUKSES") { ?>
+                                            <?php } else if ($income_dpb[0]->status_pembayaran == "SUKSES") {?>
                                             <p class="font-weight-boldest display-3 mb-1 text-success">SUKSES</p>
-                                            <?php } else if ($income_dpb[0]->status_pembayaran == "GAGAL") { ?>
+                                            <?php } else if ($income_dpb[0]->status_pembayaran == "GAGAL") {?>
                                             <p class="font-weight-boldest display-3 mb-1 text-danger">GAGAL</p>
-                                            <?php } ?>
+                                            <?php }?>
                                         </div>
                                     </div>
                                     <div class="col-lg-2 text-center">
@@ -283,3 +307,51 @@
     <!--end::Entry-->
 </div>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-income-dpb.js"></script>
+<script>
+// Selectors for the input fields
+var nomor_invoice = $('#nomor_invoice');
+var nomor_pembayaran = $('#nomor_pembayaran');
+var nis = $('#nis');
+
+// Function to handle keyup event for Nomor Invoice
+nomor_invoice.on('keyup', function() {
+    var prefix = "";
+    var value = $(this).val().split('-');
+
+    // Get the last element from the resulting array
+    var lastValue = value[value.length - 1];
+
+    // Update other inputs with the prefixed value
+    nomor_pembayaran.val(lastValue);
+    nis.val(lastValue);
+});
+
+// Function to handle keyup event for Nomor Pembayaran
+nomor_pembayaran.on('keyup', function() {
+    var value = $(this).val();
+    var inv_value = nomor_invoice.val();
+
+    var parts = inv_value.split('-');
+
+    // Get all elements before the last element in the array
+    var allBeforeLastValue = parts.slice(0, -1).join('-');
+
+    // Update other inputs with the current value
+    nomor_invoice.val(allBeforeLastValue + "-" + value);
+    nis.val(value);
+});
+
+nomor_pembayaran.one('keyup', function() {
+    Swal.fire({
+        html: "<h3 class='text-danger font-weight-bolder'>MOHON DIPERHATIKAN!</h3><b>JIKA ANDA MENGUBAH BELAKANG NOMOR INVOICE MAKA SECARA OTOMATIS MENGUBAH NOMOR PEMBAYARAN DPB DAN NIS SISWA</b>",
+        icon: "warning",
+        buttonsStyling: false,
+        confirmButtonText: "Oke!",
+        customClass: {
+            confirmButton: "btn font-weight-bold btn-danger"
+        }
+    }).then(function() {
+        KTUtil.scrollTop();
+    });
+});
+</script>

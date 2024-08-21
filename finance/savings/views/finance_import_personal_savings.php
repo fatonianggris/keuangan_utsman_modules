@@ -48,8 +48,8 @@
                             role="alert">
                             <div class="alert-text font-weight-bolder text-center text-dark">
                                 <h1 class="font-weight-boldest text-danger">
-                                    <li class="fas fa-exclamation-triangle"></li> HASIL IMPORT NASABAH TABUNGAN PERSONAL <li
-                                        class="fas fa-exclamation-triangle"></li>
+                                    <li class="fas fa-exclamation-triangle"></li> HASIL IMPORT NASABAH TABUNGAN PERSONAL
+                                    <li class="fas fa-exclamation-triangle"></li>
                                 </h1>
                                 MOHON UNTUK DIPERHATIKAN!!.<br> Silahkan
                                 Melakukan Pengecekan Kembali dengan data Asli, Terima Kasih!
@@ -73,95 +73,107 @@
                             </div>
                         </div>
                         <div class="card-body" id="paper">
-                            <div class="card-body">
-                                <!--begin: Search Form-->
-                                <div class="row mb-4">
-                                    <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Nomor Rekening/NIS:</label>
-                                        <input type="text" class="form-control datatable-input"
-                                            placeholder="Inputkan Nomor Rekening" data-col-index="1" />
-                                    </div>
-                                    <div class="col-lg-4 mb-lg-0 mb-6">
-                                        <label>Nama Siswa:</label>
-                                        <input type="text" class="form-control datatable-input"
-                                            placeholder="Inputkan Nama Siswa" data-col-index="2" />
-                                    </div>
-									<div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Tahun Ajaran:</label>
-                                        <select class="form-control datatable-input" data-col-index="4">
-                                            <option value="">Pilih Tahun Ajaran</option>
-                                            <?php
+							
+                            <!--begin: Search Form-->
+                            <div class="row mb-4">
+                                <div class="col-lg-2 mb-lg-0 mb-6">
+                                    <label>Nomor Rekening/NIS:</label>
+                                    <input type="text" class="form-control datatable-input"
+                                        placeholder="Inputkan Nomor Rekening" data-col-index="1" />
+                                </div>
+                                <div class="col-lg-4 mb-lg-0 mb-6">
+                                    <label>Nama Siswa:</label>
+                                    <input type="text" class="form-control datatable-input"
+                                        placeholder="Inputkan Nama Siswa" data-col-index="2" />
+                                </div>
+                                <div class="col-lg-2 mb-lg-0 mb-6">
+                                    <label>Tahun Ajaran:</label>
+                                    <select class="form-control datatable-input" data-col-index="4">
+                                        <option value="">Pilih Tahun Ajaran</option>
+                                        <?php
 if (!empty($schoolyear)) {
     foreach ($schoolyear as $key => $value) {
         ?>
-                                            <option
-                                                value="<?php echo $value->tahun_awal . "/" . $value->tahun_akhir; ?>">
-                                                <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
-                                            </option>
-                                            <?php
+                                        <option value="<?php echo $value->tahun_awal . "/" . $value->tahun_akhir; ?>">
+                                            <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
+                                        </option>
+                                        <?php
 } //ngatur nomor urut
 }
 ?>
-                                            <option value="">Semua</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Tingkat</label>
-                                        <select name="input_tingkat" class="form-control datatable-input"
-                                            data-col-index="5">
-                                            <option value="">Pilih Tingkat</option>
-                                            <option value="DC">DC</option>
-                                            <option value="KB">KB</option>
-                                            <option value="TK">TK</option>
-                                            <option value="SD">SD</option>
-                                            <option value="SMP">SMP</option>
-                                            <option value="">SEMUA</option>
-                                            <!-- <option value="5">SMA</option> -->
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Status Nasabah</label>
-                                        <select class="form-control datatable-input" data-col-index="12">
-                                            <option value="">Pilih Status</option>
-                                            <option value="DUPLIKAT">DUPLIKAT</option>
-                                            <option value="NON DUPLIKAT">NON DUPLIKAT</option>
-                                            <option value="">SEMUA</option>
-                                            <!-- <option value="5">SMA</option> -->
-                                        </select>
-                                    </div>
+                                        <option value="">Semua</option>
+                                    </select>
                                 </div>
-                                <div class="row mt-8">
-                                    <div class="row col-lg-7">
-                                        <div class="col-lg-12 mb-lg-0 mb-6">
-                                            <button class="btn btn-primary btn-primary--icon" id="kt_search">
-                                                <span>
-                                                    <i class="la la-search"></i>
-                                                    <span>Cari</span>
-                                                </span>
-                                            </button>&#160;&#160;
-                                            <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
-                                                <span>
-                                                    <i class="la la-close"></i>
-                                                    <span>Reset</span>
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row col-lg-5">
-                                        <div class="col-lg-4 mb-lg-0 mb-6 text-right">
-
-                                        </div>
-                                        <div class="col-lg-6 mb-lg-0 mb-6">
-
-                                        </div>
-                                        <div class="col-lg-2 mb-lg-0 mb-6">
-
-                                        </div>
-                                    </div>
+                                <div class="col-lg-2 mb-lg-0 mb-6">
+                                    <label>Tingkat</label>
+                                    <select name="input_tingkat" class="form-control datatable-input"
+                                        data-col-index="5">
+                                        <option value="">Pilih Tingkat</option>
+                                        <option value="DC">DC</option>
+                                        <option value="KB">KB</option>
+                                        <option value="TK">TK</option>
+                                        <option value="SD">SD</option>
+                                        <option value="SMP">SMP</option>
+                                        <option value="">SEMUA</option>
+                                        <!-- <option value="5">SMA</option> -->
+                                    </select>
                                 </div>
-
-                                <!--begin: Datatable-->
+                                <div class="col-lg-2 mb-lg-0 mb-6">
+                                    <label>Status Rekening</label>
+                                    <select class="form-control datatable-input" data-col-index="12">
+                                        <option value="">Pilih Status</option>
+                                        <option value="TIDAK TERDAFTAR">TIDAK TERDAFTAR</option>
+                                        <option value="TERPAKAI">TERPAKAI</option>
+                                        <option value="DUPLIKAT">DUPLIKAT</option>
+                                        <option value="">SEMUA</option>
+                                        <!-- <option value="5">SMA</option> -->
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 mb-lg-0 mb-6 mt-5">
+                                    <label>Status Nama</label>
+                                    <select class="form-control datatable-input" data-col-index="13">
+                                        <option value="">Pilih Status</option>
+                                        <option value="MIRIP">MIRIP</option>
+                                        <option value="TIDAK TERDAFTAR">TIDAK TERDAFTAR</option>
+                                        <option value="TERPAKAI">TERPAKAI</option>
+                                        <option value="DUPLIKAT">DUPLIKAT</option>
+                                        <option value="">SEMUA</option>
+                                        <!-- <option value="5">SMA</option> -->
+                                    </select>
+                                </div>
                             </div>
+                            <div class="row mt-8">
+                                <div class="row col-lg-7">
+                                    <div class="col-lg-12 mb-lg-0 mb-6">
+                                        <button class="btn btn-primary btn-primary--icon" id="kt_search">
+                                            <span>
+                                                <i class="la la-search"></i>
+                                                <span>Cari</span>
+                                            </span>
+                                        </button>&#160;&#160;
+                                        <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+                                            <span>
+                                                <i class="la la-close"></i>
+                                                <span>Reset</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row col-lg-5">
+                                    <div class="col-lg-4 mb-lg-0 mb-6 text-right">
+
+                                    </div>
+                                    <div class="col-lg-6 mb-lg-0 mb-6">
+
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--begin: Datatable-->
+
                             <div class="table-responsive">
                                 <table class="table table-separate table-hover table-light-default table-checkable"
                                     id="table_transcation">
@@ -179,7 +191,8 @@ if (!empty($schoolyear)) {
                                             <th>Saldo Umum</th>
                                             <th>Saldo Qurban</th>
                                             <th>Saldo Wisata</th>
-                                            <th>Status Nasabah</th>
+                                            <th>Status Rekening</th>
+                                            <th>Status Nama</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -201,15 +214,18 @@ if (!empty($schoolyear)) {
                                             <th class="font-weight-bolder text-dark">-</th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
                             </div>
 
-							<div class="pb-1 text-center" style="justify-content: center">
-								<button id="btn_accept_import" class="btn btn-success btn-lg font-weight-bold mr-7"><i class="fas fa-check-circle "></i>KONFIRMASI IMPOR DATA NASABAH</button>
-								<button id="btn_reject_import" class="btn btn-danger btn-lg font-weight-bold ml-7"><i class="fas fa-window-close"></i>BATALKAN IMPOR DATA NASABAH</button>
-							</div>
+                            <div class="pb-1 text-center" style="justify-content: center">
+                                <button id="btn_accept_import" class="btn btn-success btn-lg font-weight-bold mr-7"><i
+                                        class="fas fa-check-circle "></i>KONFIRMASI IMPOR DATA NASABAH</button>
+                                <button id="btn_reject_import" class="btn btn-danger btn-lg font-weight-bold ml-7"><i
+                                        class="fas fa-window-close"></i>BATALKAN IMPOR DATA NASABAH</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,8 +234,8 @@ if (!empty($schoolyear)) {
         <!--end::Container-->
     </div>
     <!--end::Entry-->
-	<input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
-	value="<?php echo $this->security->get_csrf_hash(); ?>">
+    <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+        value="<?php echo $this->security->get_csrf_hash(); ?>">
 </div>
 <!--end::Content-->
 
@@ -243,7 +259,7 @@ if (!empty($schoolyear)) {
                             <div class="form-group">
                                 <label> NIS Nasabah</label>
                                 <input type="text" class="form-control form-control-lg nis_siswa" name="nis_siswa">
-								<input type="hidden" name="old_nis">
+                                <input type="hidden" name="old_nis">
                                 </input>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan NIS
                                     Siswa</span>
@@ -254,6 +270,7 @@ if (!empty($schoolyear)) {
                                 <label> Nama Siswa/Nasabah</label>
                                 <input type="text" name="nama_siswa" class="form-control form-control-lg nama_siswa"
                                     placeholder="Inputkan Nama Lengkap Siswa" />
+                                <input type="hidden" name="old_nama_siswa">
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan Nama
                                     Siswa/Nasabah</span>
                             </div>
@@ -357,7 +374,7 @@ if (!empty($schoolyear)) {
                                     Nominal Saldo Wisata</span>
                             </div>
                         </div>
-						<div class="col-12">
+                        <div class="col-12">
                             <div class="alert alert-secondary text-center" role="alert">
                                 <b>-- INFORMASI --</b>
                             </div>
@@ -386,7 +403,8 @@ if (!empty($schoolyear)) {
 
                 <div class="modal-footer bg-whitesmoke ">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success font-weight-bolder" id="btnUpdateNasabah" disabled="disabled">Simpan
+                    <button type="submit" class="btn btn-success font-weight-bolder" id="btnUpdateNasabah"
+                        disabled="disabled">Simpan
                         !</button>
                 </div>
             </form>

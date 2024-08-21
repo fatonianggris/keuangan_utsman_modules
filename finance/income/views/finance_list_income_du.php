@@ -93,15 +93,20 @@
                             <div class="card-title">
                                 <h2 class="card-label font-size-h2 text-center font-weight-bolder">DAFTAR TAGIHAN SISWA
                                     DU SEKOLAH
-                                    <span class="text-warning pt-1 font-size-h6 font-weight-bold d-block">Berikut
+                                    <span class="text-warning pt-1 font-size-lg font-weight-bolder d-block">Berikut
                                         merupakan daftar tagihan/pemasukan DU siswa Sekolah Utsman</span>
                                 </h2>
                             </div>
                             <div class="card-toolbar">
+								<a href="<?php echo site_url('finance/income/add_income_du');?>"
+                                    class="btn btn-success btn-md mr-5">
+                                    <i class="flaticon-add"></i>Tambah Tagihan DU
+                                </a>
                                 <a href="#" data-toggle="modal" data-target="#modal_import_payment"
                                     class="btn btn-primary btn-md">
                                     <i class="flaticon-upload"></i>Import Tagihan DU
                                 </a>
+								
                             </div>
                         </div>
                         <div class="card-body">
@@ -125,17 +130,11 @@
                                                 </div>
                                                 <div class="col-lg-2 mb-lg-0 mb-6">
                                                     <label>Tgl Invoice:</label>
-                                                    <input type="text" id="kt_datepicker_invoice" required=""
+                                                    <input type="text" id="kt_datepicker_invoice"
                                                         class="form-control datatable-input"
                                                         placeholder="Inputkan Tgl Invoice" data-col-index="2" />
                                                 </div>
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
-                                                    <label>Waktu Transaksi:</label>
-                                                    <input type="text" id="kt_datepicker_transaksi" readonly=""
-                                                        class="form-control datatable-input"
-                                                        placeholder="Inputkan Tgl Transaksi" data-col-index="12" />
-                                                </div>
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
+                                                <div class="col-lg-4 mb-lg-0 mb-6">
                                                     <label>Nama Siswa:</label>
                                                     <input type="text" class="form-control datatable-input"
                                                         placeholder="Inputkan Nama Siswa" data-col-index="3" />
@@ -162,21 +161,13 @@
 
                                             <div class="row mb-6">
                                                 <div class="col-lg-2 mb-lg-0 mb-6">
-                                                    <label>Kelas:</label>
-                                                    <select class="form-control datatable-input" id="kelas"
-                                                        data-col-index="6">
-                                                        <option value="">Pilih Kelas</option>
-
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
                                                     <label>Status Transfer:</label>
                                                     <select class="form-control datatable-input" data-col-index="7">
                                                         <option value="">Pilih Status</option>
-                                                        <option value="MENUNGGU">Menunggu</option>
-                                                        <option value="PROSES">Proses</option>
-                                                        <option value="SUKSES">Sukses</option>
-                                                        <option value="GAGAL">Gagal</option>
+                                                        <option value="MENUNGGU">MENUNGGU</option>
+                                                        <option value="PROSES">PROSES</option>
+                                                        <option value="SUKSES">SUKSES</option>
+                                                        <option value="GAGAL">GAGAL</option>
                                                         <option value="">Semua</option>
                                                     </select>
                                                 </div>
@@ -207,15 +198,6 @@ if (!empty($schoolyear)) {
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 mb-lg-0 mb-6">
-                                                    <label>Semester:</label>
-                                                    <select class="form-control datatable-input" data-col-index="9">
-                                                        <option value="">Pilih Semester</option>
-                                                        <option value="ganjil">Ganjil</option>
-                                                        <option value="genap">Genap</option>
-                                                        <option value="">Semua</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
                                                     <label>Bulan:</label>
                                                     <select class="form-control datatable-input" data-col-index="10">
                                                         <option value="">Pilih Bulan</option>
@@ -234,10 +216,16 @@ if (!empty($schoolyear)) {
                                                         <option value="">Semua</option>
                                                     </select>
                                                 </div>
+												<div class="col-lg-2 mb-lg-0 mb-6">
+                                                    <label>Waktu Transaksi:</label>
+                                                    <input type="text" id="kt_datepicker_transaksi" readonly=""
+                                                        class="form-control datatable-input"
+                                                        placeholder="Inputkan Tgl Transaksi" data-col-index="11" />
+                                                </div>
                                                 <div class="col-lg-2 mb-lg-0 mb-6">
                                                     <label>Nominal Tagihan:</label>
-                                                    <input type="number" class="form-control datatable-input"
-                                                        placeholder="Inputkan Nominal" data-col-index="11" />
+                                                    <input type="text" class="form-control datatable-input"
+                                                        placeholder="Inputkan Nominal" data-col-index="12" />
                                                 </div>
                                             </div>
                                             <div class="row mt-8">
@@ -458,42 +446,32 @@ $(document).ready(function() {
 });
 </script>
 <script>
-$(document).ready(function() {
-    var lvl_tingkat;
-    var value;
-    $("#tingkat").change(function() {
-        lvl_tingkat = $(this).val();
-        if (lvl_tingkat == "KB") {
-            value = 1;
-        } else if (lvl_tingkat == "TK") {
-            value = 2;
-        } else if (lvl_tingkat == "SD") {
-            value = 3;
-        } else if (lvl_tingkat == "SMP") {
-            value = 4;
-        }
-        var url = "<?php echo site_url('finance/income/income/add_ajax_grade/'); ?>" + value;
-        $('#kelas').load(url);
-        return false;
-    });
-
-});
-</script>
-<script>
 function act_delete_income(id, name, nis) {
     var csrfName = $('.txt_csrfname').attr('name');
     var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 
     Swal.fire({
         title: "Peringatan!",
-        html: "Apakah anda yakin ingin <b>MENGHAPUS</b> Tagihan atas Nama <b>" + name + " (" + nis + ")</b> ?",
+        html: "Apakah anda yakin ingin <b>MENGHAPUS</b> Tagihan atas Nama <b>" + name.toUpperCase() + " (" +
+            nis + ")</b> ?",
         icon: "warning",
+        input: 'password',
+        inputLabel: 'Password Anda',
+        inputPlaceholder: 'Masukkan password Anda',
+        inputAttributes: {
+            'aria-label': 'Masukkan password Anda'
+        },
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Password Anda diperlukan!'
+            }
+        },
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Ya, hapus!",
         cancelButtonText: "Tidak, batal!",
         closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnCancel: true
     }).then(function(result) {
         if (result.value) {
             $.ajax({
@@ -501,6 +479,7 @@ function act_delete_income(id, name, nis) {
                 url: "<?php echo site_url("/finance/income/income/delete_income_du") ?>",
                 data: {
                     id: id,
+					password: result.value,
                     [csrfName]: csrfHash
                 },
                 dataType: 'json',
@@ -542,7 +521,8 @@ function act_delete_income(id, name, nis) {
             });
 
         } else {
-            Swal.fire("Dibatalkan!", "Tagihan atas Nama " + name + " (" + nis + ") batal dihapus.", "error");
+            Swal.fire("Dibatalkan!", "Tagihan DU atas Nama <b>" + name.toUpperCase() + " (" + nis +
+                ")</b> batal dihapus.", "error");
         }
     });
 }

@@ -157,48 +157,48 @@
 															$image = "/assets/finance/dist/assets/media/svg/avatars/018-girl-9.svg";
 														}
 														?>
-																							<tr>
-																								<td class="pl-0 py-2">
-																									<div class="d-flex align-items-center">
-																										<div class="symbol symbol-50 symbol-light mr-4">
-																											<span class="symbol-label">
-																												<img src="<?php echo base_url() . $image; ?>"
-																													class="h-75 align-self-end" alt="">
-																											</span>
-																										</div>
-																										<div>
-																											<a href="#"
-																												class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">
-																												<?php echo strtoupper(strtolower($value->nama_lengkap)); ?>
-																											</a>
-																											<span class="text-muted font-weight-bold d-block">
-																												NIS:
-																												<?php echo strtoupper(strtolower($value->nis_siswa)); ?>
-																											</span>
-																										</div>
-																									</div>
-																								</td>
-																								<td>
-																									<span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-																										Rp.<?php echo number_format($value->nominal, 0, ',', '.'); ?>
-																									</span>
-																								</td>
-																								<td>
-																									<span
-																										class="label label-lg label-inline label-light-<?php echo $status_label; ?> font-weight-bolder">
-																										<?php echo $status_transaction; ?>
-																									</span>
-																								</td>
-																								<td>
-																									<span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-																										<?php echo $value->waktu_transaksi; ?>
-																									</span>
-																									<span class="text-muted font-weight-bold">
-																										TA. <?php echo $value->tahun_ajaran; ?>
-																									</span>
-																								</td>
-																							</tr>
-																							<?php
+                                            <tr>
+                                                <td class="pl-0 py-2">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-50 symbol-light mr-4">
+                                                            <span class="symbol-label">
+                                                                <img src="<?php echo base_url() . $image; ?>"
+                                                                    class="h-75 align-self-end" alt="">
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <a href="#"
+                                                                class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">
+                                                                <?php echo strtoupper(strtolower($value->nama_lengkap)); ?>
+                                                            </a>
+                                                            <span class="text-muted font-weight-bold d-block">
+                                                                NIS:
+                                                                <?php echo strtoupper(strtolower($value->nis_siswa)); ?>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        Rp.<?php echo number_format($value->nominal, 0, ',', '.'); ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="label label-lg label-inline label-light-<?php echo $status_label; ?> font-weight-bolder">
+                                                        <?php echo $status_transaction; ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        <?php echo $value->waktu_transaksi; ?>
+                                                    </span>
+                                                    <span class="text-muted font-weight-bold">
+                                                        TA. <?php echo $value->tahun_ajaran; ?>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <?php
 												} //ngatur nomor urut
 												}
 												?>

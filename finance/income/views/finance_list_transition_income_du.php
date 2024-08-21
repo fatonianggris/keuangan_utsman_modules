@@ -46,13 +46,150 @@
                             <div class="card-title">
                                 <h2 class="card-label font-size-h1 text-center font-weight-bolder text-danger">
                                     KONFIRMASI IMPOR DATA TAGIHAN DU SEKOLAH
-                                    <span class="text-dark-75 pt-1 font-size-h6 font-weight-bolder d-block">Berikut
+                                    <span class="text-dark-75 pt-1 font-size-lg font-weight-bolder d-block">Berikut
                                         merupakan hasil impor tagihan DU siswa Sekolah Utsman</span>
                                 </h2>
                             </div>
                         </div>
                         <div class="card-body">
-                            <!--begin: Datatable-->
+
+                            <!--begin: Search Form-->
+                            <form class="mb-6 mt-4">
+                                <div class="row mb-6">
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Invoice:</label>
+                                        <input type="text" class="form-control datatable-input"
+                                            placeholder="Inputkan Invoice" data-col-index="1" />
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>No. Pembayaran:</label>
+                                        <input type="number" class="form-control datatable-input"
+                                            placeholder="Inputkan No Pembayaran" data-col-index="2" />
+                                    </div>
+                                    <div class="col-lg-4 mb-lg-0 mb-6">
+                                        <label>Nama Siswa:</label>
+                                        <input type="text" class="form-control datatable-input"
+                                            placeholder="Inputkan Nama Siswa" data-col-index="3" />
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Tingkat:</label>
+                                        <select class="form-control datatable-input" id="tingkat" data-col-index="5">
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="DC">DC</option>
+                                            <option value="KB">KB</option>
+                                            <option value="TK">TK</option>
+                                            <option value="SD">SD</option>
+                                            <option value="SMP">SMP</option>
+                                            <option value="">Semua</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Tahun Ajaran:</label>
+                                        <select class="form-control datatable-input" data-col-index="10">
+                                            <option value="">Pilih Tahun Ajaran</option>
+                                            <?php
+													if (!empty($schoolyear)) {
+														foreach ($schoolyear as $key => $value) {
+															if ($value->status_tahun_ajaran == 1) {
+																?>
+                                            <option value="<?php echo $value->id_tahun_ajaran; ?>" selected>
+                                                <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
+                                            </option>
+                                            <?php
+													} else {
+																?>
+                                            <option value="<?php echo $value->id_tahun_ajaran; ?>">
+                                                <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
+                                            </option>
+                                            <?php
+															}
+														}
+													}
+													?>
+                                            <option value="">Semua</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-6">
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Status No. Bayar</label>
+                                        <select class="form-control datatable-input" data-col-index="12">
+                                            <option value="">Pilih Status</option>
+                                            <option value="TERDAFTAR">TERDAFTAR</option>
+                                            <option value="TIDAK TERDAFTAR">TIDAK TERDAFTAR</option>
+                                            <option value="DUPLIKAT">DUPLIKAT</option>
+                                            <option value="">SEMUA</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Status Nama</label>
+                                        <select class="form-control datatable-input" data-col-index="13">
+                                            <option value="">Pilih Status</option>
+                                            <option value="TERDAFTAR">TERDAFTAR</option>
+                                            <option value="TIDAK TERDAFTAR">TIDAK TERDAFTAR</option>
+                                            <option value="DUPLIKAT">DUPLIKAT</option>
+                                            <option value="MIRIP">MIRIP</option>
+                                            <option value="">SEMUA</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Status Invoice</label>
+                                        <select class="form-control datatable-input" data-col-index="14">
+                                            <option value="">Pilih Status</option>
+                                            <option value="TERPAKAI">TERPAKAI</option>
+                                            <option value="TIDAK TERDAFTAR">TIDAK TERDAFTAR</option>
+                                            <option value="DUPLIKAT">DUPLIKAT</option>
+                                            <option value="">SEMUA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-8">
+                                    <div class="col-lg-10">
+                                        <button class="btn btn-primary btn-primary--icon" id="kt_search">
+                                            <span>
+                                                <i class="la la-search"></i>
+                                                <span>Cari</span>
+                                            </span>
+                                        </button>&#160;&#160;
+                                        <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+                                            <span>
+                                                <i class="la la-close"></i>
+                                                <span>Reset</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-2 text-right">
+                                        <div class="btn-group">
+                                            <button class="btn btn-warning font-weight-bold dropdown-toggle"
+                                                type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="true">
+                                                <i class="flaticon2-download"></i>
+                                                Export
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <form class="form" id="frm-excel" action="<?php echo site_url('//'); ?>"
+                                                    method="POST">
+                                                    <input type="text" id="id_check_excel" class="form-control" value=""
+                                                        name="data_check" style="display:none">
+                                                    <button class="dropdown-item" role="button" type="submit"><i
+                                                            class="flaticon2-checking"></i>
+                                                        Laporan .csv</button>
+                                                </form>
+                                                <form class="form" id="frm-form" action="<?php echo site_url('//'); ?>"
+                                                    method="POST">
+                                                    <input type="text" id="id_check_form" class="form-control" value=""
+                                                        name="data_check" style="display:none">
+                                                    <button class="dropdown-item" role="button" type="submit"><i
+                                                            class="flaticon-doc"></i> Laporan
+                                                        .pdf</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                     		<!--begin: Datatable-->
                             <table class="table table-separate table-hover table-light-success table-checkable"
                                 id="kt_datatable_income_du_invoice_success">
                                 <thead>
@@ -132,13 +269,6 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                                     <ul class="nav nav-hover flex-column">
-                                                        <li class="nav-item"><a class="nav-link"
-                                                                href="<?php echo site_url("/finance/income/detail_income_du/" . paramEncrypt($value->id_tagihan_pembayaran)); ?>"><i
-                                                                    class="nav-icon fas fa-eye"></i><span
-                                                                    class="nav-text text-hover-primary font-weight-bold">Lihat
-                                                                    Detail</span></a></li>
-                                                    </ul>
-                                                    <ul class="nav nav-hover flex-column">
                                                         <li class="nav-item"><a
                                                                 data-id_tagihan="<?php echo paramEncrypt($value->id_tagihan_pembayaran); ?>"
                                                                 data-id_invoice="<?php echo $value->id_invoice; ?>"
@@ -164,11 +294,11 @@
                                                     </ul>
                                                     <ul class="nav nav-hover flex-column">
                                                         <li class="nav-item"><a
-																data-id_tagihan="<?php echo paramEncrypt($value->id_tagihan_pembayaran); ?>"
+                                                                data-id_tagihan="<?php echo paramEncrypt($value->id_tagihan_pembayaran); ?>"
                                                                 data-id_invoice="<?php echo $value->id_invoice; ?>"
                                                                 data-nomor_bayar="<?php echo $value->nomor_siswa; ?>"
                                                                 data-nama="<?php echo $value->nama; ?>"
-																data-nominal_tagihan="<?php echo $value->nominal_tagihan; ?>"
+                                                                data-nominal_tagihan="<?php echo $value->nominal_tagihan; ?>"
                                                                 class="nav-link delete_income_transition_du"
                                                                 href="javascript:void(0);"><i
                                                                     class="nav-icon fas fa-trash text-danger"></i><span

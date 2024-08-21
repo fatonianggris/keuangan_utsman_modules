@@ -189,7 +189,7 @@ if (!empty($schoolyear)) {
                                     </div>
                                     <div class="row col-lg-5">
                                         <div class="col-lg-4 mb-lg-0 mb-6 text-right">
-                                            <span class="font-weight-bolder">Tampilkan Dari Tanggal</span>
+                                            <span class="font-weight-bolder">Tampilkan Dari Waktu Transaksi</span>
                                         </div>
                                         <div class="col-lg-6 mb-lg-0 mb-6">
                                             <div class="input-group" id="kt_daterangepicker_6">

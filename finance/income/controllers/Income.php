@@ -47,6 +47,24 @@ class Income extends MX_Controller
         $this->template->load('template_finance/template_finance', 'finance_list_income_dpb', $data);
     }
 
+    public function add_income_dpb()
+    {
+
+        $data['nav_in'] = 'menu-item-here';
+        $data['schoolyear'] = $this->IncomeModel->get_schoolyear_sias();
+
+        $this->template->load('template_finance/template_finance', 'finance_add_income_dpb', $data);
+    }
+
+    public function add_income_du()
+    {
+
+        $data['nav_in'] = 'menu-item-here';
+        $data['schoolyear'] = $this->IncomeModel->get_schoolyear_sias();
+
+        $this->template->load('template_finance/template_finance', 'finance_add_income_du', $data);
+    }
+
     public function edit_income_dpb($id = '')
     {
         $id = paramDecrypt($id);
@@ -65,6 +83,162 @@ class Income extends MX_Controller
         $this->template->load('template_finance/template_finance', 'finance_edit_income_du', $data);
     }
 
+    public function check_invoice_number_du_add()
+    {
+        $invoice = $this->input->post('nomor_invoice');
+
+        $check = $this->IncomeModel->check_invoice_du_duplicate($invoice);
+
+        if ($invoice == null || $invoice == "") {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        } else if ($check == true) {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        } else if ($check == false) {
+            $isAvailable = true;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        }
+    }
+
+    public function check_invoice_number_dpb_add()
+    {
+        $invoice = $this->input->post('nomor_invoice');
+
+        $check = $this->IncomeModel->check_invoice_dpb_duplicate($invoice);
+
+        if ($invoice == null || $invoice == "") {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        } else if ($check == true) {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        } else if ($check == false) {
+            $isAvailable = true;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+            ));
+        }
+    }
+
+    public function check_payment_number_dpb_add()
+    {
+
+        $name = $this->input->post('nama');
+        $name = $this->security->xss_clean($name);
+
+        $pay = $this->input->post('nomor_pembayaran');
+        $pay = $this->security->xss_clean($pay);
+
+        $check = $this->IncomeModel->check_payment_dpb_duplicate($pay);
+
+        if ($pay == null || $pay == "") {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+                'message' => "<span class='text-danger'>Nomor Pembayaran <b>TIDAK DITEMUKAN</b></span>",
+                'status' => false,
+            ));
+        } else if ($check == true) {
+            $isAvailable = false;
+
+            $student = $this->IncomeModel->check_student_by_nomor_pembayaran_dpb($pay);
+            $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($name)));
+
+            if ($score == 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-success'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else if ($score >= 90 && $score < 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-warning'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-danger'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => false,
+                ));
+            }
+
+        } else if ($check == false) {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+                'message' => "<span class='text-warning'>Nomor Pembayaran <b>BELUM TERDAFATAR</b> di Database</span>",
+                'status' => true,
+            ));
+        }
+    }
+
+    public function check_payment_number_du_add()
+    {
+
+        $name = $this->input->post('nama');
+        $name = $this->security->xss_clean($name);
+
+        $pay = $this->input->post('nomor_pembayaran');
+        $pay = $this->security->xss_clean($pay);
+
+        $check = $this->IncomeModel->check_payment_du_duplicate($pay);
+
+        if ($pay == null || $pay == "") {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+                'message' => "<span class='text-danger'>Nomor Pembayaran <b>TIDAK DITEMUKAN</b></span>",
+                'status' => false,
+            ));
+        } else if ($check == true) {
+            $isAvailable = false;
+
+            $student = $this->IncomeModel->check_student_by_nomor_pembayaran_du($pay);
+            $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($name)));
+
+            if ($score == 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-success'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else if ($score >= 90 && $score < 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-warning'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-danger'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => false,
+                ));
+            }
+
+        } else if ($check == false) {
+            $isAvailable = false;
+            echo json_encode(array(
+                'valid' => $isAvailable,
+                'message' => "<span class='text-warning'>Nomor Pembayaran <b>BELUM TERDAFATAR</b> di Database</span>",
+                'status' => true,
+            ));
+        }
+    }
+
     public function check_invoice_number_dpb()
     {
         $id = $this->input->post('id_tagihan');
@@ -74,7 +248,7 @@ class Income extends MX_Controller
         $check = $this->IncomeModel->check_invoice_dpb_duplicate($invoice);
         $check_old = $this->IncomeModel->get_income_dpb_by_id($id);
 
-        if ($check == true && $id == null) {
+        if ($id == null || $invoice == null || $id == "" || $invoice == "") {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
@@ -106,7 +280,7 @@ class Income extends MX_Controller
         $check = $this->IncomeModel->check_invoice_du_duplicate($invoice);
         $check_old = $this->IncomeModel->get_income_du_by_id($id);
 
-        if ($check == true && $id == null) {
+        if ($id == null || $invoice == null || $id == "" || $invoice == "") {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
@@ -131,64 +305,122 @@ class Income extends MX_Controller
 
     public function check_payment_number_dpb()
     {
-        $id = $this->input->post('id_tagihan');
-        $id = paramDecrypt($id);
+        $old_number = $this->input->post('nomor_pembayaran_old');
+        $old_number = $this->security->xss_clean($old_number);
+
+        $name = $this->input->post('nama');
+        $name = $this->security->xss_clean($name);
+
         $pay = $this->input->post('nomor_pembayaran');
+        $pay = $this->security->xss_clean($pay);
 
         $check = $this->IncomeModel->check_payment_dpb_duplicate($pay);
-        $check_old = $this->IncomeModel->get_income_dpb_by_id($id);
 
-        if ($check == true && $id == null) {
+        if ($old_number == null || $pay == null || $old_number == "" || $pay == "") {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "<span class='text-danger'>Nomor Pembayaran <b>TIDAK DITEMUKAN</b></span>",
+                'status' => false,
             ));
-        } else if ($check == true && $check_old[0]->nomor_siswa != $pay) {
+        } else if ($check == true && $old_number != $pay) {
             $isAvailable = false;
-            echo json_encode(array(
-                'valid' => $isAvailable,
-            ));
-        } else if ($check == true && $check_old[0]->nomor_siswa == $pay) {
+
+            $student = $this->IncomeModel->check_student_by_nomor_pembayaran_dpb($pay);
+            $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($name)));
+
+            if ($score == 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-success'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else if ($score >= 90 && $score < 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-warning'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-danger'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => false,
+                ));
+            }
+
+        } else if ($check == true && $old_number == $pay) {
             $isAvailable = true;
             echo json_encode(array(
                 'valid' => $isAvailable,
             ));
         } else if ($check == false) {
-            $isAvailable = true;
+            $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "<span class='text-warning'>Nomor Pembayaran <b>BELUM TERDAFATAR</b> di Database.</span>",
+                'status' => true,
             ));
         }
     }
 
     public function check_payment_number_du()
     {
-        $id = $this->input->post('id_tagihan');
-        $id = paramDecrypt($id);
+        $old_number = $this->input->post('nomor_pembayaran_old');
+        $old_number = $this->security->xss_clean($old_number);
+
+        $name = $this->input->post('nama');
+        $name = $this->security->xss_clean($name);
+
         $pay = $this->input->post('nomor_pembayaran');
+        $pay = $this->security->xss_clean($pay);
 
         $check = $this->IncomeModel->check_payment_du_duplicate($pay);
-        $check_old = $this->IncomeModel->get_income_du_by_id($id);
 
-        if ($check == true && $id == null) {
+        if ($old_number == null || $pay == null || $old_number == "" || $pay == "") {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "<span class='text-danger'>Nomor Pembayaran <b>TIDAK DITEMUKAN</b></span>",
+                'status' => false,
             ));
-        } else if ($check == true && $check_old[0]->nomor_siswa != $pay) {
+        } else if ($check == true && $old_number != $pay) {
             $isAvailable = false;
-            echo json_encode(array(
-                'valid' => $isAvailable,
-            ));
-        } else if ($check == true && $check_old[0]->nomor_siswa == $pay) {
+
+            $student = $this->IncomeModel->check_student_by_nomor_pembayaran_du($pay);
+            $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($name)));
+
+            if ($score == 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-success'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else if ($score >= 90 && $score < 100) {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-warning'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => true,
+                ));
+            } else {
+                echo json_encode(array(
+                    'valid' => $isAvailable,
+                    'message' => "<span class='text-danger'>Nomor Pembayaran telah <b>TERDAFATAR</b> atas nama <b> " . $student[0]->nama_lengkap . " (" . $student[0]->nomor_pembayaran_du . ")</b></span>",
+                    'status' => false,
+                ));
+            }
+
+        } else if ($check == true && $old_number == $pay) {
             $isAvailable = true;
             echo json_encode(array(
                 'valid' => $isAvailable,
             ));
         } else if ($check == false) {
-            $isAvailable = true;
+            $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "<span class='text-warning'>Nomor Pembayaran <b>BELUM TERDAFATAR</b> di Database.</span>",
+                'status' => true,
             ));
         }
     }
@@ -289,11 +521,13 @@ class Income extends MX_Controller
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nomor Bayar <b>Duplikat</b> di File Excel",
             ));
         } else if (($check_transition == 1) && ($number_pay != $old_number_pay)) {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nomor Bayar <b>Duplikat</b> di File Excel",
             ));
         } else {
             $isAvailable = true;
@@ -318,11 +552,13 @@ class Income extends MX_Controller
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nomor Bayar <b>Duplikat</b> di File Excel",
             ));
         } else if (($check_transition == 1) && ($number_pay != $old_number_pay)) {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nomor Bayar <b>Duplikat</b> di File Excel",
             ));
         } else {
             $isAvailable = true;
@@ -341,17 +577,22 @@ class Income extends MX_Controller
         $name = $this->input->post('nama');
         $name = $this->security->xss_clean($name);
 
-        $check_transition = $this->IncomeModel->get_transition_income_du_by_name(strtoupper($name));
+        $number_pay = $this->input->post('nomor_pembayaran');
+        $number_pay = $this->security->xss_clean($number_pay);
+
+        $check_transition = $this->IncomeModel->get_transition_income_du_by_number_name($number_pay, strtoupper($name));
 
         if ($check_transition >= 2) {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nama Tertagih dengan Nomor Bayar <b>" . $number_pay . "</b> duplikat di file Excel",
             ));
         } else if (($check_transition == 1) && (strtoupper($name) != strtoupper($old_name))) {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nama Tertagih dengan Nomor Bayar <b>" . $number_pay . "</b> duplikat di file Excel",
             ));
         } else {
             $isAvailable = true;
@@ -370,17 +611,22 @@ class Income extends MX_Controller
         $name = $this->input->post('nama');
         $name = $this->security->xss_clean($name);
 
-        $check_transition = $this->IncomeModel->get_transition_income_dpb_by_name(strtoupper($name));
+        $number_pay = $this->input->post('nomor_pembayaran');
+        $number_pay = $this->security->xss_clean($number_pay);
+
+        $check_transition = $this->IncomeModel->get_transition_income_dpb_by_number_name($number_pay, strtoupper($name));
 
         if ($check_transition >= 2) {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nama Tertagih dengan Nomor Bayar <b>" . $number_pay . "</b> duplikat di file Excel",
             ));
         } else if (($check_transition == 1) && (strtoupper($name) != strtoupper($old_name))) {
             $isAvailable = false;
             echo json_encode(array(
                 'valid' => $isAvailable,
+                'message' => "Nama Tertagih dengan Nomor Bayar <b>" . $number_pay . "</b> duplikat di file Excel",
             ));
         } else {
             $isAvailable = true;
@@ -396,6 +642,7 @@ class Income extends MX_Controller
         $data['nav_in'] = 'menu-item-here';
         $data['income'] = $this->IncomeModel->get_income_dpb_by_nomor_pembayaran($id);
         $data['payment'] = $this->IncomeModel->get_dpb_total_by_nomor_pembayaran($id);
+        $data['schoolyear'] = $this->IncomeModel->get_schoolyear_sias();
 
         if ($data) {
             $this->template->load('template_finance/template_finance', 'finance_list_income_dpb_student', $data);
@@ -411,6 +658,7 @@ class Income extends MX_Controller
         $data['nav_in'] = 'menu-item-here';
         $data['income'] = $this->IncomeModel->get_income_du_by_nomor_pembayaran($id);
         $data['payment'] = $this->IncomeModel->get_du_total_by_nomor_pembayaran($id);
+        $data['schoolyear'] = $this->IncomeModel->get_schoolyear_sias();
 
         if ($data) {
             $this->template->load('template_finance/template_finance', 'finance_list_income_du_student', $data);
@@ -467,8 +715,8 @@ class Income extends MX_Controller
                 foreach ($result as $index => $item) {
                     // Perform the text match and check if it's above the threshold
                     $score = $this->matching->single_text_match(strtoupper(trim(preg_replace("/'/", "", $item->nama_lengkap))), strtoupper(trim($name)));
-                    if ($score >= 80 && $score < 100) {
-                        $transaction[$index] = array(
+                    if ($score >= 80 && $score <= 100) {
+                        $transaction[] = array(
                             'nis' => $item->nis,
                             'nomor_pembayaran_du' => $item->nomor_pembayaran_du,
                             'nomor_pembayaran_dpb' => $item->nomor_pembayaran_dpb,
@@ -565,46 +813,236 @@ class Income extends MX_Controller
         }
     }
 
+    public function post_income_dpb()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $status_data = false;
+        $message = "";
+
+        $this->form_validation->set_rules('nomor_invoice', 'Nomor Invoice Tagihan', 'required');
+        $this->form_validation->set_rules('nomor_pembayaran', 'Nomor Pembayaran Tagihan', 'required');
+        $this->form_validation->set_rules('nominal_tagihan', 'Total Nominal Tagihan', 'required');
+        $this->form_validation->set_rules('nama_siswa', 'Nama Siswa', 'required');
+        $this->form_validation->set_rules('nis', 'NIS Siswa', 'required');
+        $this->form_validation->set_rules('level_tingkat', 'Tingkat Siswa', 'required');
+        $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
+        $this->form_validation->set_rules('tahun_ajaran', 'Tahun Ajaran', 'required');
+
+        $invoice = $this->IncomeModel->check_invoice_dpb_duplicate($data['nomor_invoice']);
+        $check = $this->IncomeModel->check_payment_dpb_duplicate($data['nomor_pembayaran']);
+
+        $student = $this->IncomeModel->check_student_by_nomor_pembayaran_dpb($data['nomor_pembayaran']);
+
+        $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
+
+        if ($invoice == true) {
+            $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor/Kode Invoice yang anda inputkan telah terpakai."));
+            redirect('finance/income/income/add_income_dpb/');
+        } else {
+
+            if ($data['nomor_invoice'] == null || $data['nomor_pembayaran'] == null || $data['nomor_invoice'] == "" || $data['nomor_pembayaran'] == "") {
+                $status_data = false;
+                $message = "Mohon Maaf, Nomor Pembayaran yang Anda tidak ditemukan.";
+            } else if ($check == true && $data['nomor_pembayaran']) {
+
+                $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($data['nama_siswa'])));
+
+                if ($score >= 90 && $score <= 100) {
+                    $status_data = true;
+                    $data['password'] = $student[0]->password;
+                    $data['th_ajaran'] = $student[0]->th_ajaran;
+                    $message = "Berhasil DiTambahkan, Data Tagihan Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan. Terima Kasih";
+                } else {
+                    $status_data = false;
+                    $message = "Mohon Maaf, Nomor Pembayaran yang anda inputkan telah Terdafatar Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> ";
+                }
+            } else if ($check == false) {
+                $status_data = true;
+                $data['th_ajaran'] = $data['tahun_ajaran'];
+                $data['password'] = password_hash(paramEncrypt($data['nis']), PASSWORD_DEFAULT, array('cost' => 12));
+                $message = "Berhasil Ditambahkan, Data Tagihan Siswa dan Data Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan ke Database. Terima Kasih";
+            }
+
+            if ($this->form_validation->run() == false) {
+                $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
+                redirect('finance/income/income/add_income_dpb/');
+            } else {
+
+                if ($status_data == true) {
+                    $input = $this->IncomeModel->insert_income_dpb_and_student($data);
+                    if ($input == true) {
+                        $this->session->set_flashdata('flash_message', succ_msg($message));
+                        redirect('finance/income/income/add_income_dpb/');
+                    } else {
+                        $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan input ulang.'));
+                        redirect('finance/income/income/add_income_dpb/');
+                    }
+                } else {
+                    $this->session->set_flashdata('flash_message', warn_msg($message));
+                    redirect('finance/income/income/add_income_dpb/');
+                }
+            }
+
+        }
+    }
+
+    public function post_income_du()
+    {
+        $param = $this->input->post();
+        $data = $this->security->xss_clean($param);
+
+        $status_data = false;
+        $message = "";
+
+        $this->form_validation->set_rules('nomor_invoice', 'Nomor Invoice Tagihan', 'required');
+        $this->form_validation->set_rules('nomor_pembayaran', 'Nomor Pembayaran Tagihan', 'required');
+        $this->form_validation->set_rules('nominal_tagihan', 'Total Nominal Tagihan', 'required');
+        $this->form_validation->set_rules('nama_siswa', 'Nama Siswa', 'required');
+        $this->form_validation->set_rules('nis', 'NIS Siswa', 'required');
+        $this->form_validation->set_rules('level_tingkat', 'Tingkat Siswa', 'required');
+        $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
+        $this->form_validation->set_rules('tahun_ajaran', 'Tahun Ajaran', 'required');
+
+        $invoice = $this->IncomeModel->check_invoice_du_duplicate($data['nomor_invoice']);
+        $check = $this->IncomeModel->check_payment_du_duplicate($data['nomor_pembayaran']);
+
+        $student = $this->IncomeModel->check_student_by_nomor_pembayaran_du($data['nomor_pembayaran']);
+
+        $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
+
+        if ($invoice == true) {
+            $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor/Kode Invoice yang anda inputkan telah terpakai."));
+            redirect('finance/income/income/add_income_du/');
+        } else {
+
+            if ($data['nomor_invoice'] == null || $data['nomor_pembayaran'] == null || $data['nomor_invoice'] == "" || $data['nomor_pembayaran'] == "") {
+                $status_data = false;
+                $message = "Mohon Maaf, Nomor Pembayaran yang Anda tidak ditemukan.";
+            } else if ($check == true && $data['nomor_pembayaran']) {
+
+                $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($data['nama_siswa'])));
+
+                if ($score >= 90 && $score <= 100) {
+                    $status_data = true;
+                    $data['password'] = $student[0]->password;
+                    $data['th_ajaran'] = $student[0]->th_ajaran;
+                    $message = "Berhasil DiTambahkan, Data Tagihan Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan. Terima Kasih";
+                } else {
+                    $status_data = false;
+                    $message = "Mohon Maaf, Nomor Pembayaran yang anda inputkan telah Terdafatar Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> ";
+                }
+            } else if ($check == false) {
+                $status_data = true;
+                $data['th_ajaran'] = $data['tahun_ajaran'];
+                $data['password'] = password_hash(paramEncrypt($data['nis']), PASSWORD_DEFAULT, array('cost' => 12));
+                $message = "Berhasil Ditambahkan, Data Tagihan Siswa dan Data Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan ke Database. Terima Kasih";
+            }
+
+            if ($this->form_validation->run() == false) {
+                $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
+                redirect('finance/income/income/add_income_du/');
+            } else {
+
+                if ($status_data == true) {
+                    $input = $this->IncomeModel->insert_income_du_and_student($data);
+                    if ($input == true) {
+                        $this->session->set_flashdata('flash_message', succ_msg($message));
+                        redirect('finance/income/income/add_income_du/');
+                    } else {
+                        $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan input ulang.'));
+                        redirect('finance/income/income/add_income_du/');
+                    }
+                } else {
+                    $this->session->set_flashdata('flash_message', warn_msg($message));
+                    redirect('finance/income/income/add_income_du/');
+                }
+            }
+
+        }
+    }
+
     public function update_income_dpb($id = '')
     {
         $param = $this->input->post();
         $data = $this->security->xss_clean($param);
 
         $id = paramDecrypt($id);
+        $status_data = false;
+        $message = "";
 
         $this->form_validation->set_rules('nomor_invoice', 'Nomor Invoice Tagihan', 'required');
         $this->form_validation->set_rules('nomor_pembayaran', 'Nomor Pembayaran Tagihan', 'required');
         $this->form_validation->set_rules('nominal_tagihan', 'Total Nominal Tagihan', 'required');
         $this->form_validation->set_rules('nama_siswa', 'Nama Siswa', 'required');
+        $this->form_validation->set_rules('nis', 'NIS Siswa', 'required');
+        $this->form_validation->set_rules('level_tingkat', 'Tingkat Siswa', 'required');
         $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
 
         $invoice = $this->IncomeModel->check_invoice_dpb_duplicate($data['nomor_invoice']);
-        $payment = $this->IncomeModel->check_payment_dpb_duplicate($data['nomor_pembayaran']);
+        $check = $this->IncomeModel->check_payment_dpb_duplicate($data['nomor_pembayaran']);
 
         $check_old = $this->IncomeModel->get_income_dpb_by_id($id);
+        $student = $this->IncomeModel->check_student_by_nomor_pembayaran_dpb($data['nomor_pembayaran']);
+        $tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
+
+        $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
 
         if ($invoice == true && strtoupper(strtolower($data['nomor_invoice'])) != strtoupper(strtolower($check_old[0]->id_invoice))) {
             $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor/Kode Invoice yang anda inputkan telah terpakai."));
             redirect('finance/income/income/edit_income_dpb/' . paramEncrypt($id));
         } else {
-            if ($payment == true && strtoupper(strtolower($data['nomor_pembayaran'])) != strtoupper(strtolower($check_old[0]->nomor_siswa))) {
-                $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan telah terpakai."));
+
+            if ($data['nomor_pembayaran_old'] == null || $data['nomor_pembayaran'] == null || $data['nomor_pembayaran_old'] == "" || $data['nomor_pembayaran'] == "") {
+                $status_data = false;
+                $message = "Mohon Maaf, Nomor Pembayaran yang Anda tidak ditemukan.";
+            } else if ($check == true && $data['nomor_pembayaran_old'] != $data['nomor_pembayaran']) {
+
+                $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($data['nama_siswa'])));
+
+                if ($score >= 90 && $score <= 100) {
+                    $status_data = true;
+                    $data['password'] = $student[0]->password;
+                    $data['th_ajaran'] = $student[0]->th_ajaran;
+                    $message = "Berhasil Diupdate, Data Tagihan dan Data Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah diupdate. Terima Kasih";
+                } else {
+                    $status_data = false;
+                    $message = "Mohon Maaf, Nomor Pembayaran yang anda inputkan telah Terdafatar Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> ";
+                }
+
+            } else if ($check == true && $data['nomor_pembayaran_old'] == $data['nomor_pembayaran']) {
+                $status_data = true;
+                $data['password'] = $student[0]->password;
+                $data['th_ajaran'] = $student[0]->th_ajaran;
+                $message = "Berhasil Diupdate, Data Tagihan Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah diupdate. Terima Kasih";
+            } else if ($check == false) {
+                $status_data = true;
+                $data['th_ajaran'] = $tahun_ajaran[0]->id_tahun_ajaran;
+                $data['password'] = password_hash(paramEncrypt($data['nis']), PASSWORD_DEFAULT, array('cost' => 12));
+                $message = "Berhasil Diupdate dan Ditambahkan, Data Tagihan Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah diupdate dan ditambahkan ke Database. Terima Kasih";
+            }
+
+            if ($this->form_validation->run() == false) {
+                $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
                 redirect('finance/income/income/edit_income_dpb/' . paramEncrypt($id));
             } else {
-                if ($this->form_validation->run() == false) {
-                    $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
-                    redirect('finance/income/income/edit_income_dpb/' . paramEncrypt($id));
-                } else {
-                    $input = $this->IncomeModel->update_income_dpb($id, $data);
+
+                if ($status_data == true) {
+                    $input = $this->IncomeModel->update_income_dpb_and_student($id, $data);
                     if ($input == true) {
-                        $this->session->set_flashdata('flash_message', succ_msg("Berhasil Diupdate, Data Tagihan Atas Nama " . strtoupper($data['nama_siswa']) . " Anda telah diupdate. Terima Kasih"));
+                        $this->session->set_flashdata('flash_message', succ_msg($message));
                         redirect('finance/income/income/edit_income_dpb/' . paramEncrypt($id));
                     } else {
                         $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan input ulang.'));
                         redirect('finance/income/income/edit_income_dpb/' . paramEncrypt($id));
                     }
+                } else {
+                    $this->session->set_flashdata('flash_message', warn_msg($message));
+                    redirect('finance/income/income/edit_income_dpb/' . paramEncrypt($id));
                 }
             }
+
         }
     }
 
@@ -614,40 +1052,79 @@ class Income extends MX_Controller
         $data = $this->security->xss_clean($param);
 
         $id = paramDecrypt($id);
+        $status_data = false;
+        $message = "";
 
         $this->form_validation->set_rules('nomor_invoice', 'Nomor Invoice Tagihan', 'required');
         $this->form_validation->set_rules('nomor_pembayaran', 'Nomor Pembayaran Tagihan', 'required');
         $this->form_validation->set_rules('nominal_tagihan', 'Total Nominal Tagihan', 'required');
         $this->form_validation->set_rules('nama_siswa', 'Nama Siswa', 'required');
+        $this->form_validation->set_rules('nis', 'NIS Siswa', 'required');
+        $this->form_validation->set_rules('level_tingkat', 'Tingkat Siswa', 'required');
         $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
 
         $invoice = $this->IncomeModel->check_invoice_du_duplicate($data['nomor_invoice']);
-        $payment = $this->IncomeModel->check_payment_du_duplicate($data['nomor_pembayaran']);
+        $check = $this->IncomeModel->check_payment_du_duplicate($data['nomor_pembayaran']);
 
         $check_old = $this->IncomeModel->get_income_du_by_id($id);
+        $student = $this->IncomeModel->check_student_by_nomor_pembayaran_du($data['nomor_pembayaran']);
+        $tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
+
+        $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
 
         if ($invoice == true && strtoupper(strtolower($data['nomor_invoice'])) != strtoupper(strtolower($check_old[0]->id_invoice))) {
             $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor/Kode Invoice yang anda inputkan telah terpakai."));
             redirect('finance/income/income/edit_income_du/' . paramEncrypt($id));
         } else {
-            if ($payment == true && strtoupper(strtolower($data['nomor_pembayaran'])) != strtoupper(strtolower($check_old[0]->nomor_siswa))) {
-                $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan telah terpakai."));
+
+            if ($data['nomor_pembayaran_old'] == null || $data['nomor_pembayaran'] == null || $data['nomor_pembayaran_old'] == "" || $data['nomor_pembayaran'] == "") {
+                $status_data = false;
+                $message = "Mohon Maaf, Nomor Pembayaran yang Anda tidak ditemukan.";
+            } else if ($check == true && $data['nomor_pembayaran_old'] != $data['nomor_pembayaran']) {
+
+                $score = $this->matching->single_text_match(strtoupper(trim($student[0]->nama_lengkap)), strtoupper(trim($data['nama_siswa'])));
+
+                if ($score >= 90 && $score <= 100) {
+                    $status_data = true;
+                    $data['password'] = $student[0]->password;
+                    $data['th_ajaran'] = $student[0]->th_ajaran;
+                    $message = "Berhasil Diupdate, Data Tagihan dan Data Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah diupdate. Terima Kasih";
+                } else {
+                    $status_data = false;
+                    $message = "Mohon Maaf, Nomor Pembayaran yang anda inputkan telah Terdafatar Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b>";
+                }
+
+            } else if ($check == true && $data['nomor_pembayaran_old'] == $data['nomor_pembayaran']) {
+                $status_data = true;
+                $data['password'] = $student[0]->password;
+                $data['th_ajaran'] = $student[0]->th_ajaran;
+                $message = "Berhasil Diupdate, Data Tagihan Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah diupdate. Terima Kasih";
+            } else if ($check == false) {
+                $status_data = true;
+                $data['th_ajaran'] = $tahun_ajaran[0]->id_tahun_ajaran;
+                $data['password'] = password_hash(paramEncrypt($data['nis']), PASSWORD_DEFAULT, array('cost' => 12));
+                $message = "Berhasil Diupdate dan Ditambahkan, Data Tagihan Siswa Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah diupdate dan ditambahkan ke Database. Terima Kasih";
+            }
+
+            if ($this->form_validation->run() == false) {
+                $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
                 redirect('finance/income/income/edit_income_du/' . paramEncrypt($id));
             } else {
-                if ($this->form_validation->run() == false) {
-                    $this->session->set_flashdata('flash_message', warn_msg(validation_errors()));
-                    redirect('finance/income/income/edit_income_du/' . paramEncrypt($id));
-                } else {
-                    $input = $this->IncomeModel->update_income_du($id, $data);
+                if ($status_data == true) {
+                    $input = $this->IncomeModel->update_income_du_and_student($id, $data);
                     if ($input == true) {
-                        $this->session->set_flashdata('flash_message', succ_msg("Berhasil Diupdate, Data Tagihan Atas Nama " . strtoupper($data['nama_siswa']) . " Anda telah diupdate. Terima Kasih"));
+                        $this->session->set_flashdata('flash_message', succ_msg($message));
                         redirect('finance/income/income/edit_income_du/' . paramEncrypt($id));
                     } else {
                         $this->session->set_flashdata('flash_message', err_msg('Mohon Maaf, Terjadi kesalahan, Silahkan input ulang.'));
                         redirect('finance/income/income/edit_income_du/' . paramEncrypt($id));
                     }
+                } else {
+                    $this->session->set_flashdata('flash_message', warn_msg($message));
+                    redirect('finance/income/income/edit_income_du/' . paramEncrypt($id));
                 }
             }
+
         }
     }
 
@@ -673,7 +1150,8 @@ class Income extends MX_Controller
         $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
 
         $cek_invoice = $this->IncomeModel->check_invoice_du_duplicate($data['id_invoice']);
-        $check_name = $this->IncomeModel->check_invoice_du_duplicate_by_name_and_number($data['nomor_bayar'], strtoupper($data['nama']));
+        $check_name = $this->IncomeModel->check_student_by_name_and_number_du($data['nomor_bayar'], strtoupper($data['nama']));
+        $check_number = $this->IncomeModel->check_student_by_nomor_pembayaran_du($data['nomor_bayar']);
         $check_invoice_transition = $this->IncomeModel->get_transition_income_du_by_id($data['id_invoice']);
         $check_payment_transition = $this->IncomeModel->get_transition_income_du_by_number($data['nomor_bayar']);
         $check_name_transition = $this->IncomeModel->get_transition_income_du_by_name(strtoupper($data['nama']));
@@ -695,15 +1173,20 @@ class Income extends MX_Controller
             }
         }
 
-        if ($check_payment_transition >= 2) {
-            $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
-            redirect('finance/income/income/list_transition_income_du/' . paramEncrypt("sekolah_utsman"));
-        } else if (($check_payment_transition == 1) && ($data['nomor_bayar'] != $data['old_nomor_bayar'])) {
-            $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
-            redirect('finance/income/income/list_transition_income_du/' . paramEncrypt("sekolah_utsman"));
-        } else {
+        if ($check_number) {
             $status_payment = true;
             $data['status_nomor_terdaftar'] = 1;
+        } else {
+            if ($check_payment_transition >= 2) {
+                $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
+                redirect('finance/income/income/list_transition_income_du/' . paramEncrypt("sekolah_utsman"));
+            } else if (($check_payment_transition == 1) && ($data['nomor_bayar'] != $data['old_nomor_bayar'])) {
+                $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
+                redirect('finance/income/income/list_transition_income_du/' . paramEncrypt("sekolah_utsman"));
+            } else {
+                $status_payment = true;
+                $data['status_nomor_terdaftar'] = 2;
+            }
         }
 
         if ($check_name) {
@@ -725,8 +1208,7 @@ class Income extends MX_Controller
         $new_nis = "9" . substr($data['nomor_bayar'], 1);
         $check_student = $this->IncomeModel->get_student_by_id($new_nis);
         if ($check_student) {
-
-            $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($new_nis), trim($data['nama']));
+            $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_du(trim($data['nomor_bayar']), trim($data['nama']));
             if ($check_student_name_and_number) {
                 $data['password'] = $check_student[0]->password;
             } else {
@@ -779,7 +1261,8 @@ class Income extends MX_Controller
         $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
 
         $cek_invoice = $this->IncomeModel->check_invoice_dpb_duplicate($data['id_invoice']);
-        $check_name = $this->IncomeModel->check_invoice_dpb_duplicate_by_name_and_number($data['nomor_bayar'], strtoupper($data['nama']));
+        $check_name = $this->IncomeModel->check_student_by_name_and_number_dpb($data['nomor_bayar'], strtoupper($data['nama']));
+        $check_number = $this->IncomeModel->check_student_by_nomor_pembayaran_dpb($data['nomor_bayar']);
         $check_invoice_transition = $this->IncomeModel->get_transition_income_dpb_by_id($data['id_invoice']);
         $check_payment_transition = $this->IncomeModel->get_transition_income_dpb_by_number($data['nomor_bayar']);
         $check_name_transition = $this->IncomeModel->get_transition_income_dpb_by_name(strtoupper($data['nama']));
@@ -801,15 +1284,20 @@ class Income extends MX_Controller
             }
         }
 
-        if ($check_payment_transition >= 2) {
-            $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
-            redirect('finance/income/income/list_transition_income_dpb/' . paramEncrypt("sekolah_utsman"));
-        } else if (($check_payment_transition == 1) && ($data['nomor_bayar'] != $data['old_nomor_bayar'])) {
-            $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
-            redirect('finance/income/income/list_transition_income_dpb/' . paramEncrypt("sekolah_utsman"));
-        } else {
+        if ($check_number) {
             $status_payment = true;
             $data['status_nomor_terdaftar'] = 1;
+        } else {
+            if ($check_payment_transition >= 2) {
+                $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
+                redirect('finance/income/income/list_transition_income_dpb/' . paramEncrypt("sekolah_utsman"));
+            } else if (($check_payment_transition == 1) && ($data['nomor_bayar'] != $data['old_nomor_bayar'])) {
+                $this->session->set_flashdata('flash_message', warn_msg("Mohon Maaf, Nomor Pembayaran yang anda inputkan <b>DUPLIKAT</b> di file Excel."));
+                redirect('finance/income/income/list_transition_income_dpb/' . paramEncrypt("sekolah_utsman"));
+            } else {
+                $status_payment = true;
+                $data['status_nomor_terdaftar'] = 2;
+            }
         }
 
         if ($check_name) {
@@ -829,10 +1317,8 @@ class Income extends MX_Controller
         }
 
         $check_student = $this->IncomeModel->get_student_by_id($data['nomor_bayar']);
-
         if ($check_student) {
-            $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($data['nomor_bayar']), trim($data['nama']));
-
+            $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_dpb(trim($data['nomor_bayar']), trim($data['nama']));
             if ($check_student_name_and_number) {
                 $data['password'] = $check_student[0]->password;
             } else {
@@ -1047,11 +1533,11 @@ class Income extends MX_Controller
             redirect('finance/income/income/list_income_dpb');
         } else {
             $check_pass = $this->IncomeModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
-			
-			$this->db->query('SET SESSION interactive_timeout = 28000');
-			$this->db->query('SET SESSION wait_timeout = 28000');
-			$this->db2->query('SET SESSION interactive_timeout = 28000');
-			$this->db2->query('SET SESSION wait_timeout = 28000');
+
+            $this->db->query('SET SESSION interactive_timeout = 28000');
+            $this->db->query('SET SESSION wait_timeout = 28000');
+            $this->db2->query('SET SESSION interactive_timeout = 28000');
+            $this->db2->query('SET SESSION wait_timeout = 28000');
             // pass verify
             if (password_verify(($data['pass_verification']), $check_pass[0]->password)) {
                 // gcaptha verify
@@ -1122,7 +1608,7 @@ class Income extends MX_Controller
                         $seenName = [];
                         $duplicateName = [];
 
-						$tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
+                        $tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
 
                         for ($i = 1; $i < count($sheetData); $i++) {
 
@@ -1142,29 +1628,39 @@ class Income extends MX_Controller
                                 if (isset($seenNoPay[$currentNoPay])) {
                                     $duplicateNoPay[$currentNoPay] = true;
                                     $status_no_dpb = 3; //nis terdafatar dan nama tidak mirip
-                                    if ($this->matching->single_text_match(strtoupper($student[0]->nama_lengkap), strtoupper(trim($sheetData[$i]['3']))) >= 95) {
-                                        $status_nama = 1;
-                                    } else {
-                                        $status_nama = 2;
-                                    }
                                 } else {
                                     $seenNoPay[$currentNoPay] = true;
                                     $status_no_dpb = 1; //nis terdafatar dan nama mirip
-                                    if ($this->matching->single_text_match(strtoupper($student[0]->nama_lengkap), strtoupper(trim($sheetData[$i]['3']))) >= 95) {
-                                        $status_nama = 1;
+                                }
+
+                                if (isset($seenName[$currentName]) && isset($seenNoPay[$currentNoPay])) {
+                                    $duplicateName[$currentName] = true;
+                                    $status_nama = 3;
+                                } else {
+                                    $seenName[$currentName] = true;
+                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    if ($result) {
+                                        for ($j = 0; $j < count($result); $j++) {
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            if ($score == 100) {
+                                                $status_nama = 1;
+                                                break;
+                                            } elseif ($score >= 80 && $score < 100) {
+                                                $status_nama = 4;
+                                                break;
+                                            } else {
+                                                $status_nama = 2;
+                                                break;
+                                            }
+                                        }
                                     } else {
                                         $status_nama = 2;
                                     }
                                 }
-                                if (isset($seenName[$currentName])) {
-                                    $duplicateName[$currentName] = true;
-                                    $status_nama = 3; //nis tidak terdaftar dan nama tidak mirip
-                                } else {
-                                    $seenName[$currentName] = true;
-                                }
 
-                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($sheetData[$i]['1']), trim($sheetData[$i]['3']));
+                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_dpb(trim($sheetData[$i]['1']), trim($sheetData[$i]['3']));
                                 if ($check_student_name_and_number) {
+                                    $status_nama = 1;
                                     $password = $student[0]->password;
                                 } else {
                                     $password = password_hash(paramEncrypt(trim($sheetData[$i]['1'])), PASSWORD_DEFAULT, array('cost' => 12));
@@ -1172,47 +1668,44 @@ class Income extends MX_Controller
 
                             } else {
 
-                                $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
-                                if ($result) {
-                                    if (isset($seenNoPay[$currentNoPay])) {
-                                        $duplicateNoPay[$currentNoPay] = true;
-                                        $status_no_dpb = 3; //nis tidak terdaftar dan nama tidak mirip
-                                    } else {
-                                        $seenNoPay[$currentNoPay] = true;
-                                        $status_no_dpb = 2; //nis tidak terdaftar dan nama tidak mirip
-                                    }
-                                    for ($j = 0; $j < count($result); $j++) {
-                                        if ($this->matching->single_text_match(strtoupper(trim($sheetData[$j]['3'])), strtoupper($result[$j]->nama_lengkap)) >= 83) {
-                                            $status_nama = 1;
-                                        } else {
-                                            $status_nama = 2;
-                                        }
-                                    }
+                                if (isset($seenNoPay[$currentNoPay])) {
+                                    $duplicateNoPay[$currentNoPay] = true;
+                                    $status_no_dpb = 3;
                                 } else {
-                                    if (isset($seenNoPay[$currentNoPay])) {
-                                        $duplicateNoPay[$currentNoPay] = true;
-                                        $status_no_dpb = 3; //nis tidak terdaftar dan nama tidak mirip
-                                    } else {
-                                        $seenNoPay[$currentNoPay] = true;
-                                        $status_no_dpb = 2; //nis tidak terdaftar dan nama tidak mirip
-                                    }
-                                    $status_nama = 2;
+                                    $seenNoPay[$currentNoPay] = true;
+                                    $status_no_dpb = 2;
                                 }
-                                if (isset($seenName[$currentName])) {
+
+                                if (isset($seenName[$currentName]) && isset($seenNoPay[$currentNoPay])) {
                                     $duplicateName[$currentName] = true;
-                                    $status_nama = 3; //nis tidak terdaftar dan nama tidak mirip
+                                    $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
+                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    if ($result) {
+                                        for ($j = 0; $j < count($result); $j++) {
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            if ($score >= 80 && $score <= 100) {
+                                                $status_nama = 4;
+                                                break;
+                                            } else {
+                                                $status_nama = 2;
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        $status_nama = 2;
+                                    }
                                 }
                                 $password = password_hash(paramEncrypt(trim($sheetData[$i]['1'])), PASSWORD_DEFAULT, array('cost' => 12));
                             }
 
                             if ($invoice) {
-                                $status_invoice = '2'; // jika duplikat
+                                $status_invoice = 2; // jika duplikat
                             } else {
                                 if (isset($seenIdInv[$currentIdInv])) {
                                     $duplicateIdInv[$currentIdInv] = true;
-                                    $status_invoice = 2;
+                                    $status_invoice = 3;
                                 } else {
                                     $seenIdInv[$currentIdInv] = true;
                                     $status_invoice = 1;
@@ -1308,10 +1801,10 @@ class Income extends MX_Controller
         } else {
             $check_pass = $this->IncomeModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
 
-			$this->db->query('SET SESSION interactive_timeout = 28000');
-			$this->db->query('SET SESSION wait_timeout = 28000');
-			$this->db2->query('SET SESSION interactive_timeout = 28000');
-			$this->db2->query('SET SESSION wait_timeout = 28000');
+            $this->db->query('SET SESSION interactive_timeout = 28000');
+            $this->db->query('SET SESSION wait_timeout = 28000');
+            $this->db2->query('SET SESSION interactive_timeout = 28000');
+            $this->db2->query('SET SESSION wait_timeout = 28000');
             // pass verify
             if (password_verify(($data['pass_verification']), $check_pass[0]->password)) {
                 // gcaptha verify
@@ -1382,6 +1875,8 @@ class Income extends MX_Controller
                         $seenName = [];
                         $duplicateName = [];
 
+                        $tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
+
                         for ($i = 1; $i < count($sheetData); $i++) {
 
                             $rincian = "";
@@ -1394,88 +1889,90 @@ class Income extends MX_Controller
 
                             $student = $this->IncomeModel->check_student_by_nomor_pembayaran_du($sheetData[$i]['1']);
                             $invoice = $this->IncomeModel->check_invoice_du_duplicate($sheetData[$i]['0']);
-                            $tahun_ajaran = $this->IncomeModel->get_schoolyear_now();
 
                             if ($student) {
 
                                 if (isset($seenNoPay[$currentNoPay])) {
                                     $duplicateNoPay[$currentNoPay] = true;
                                     $status_no_du = 3; //nis terdafatar dan nama tidak mirip
-                                    if ($this->matching->single_text_match(strtoupper($student[0]->nama_lengkap), strtoupper(trim($sheetData[$i]['3']))) >= 95) {
-                                        $status_nama = 1;
-                                    } else {
-                                        $status_nama = 2;
-                                    }
                                 } else {
                                     $seenNoPay[$currentNoPay] = true;
                                     $status_no_du = 1; //nis terdafatar dan nama mirip
-                                    if ($this->matching->single_text_match(strtoupper($student[0]->nama_lengkap), strtoupper(trim($sheetData[$i]['3']))) >= 95) {
-                                        $status_nama = 1;
+                                }
+
+                                if (isset($seenName[$currentName]) && isset($seenNoPay[$currentNoPay])) {
+                                    $duplicateName[$currentName] = true;
+                                    $status_nama = 3;
+                                } else {
+                                    $seenName[$currentName] = true;
+                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    if ($result) {
+                                        for ($j = 0; $j < count($result); $j++) {
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            if ($score == 100) {
+                                                $status_nama = 1;
+                                                break;
+                                            } elseif ($score >= 80 && $score < 100) {
+                                                $status_nama = 4;
+                                                break;
+                                            } else {
+                                                $status_nama = 2;
+                                                break;
+                                            }
+                                        }
                                     } else {
                                         $status_nama = 2;
                                     }
                                 }
-								
-                                if (isset($seenName[$currentName])) {
-                                    $duplicateName[$currentName] = true;
-                                    $status_nama = 3; //nis tidak terdaftar dan nama tidak mirip
-                                } else {
-                                    $seenName[$currentName] = true;
-                                }
 
-                                $new_nis = "9" . substr(trim($sheetData[$i]['1']), 1);
-                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number(trim($new_nis), trim($sheetData[$i]['3']));
-
+                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_du(trim($sheetData[$i]['1']), trim($sheetData[$i]['3']));
                                 if ($check_student_name_and_number) {
+                                    $status_nama = 1;
                                     $password = $student[0]->password;
                                 } else {
-                                    $password = password_hash(paramEncrypt(trim($new_nis)), PASSWORD_DEFAULT, array('cost' => 12));
+                                    $password = password_hash(paramEncrypt(trim($sheetData[$i]['1'])), PASSWORD_DEFAULT, array('cost' => 12));
                                 }
 
                             } else {
 
-                                $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
-                                if ($result) {
-                                    if (isset($seenNoPay[$currentNoPay])) {
-                                        $duplicateNoPay[$currentNoPay] = true;
-                                        $status_no_du = 3; //nis tidak terdaftar dan nama tidak mirip
-                                    } else {
-                                        $seenNoPay[$currentNoPay] = true;
-                                        $status_no_du = 2; //nis tidak terdaftar dan nama tidak mirip
-                                    }
-                                    for ($j = 0; $j < count($result); $j++) {
-                                        if ($this->matching->single_text_match(strtoupper(trim($sheetData[$j]['3'])), strtoupper($result[$j]->nama_lengkap)) >= 83) {
-                                            $status_nama = 1;
-                                        } else {
-                                            $status_nama = 2;
-                                        }
-                                    }
+                                if (isset($seenNoPay[$currentNoPay])) {
+                                    $duplicateNoPay[$currentNoPay] = true;
+                                    $status_no_du = 3;
                                 } else {
-                                    if (isset($seenNoPay[$currentNoPay])) {
-                                        $duplicateNoPay[$currentNoPay] = true;
-                                        $status_no_du = 3; //nis tidak terdaftar dan nama tidak mirip
-                                    } else {
-                                        $seenNoPay[$currentNoPay] = true;
-                                        $status_no_du = 2; //nis tidak terdaftar dan nama tidak mirip
-                                    }
-                                    $status_nama = 2;
+                                    $seenNoPay[$currentNoPay] = true;
+                                    $status_no_du = 2;
                                 }
-                                if (isset($seenName[$currentName])) {
+
+                                if (isset($seenName[$currentName]) && isset($seenNoPay[$currentNoPay])) {
                                     $duplicateName[$currentName] = true;
-                                    $status_nama = 3; //nis tidak terdaftar dan nama tidak mirip
+                                    $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
+                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    if ($result) {
+                                        for ($j = 0; $j < count($result); $j++) {
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            if ($score >= 80 && $score <= 100) {
+                                                $status_nama = 4;
+                                                break;
+                                            } else {
+                                                $status_nama = 2;
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        $status_nama = 2;
+                                    }
                                 }
-                                $new_nis = "9" . substr(trim($sheetData[$i]['1']), 1);
-                                $password = password_hash(paramEncrypt($new_nis), PASSWORD_DEFAULT, array('cost' => 12));
+                                $password = password_hash(paramEncrypt(trim($sheetData[$i]['1'])), PASSWORD_DEFAULT, array('cost' => 12));
                             }
 
                             if ($invoice) {
-                                $status_invoice = '2'; // jika duplikat
+                                $status_invoice = 2; // jika duplikat
                             } else {
                                 if (isset($seenIdInv[$currentIdInv])) {
                                     $duplicateIdInv[$currentIdInv] = true;
-                                    $status_invoice = 2;
+                                    $status_invoice = 3;
                                 } else {
                                     $seenIdInv[$currentIdInv] = true;
                                     $status_invoice = 1;
@@ -1558,21 +2055,53 @@ class Income extends MX_Controller
     public function delete_income_dpb()
     {
         $id = $this->input->post('id');
-        $id = paramDecrypt($id);
+        $id = $this->security->xss_clean($id);
+        $id_dpb = paramDecrypt($id);
+
+        $password = $this->input->post('password');
+        $password = $this->security->xss_clean($password);
+
         $token = $this->security->get_csrf_hash();
-        $income_dpb = $this->IncomeModel->get_income_dpb_by_id($id);
 
-        $delete = $this->IncomeModel->delete_income_dpb_by_id($id);
-        if ($delete == true) {
-            $output = array("status" => true,
-                "token" => $token,
-                "messages" => "Berhasil, Tagihan DPB Atas Nama <b>" . $income_dpb[0]->nama_lengkap . " (" . $income_dpb[0]->nis . ")</b> Telah Terhapus..",
-            );
+        $income_dpb = $this->IncomeModel->get_income_dpb_by_id($id_dpb);
 
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+
+            if ($id_dpb) {
+
+                $check_pass = $this->IncomeModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($password, $check_pass[0]->password)) {
+                    $delete = $this->IncomeModel->delete_income_dpb_by_id($id_dpb);
+                    if ($delete == true) {
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "messages" => "Berhasil, Tagihan DPB Atas Nama <b>" . $income_dpb[0]->nama_lengkap . " (" . $income_dpb[0]->nis . ")</b> Telah Terhapus..",
+                        );
+
+                    } else {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan hapus ulang..",
+                        );
+                    }
+                } else {
+
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
+                    );
+                }
+            } else {
+
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, ID Tagihan belum diinputkan, Silahkan coba lagi.",
+                );
+            }
         } else {
             $output = array("status" => false,
                 "token" => $token,
-                "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan hapus ulang..",
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
             );
         }
         echo json_encode($output);
@@ -1581,21 +2110,52 @@ class Income extends MX_Controller
     public function delete_income_du()
     {
         $id = $this->input->post('id');
-        $id = paramDecrypt($id);
+        $id = $this->security->xss_clean($id);
+        $id_du = paramDecrypt($id);
+
+        $password = $this->input->post('password');
+        $password = $this->security->xss_clean($password);
+
         $token = $this->security->get_csrf_hash();
-        $income_du = $this->IncomeModel->get_income_du_by_id($id);
+        $income_du = $this->IncomeModel->get_income_du_by_id($id_du);
 
-        $delete = $this->IncomeModel->delete_income_du_by_id($id);
-        if ($delete == true) {
-            $output = array("status" => true,
-                "token" => $token,
-                "messages" => "Berhasil, Tagihan DU Atas Nama <b>" . $income_du[0]->nama_lengkap . " (" . $income_du[0]->nis . ")</b> Telah Terhapus..",
-            );
+        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
 
+            if ($id_du) {
+
+                $check_pass = $this->IncomeModel->check_pass_admin($this->user_finance[0]->id_akun_keuangan);
+                if (password_verify($password, $check_pass[0]->password)) {
+                    $delete = $this->IncomeModel->delete_income_du_by_id($id_du);
+                    if ($delete == true) {
+                        $output = array("status" => true,
+                            "token" => $token,
+                            "messages" => "Berhasil, Tagihan DU Atas Nama <b>" . $income_du[0]->nama_lengkap . " (" . $income_du[0]->nis . ")</b> Telah Terhapus..",
+                        );
+
+                    } else {
+                        $output = array("status" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan hapus ulang..",
+                        );
+                    }
+                } else {
+
+                    $output = array("status" => false,
+                        "token" => $token,
+                        "messages" => "Opps!, Password Anda Salah, Silahkan coba lagi.",
+                    );
+                }
+            } else {
+
+                $output = array("status" => false,
+                    "token" => $token,
+                    "messages" => "Opps!, ID Tagihan belum diinputkan, Silahkan coba lagi.",
+                );
+            }
         } else {
             $output = array("status" => false,
                 "token" => $token,
-                "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan hapus ulang..",
+                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
             );
         }
         echo json_encode($output);
@@ -1810,6 +2370,7 @@ class Income extends MX_Controller
 
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['id_encrypt'] = paramEncrypt($data[$i]['id_tagihan_pembayaran_du']);
+            $data[$i]['nominal_tagihan_formated'] = number_format($data[$i]['nominal_tagihan'], 0, ',', '.');
         }
 
         // count data

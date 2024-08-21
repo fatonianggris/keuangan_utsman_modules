@@ -77,8 +77,8 @@
 
                             <div class="card-title">
                                 <h2 class="card-label font-size-h2 text-center font-weight-bolder">DAFTAR TAGIHAN DU
-                                    "<?php echo strtoupper($income[0]->nama); ?>-<?php echo strtoupper($income[0]->nis); ?>"
-                                    <span class="text-warning pt-1 font-size-h6 font-weight-normal d-block">Berikut
+                                    "<?php echo strtoupper(@$income[0]->nama); ?>-<?php echo strtoupper(@$income[0]->nis); ?>"
+                                    <span class="text-warning pt-1 font-size-lg font-weight-bolder d-block">Berikut
                                         merupakan daftar tagihan DU siswa bersangkutan</span>
                                 </h2>
                             </div>
@@ -109,13 +109,8 @@
                                                         class="form-control datatable-input"
                                                         placeholder="Inputkan Tgl Invoice" data-col-index="2" />
                                                 </div>
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
-                                                    <label>Tgl Transaksi:</label>
-                                                    <input type="text" id="kt_datepicker_transaksi" readonly=""
-                                                        class="form-control datatable-input"
-                                                        placeholder="Inputkan Tgl Transaksi" data-col-index="12" />
-                                                </div>
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
+
+                                                <div class="col-lg-4 mb-lg-0 mb-6">
                                                     <label>Nama Siswa:</label>
                                                     <input type="text" class="form-control datatable-input"
                                                         placeholder="Inputkan Nama Siswa" data-col-index="3" />
@@ -130,7 +125,7 @@
                                                     <select class="form-control datatable-input" id="tingkat"
                                                         data-col-index="5">
                                                         <option value="">Pilih Tingkat</option>
-														<option value="6">DC</option>
+                                                        <option value="DC">DC</option>
                                                         <option value="KB">KB</option>
                                                         <option value="TK">TK</option>
                                                         <option value="SD">SD</option>
@@ -141,23 +136,16 @@
                                             </div>
 
                                             <div class="row mb-6">
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
-                                                    <label>Kelas:</label>
-                                                    <select class="form-control datatable-input" id="kelas"
-                                                        data-col-index="6">
-                                                        <option value="">Pilih Kelas</option>
 
-                                                    </select>
-                                                </div>
                                                 <div class="col-lg-2 mb-lg-0 mb-6">
                                                     <label>Status Transfer:</label>
                                                     <select class="form-control datatable-input" data-col-index="7">
                                                         <option value="">Pilih Status</option>
-                                                        <option value="MENUNGGU">Menunggu</option>
-                                                        <option value="PROSES">Proses</option>
-                                                        <option value="SUKSES">Sukses</option>
-                                                        <option value="GAGAL">Gagal</option>
-                                                        <option value="">Semua</option>
+                                                        <option value="MENUNGGU">MENUNGGU</option>
+                                                        <option value="PROSES">PROSES</option>
+                                                        <option value="SUKSES">SUKSES</option>
+                                                        <option value="GAGAL">GAGAL</option>
+                                                        <option value="">SEMUA</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 mb-lg-0 mb-6">
@@ -165,25 +153,16 @@
                                                     <select class="form-control datatable-input" data-col-index="8">
                                                         <option value="">Pilih Tahun Ajaran</option>
                                                         <?php
-if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value) {
-        ?>
+															if (!empty($schoolyear)) {
+																foreach ($schoolyear as $key => $value) {
+																	?>
                                                         <option value="<?php echo $value->id_tahun_ajaran; ?>">
                                                             <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                                         </option>
                                                         <?php
-} //ngatur nomor urut
-}
-?>
-                                                        <option value="">Semua</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 mb-lg-0 mb-6">
-                                                    <label>Semester:</label>
-                                                    <select class="form-control datatable-input" data-col-index="9">
-                                                        <option value="">Pilih Semester</option>
-                                                        <option value="ganjil">Ganjil</option>
-                                                        <option value="genap">Genap</option>
+																} //ngatur nomor urut
+															}
+															?>
                                                         <option value="">Semua</option>
                                                     </select>
                                                 </div>
@@ -207,9 +186,15 @@ if (!empty($schoolyear)) {
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 mb-lg-0 mb-6">
+                                                    <label>Tgl Transaksi:</label>
+                                                    <input type="text" id="kt_datepicker_transaksi" readonly=""
+                                                        class="form-control datatable-input"
+                                                        placeholder="Inputkan Tgl Transaksi" data-col-index="11" />
+                                                </div>
+                                                <div class="col-lg-2 mb-lg-0 mb-6">
                                                     <label>Nominal Tagihan:</label>
-                                                    <input type="number" class="form-control datatable-input"
-                                                        placeholder="Inputkan Nominal" data-col-index="11" />
+                                                    <input type="text" class="form-control datatable-input"
+                                                        placeholder="Inputkan Nominal" data-col-index="12" />
                                                 </div>
                                             </div>
                                             <div class="row mt-8">
@@ -286,31 +271,42 @@ if (!empty($schoolyear)) {
                                 </thead>
                                 <tbody>
                                     <?php
-if (!empty($income)) {
-    foreach ($income as $key => $value) {
-        ?>
+										if (!empty($income)) {
+											$nama_tingkat='';
+											foreach ($income as $key => $value) {
+												if ($value->level_tingkat == '6') {
+													$nama_tingkat = 'DC';
+												} else if ($value->level_tingkat == '1') {
+													$nama_tingkat = 'KB';
+												} else if ($value->level_tingkat == '2') {
+													$nama_tingkat = 'TK';
+												} else if ($value->level_tingkat == '3') {
+													$nama_tingkat = 'SD';
+												} else if ($value->level_tingkat == '4') {
+													$nama_tingkat = 'SMP';
+												}
+												?>
                                     <tr>
-                                        <td><?php echo $value->id_tagihan_pembayaran_du; ?></td>
+                                        <td><?php echo $value->id_tagihan_pembayaran_du; ?>
+                                        </td>
                                         <td class="font-weight-bolder">
                                             <?php echo $value->id_invoice; ?>
                                         </td>
                                         <td class="font-weight-bolder text-danger">
                                             <?php echo $value->tanggal_invoice; ?></td>
                                         <td class="font-weight-bolder">
-                                            <?php echo ucwords(strtolower($value->nama_lengkap)); ?></td>
+                                            <?php echo strtoupper(strtolower($value->nama_lengkap)); ?></td>
                                         <td class="font-weight-bolder text-warning">
                                             <?php echo (($value->nomor_pembayaran_du)); ?></td>
-                                        <td class="font-weight-bolder">
-                                            <?php $tingkat = explode(" ", $value->informasi);
-        echo $tingkat[0];?>
+                                        <td class="font-weight-bold">
+                                            <?php echo $nama_tingkat;?>
                                         </td>
-                                        <td class="font-weight-bolder"><?php echo (($value->informasi)); ?></td>
-                                        <td class="font-weight-bolder">
-                                            <?php echo number_format($value->nominal_tagihan, 0, ',', '.'); ?></td>
-                                        <td><?php echo $value->status_pembayaran; ?></td>
-                                        <td><?php echo $value->tahun_ajaran; ?></td>
-                                        <td class="font-weight-bolder"><?php echo $value->semester; ?></td>
-                                        <td class="font-weight-bolder"><?php echo bulanindo($value->bulan_invoice); ?>
+                                        <td class="font-weight-bolder"><?php echo (($value->nama_kelas)); ?></td>
+                                        <td class="font-weight-bolder"><?php echo $value->status_pembayaran; ?></td>
+                                        <td class="font-weight-bold"><?php echo $value->tahun_ajaran; ?></td>
+                                        <td class="font-weight-bold"><?php echo strtoupper($value->rincian); ?></td>
+                                        <td class="font-weight-bold">
+                                            <?php echo strtoupper(bulanindo($value->bulan_invoice)); ?>
                                         </td>
                                         <td class="font-weight-bolder text-success">
                                             <?php if ($value->tanggal_transaksi) {?>
@@ -319,6 +315,9 @@ if (!empty($income)) {
                                             00/00/0000
                                             <?php }?>
                                         </td>
+                                        <td class="font-weight-bolder">
+                                            <?php echo number_format($value->nominal_tagihan, 0, ',', '.'); ?></td>
+
                                         <td nowrap="nowrap">
                                             <div class="dropdown dropdown-inline">
                                                 <a href="javascript:;"
@@ -344,7 +343,7 @@ if (!empty($income)) {
                                                     </ul>
                                                     <ul class="nav nav-hover flex-column">
                                                         <li class="nav-item"><a class="nav-link"
-                                                                href="javascript:act_delete_income('<?php echo paramEncrypt($value->id_tagihan_pembayaran_du); ?>', '<?php echo paramEncrypt($value->id_tagihan_pembayaran_du); ?>', '<?php echo strtoupper(preg_replace('/[^A-Za-z0-9\-]/', ' ', $value->nama_lengkap)); ?>', '<?php echo strtoupper($value->nis); ?>')"><i
+                                                                href="javascript:act_delete_income('<?php echo paramEncrypt($value->id_tagihan_pembayaran_du); ?>', '<?php echo ($value->nis); ?>', '<?php echo strtoupper(preg_replace('/[^A-Za-z0-9\-]/', ' ', $value->nama_lengkap)); ?>', '<?php echo strtoupper($value->nis); ?>')"><i
                                                                     class="nav-icon fas fa-trash text-danger"></i><span
                                                                     class="nav-text text-danger font-weight-bold text-hover-primary">Hapus
                                                                     Tagihan</span></a></li>
@@ -373,7 +372,7 @@ if (!empty($income)) {
                                         <th></th>
                                         <th></th>
                                         <th class="font-weight-boldest text-dark"><b>TOTAL TAGIHAN</b></th>
-                                        <th class="font-weight-boldest text-danger">Nominal Pemasukan</th>
+                                        <th class="font-weight-bolder text-danger">-</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -507,43 +506,32 @@ $(document).ready(function() {
 });
 </script>
 <script>
-$(document).ready(function() {
-    var lvl_tingkat;
-    var value;
-    $("#tingkat").change(function() {
-        lvl_tingkat = $(this).val();
-
-        if (lvl_tingkat == "KB") {
-            value = 1;
-        } else if (lvl_tingkat == "TK") {
-            value = 2;
-        } else if (lvl_tingkat == "SD") {
-            value = 3;
-        } else if (lvl_tingkat == "SMP") {
-            value = 4;
-        }
-        var url = "<?php echo site_url('finance/income/income/add_ajax_grade/'); ?>" + value;
-        $('#kelas').load(url);
-        return false;
-    });
-
-});
-</script>
-<script>
 function act_delete_income(id, name, nis) {
     var csrfName = $('.txt_csrfname').attr('name');
     var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 
     Swal.fire({
         title: "Peringatan!",
-        text: "Apakah anda yakin ingin menghapus Tagihan atas Nama " + name + " (" + nis + ") ?",
+        html: "Apakah anda yakin ingin <b>MENGHAPUS</b> Tagihan DU atas Nama <b>" + name.toUpperCase() + " (" +
+            nis + ")</b> ?",
         icon: "warning",
+		input: 'password',
+        inputLabel: 'Password Anda',
+        inputPlaceholder: 'Masukkan password Anda',
+        inputAttributes: {
+            'aria-label': 'Masukkan password Anda'
+        },
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Password Anda diperlukan!'
+            }
+        },
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Ya, hapus!",
         cancelButtonText: "Tidak, batal!",
         closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnCancel: true
     }).then(function(result) {
         if (result.value) {
             $.ajax({
@@ -551,24 +539,50 @@ function act_delete_income(id, name, nis) {
                 url: "<?php echo site_url("/finance/income/income/delete_income_du") ?>",
                 data: {
                     id: id,
+					password: result.value,
                     [csrfName]: csrfHash
                 },
-                dataType: 'html',
-                success: function(result) {
-                    Swal.fire("Terhapus!", "Tagihan atas Nama " + name + " (" + nis +
-                        ") telah terhapus.", "success");
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1000);
+                dataType: 'json',
+                success: function(data) {
+                    $('.txt_csrfname').val(data.token);
+
+                    if (data.status) {
+                        Swal.fire({
+                            html: data.messages,
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "Oke!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-success"
+                            }
+                        }).then(function() {
+                            setTimeout(function() {
+                                location.reload();
+                            }, 500);
+                        });
+                    } else {
+                        Swal.fire({
+                            html: data.messages,
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Oke!",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-danger"
+                            }
+                        }).then(function() {
+                            KTUtil.scrollTop();
+                        });
+                    }
                 },
-                error: function(result) {
-                    console.log(result);
+                error: function(data) {
+                    console.log(data);
                     Swal.fire("Opsss!", "Koneksi Internet Bermasalah.", "error");
                 }
             });
 
         } else {
-            Swal.fire("Dibatalkan!", "Tagihan atas Nama " + name + " (" + nis + ") batal dihapus.", "error");
+            Swal.fire("Dibatalkan!", "Tagihan DU atas Nama <b>" + name.toUpperCase() + " (" + nis + ")</b> batal dihapus.",
+                "error");
         }
     });
 }
