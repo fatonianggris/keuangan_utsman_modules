@@ -60,16 +60,6 @@ class SavingsModel extends CI_Model
         return $sql->num_rows();
     }
 
-	public function check_student_by_name_and_number($number = '', $name = '')
-    {
-        $this->db2->select('nis, nama_lengkap, password');
-        $this->db2->where('nis', $number);
-        $this->db2->where('nama_lengkap', $name);
-
-        $sql = $this->db2->get($this->table_student);
-        return $sql->result();
-    }
-
     public function get_number_import_joint_saving($number = '')
     {
 
@@ -78,6 +68,28 @@ class SavingsModel extends CI_Model
 
         $sql = $this->db2->get($this->table_import_joint_saving);
 
+        return $sql->num_rows();
+    }
+
+    public function get_number_name_import_personal_saving($number = '', $name = '')
+    {
+
+        $this->db2->select('nis, nama_nasabah');
+        $this->db2->where('nama_nasabah', $name);
+        $this->db2->where('nis', $number);
+
+        $sql = $this->db2->get($this->table_import_personal_saving);
+
+        return $sql->num_rows();
+    }
+
+    public function check_student_by_name_and_number($number = '', $name = '')
+    {
+        $this->db2->select('nis, nama_lengkap, password');
+        $this->db2->where('nis', $number);
+        $this->db2->where('nama_lengkap', $name);
+
+        $sql = $this->db2->get($this->table_student);
         return $sql->result();
     }
 
@@ -479,7 +491,7 @@ class SavingsModel extends CI_Model
 
     public function get_student_nis($nis_student = '')
     {
-        $this->db2->select('s.nis, s.password');
+        $this->db2->select('s.nis, s.nama_lengkap, s.password');
         $this->db2->from('siswa s');
         $this->db2->where('s.nis', $nis_student);
         $this->db2->limit(1);
@@ -561,7 +573,7 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
-	public function check_match_name($name = '')
+    public function check_match_name($name = '')
     {
         $searchWords = explode(' ', $name);
         $soundexConditions = [];
@@ -673,9 +685,9 @@ class SavingsModel extends CI_Model
 										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
 										WHERE panel_utsman.tt.nis_siswa = $nis AND
 										(
-											STR_TO_DATE(
-												panel_utsman.tt.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
@@ -725,10 +737,10 @@ class SavingsModel extends CI_Model
 										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
 										WHERE panel_utsman.tt.nis_siswa = $nis AND
 										(
-											STR_TO_DATE(
-												panel_utsman.tt.tanggal_transaksi,
-												'%d/%m/%Y'
-											) BETWEEN '$start_date' AND '$end_date'
+											DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
+										) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
@@ -777,9 +789,9 @@ class SavingsModel extends CI_Model
 										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
 										WHERE panel_utsman.tt.nis_siswa = $nis AND
 										(
-											STR_TO_DATE(
-												panel_utsman.tt.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									ORDER BY
@@ -843,9 +855,9 @@ class SavingsModel extends CI_Model
 									WHERE
 									panel_utsman.tb.nomor_rekening_bersama = $norek AND
 										(
-											STR_TO_DATE(
-												panel_utsman.ttb.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									ORDER BY
@@ -870,6 +882,7 @@ class SavingsModel extends CI_Model
 										panel_utsman.n.saldo_qurban,
 										panel_utsman.n.saldo_wisata,
 										panel_utsman.n.status_nasabah,
+										panel_utsman.n.status_nama_nasabah,
 										panel_utsman.n.tahun_ajaran,
 										CONCAT(
                                         panel_utsman.ta.tahun_awal,
@@ -883,7 +896,7 @@ class SavingsModel extends CI_Model
                                     	panel_utsman.ta.id_tahun_ajaran = panel_utsman.n.tahun_ajaran
 									ORDER BY
 										panel_utsman.n.id_nasabah
-									DESC");
+									ASC");
         return $sql->result();
     }
 
@@ -907,11 +920,11 @@ class SavingsModel extends CI_Model
 											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
 											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 1 AND(
-												STR_TO_DATE(
-													panel_utsman.ttu.tanggal_transaksi,
-													'%d/%m/%Y'
-												) BETWEEN '$start_date' AND '$end_date'
-											)
+											DATE_FORMAT(
+											panel_utsman.ttu.waktu_transaksi,
+                                                '%Y-%m-%d'
+                                                ) BETWEEN '$start_date' AND '$end_date'
+                                            )
 										) AS kredit_umum,
 										(
 											SELECT
@@ -921,10 +934,10 @@ class SavingsModel extends CI_Model
 												panel_utsman.transaksi_tabungan_umum ttu
 											WHERE
 												panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 2 AND(
-													STR_TO_DATE(
-														panel_utsman.ttu.tanggal_transaksi,
-														'%d/%m/%Y'
-													) BETWEEN '$start_date' AND '$end_date'
+													DATE_FORMAT(
+                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    '%Y-%m-%d'
+                                                    ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_umum,
 										(
@@ -933,10 +946,10 @@ class SavingsModel extends CI_Model
 											FROM panel_utsman.transaksi_tabungan_umum ttu
 											WHERE
 												panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
-													STR_TO_DATE(
-														panel_utsman.ttu.tanggal_transaksi,
-														'%d/%m/%Y'
-													) BETWEEN '$start_date' AND '$end_date'
+													DATE_FORMAT(
+                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    '%Y-%m-%d'
+                                                    ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
 												panel_utsman.ttu.id_transaksi_umum
@@ -950,10 +963,10 @@ class SavingsModel extends CI_Model
 											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
 											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND ttq.status_kredit_debet = 1 AND(
-												STR_TO_DATE(
-													panel_utsman.ttq.tanggal_transaksi,
-													'%d/%m/%Y'
-												) BETWEEN '$start_date' AND '$end_date'
+												DATE_FORMAT(
+                                                panel_utsman.ttq.waktu_transaksi,
+                                                '%Y-%m-%d'
+                                                ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS kredit_qurban,
 										(
@@ -964,11 +977,11 @@ class SavingsModel extends CI_Model
 												panel_utsman.transaksi_tabungan_qurban ttq
 											WHERE
 												panel_utsman.ttq.nis_siswa = s.nis AND panel_utsman.ttq.status_kredit_debet = 2 AND(
-													STR_TO_DATE(
-														panel_utsman.ttq.tanggal_transaksi,
-														'%d/%m/%Y'
-													) BETWEEN '$start_date' AND '$end_date'
-												)
+												DATE_FORMAT(
+											    panel_utsman.ttq.waktu_transaksi,
+                                                '%Y-%m-%d'
+                                                ) BETWEEN '$start_date' AND '$end_date'
+											)
 										) AS debet_qurban,
 										(
 											SELECT
@@ -977,10 +990,10 @@ class SavingsModel extends CI_Model
 												panel_utsman.transaksi_tabungan_qurban ttq
 											WHERE
 												panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND(
-													STR_TO_DATE(
-														panel_utsman.ttq.tanggal_transaksi,
-														'%d/%m/%Y'
-													) BETWEEN '$start_date' AND '$end_date'
+													DATE_FORMAT(
+                                                    panel_utsman.ttq.waktu_transaksi,
+                                                    '%Y-%m-%d'
+                                                    ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
 												panel_utsman.ttq.id_transaksi_qurban
@@ -994,10 +1007,10 @@ class SavingsModel extends CI_Model
 											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
 											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 1 AND(
-												STR_TO_DATE(
-													ttw.tanggal_transaksi,
-													'%d/%m/%Y'
-												) BETWEEN '$start_date' AND '$end_date'
+												DATE_FORMAT(
+                                                panel_utsman.ttw.waktu_transaksi,
+                                                '%Y-%m-%d'
+                                                ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS kredit_wisata,
 										(
@@ -1008,10 +1021,10 @@ class SavingsModel extends CI_Model
 												panel_utsman.transaksi_tabungan_wisata ttw
 											WHERE
 												ttw.nis_siswa = s.nis AND ttw.status_kredit_debet = 2 AND(
-													STR_TO_DATE(
-														ttw.tanggal_transaksi,
-														'%d/%m/%Y'
-													) BETWEEN '$start_date' AND '$end_date'
+													DATE_FORMAT(
+                                                    panel_utsman.ttw.waktu_transaksi,
+                                                    '%Y-%m-%d'
+                                                    ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_wisata,
 										(
@@ -1021,10 +1034,10 @@ class SavingsModel extends CI_Model
 												panel_utsman.transaksi_tabungan_wisata ttw
 											WHERE
 												panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND(
-													STR_TO_DATE(
-														panel_utsman.ttw.tanggal_transaksi,
-														'%d/%m/%Y'
-													) BETWEEN '$start_date' AND '$end_date'
+													DATE_FORMAT(
+                                                    panel_utsman.ttw.waktu_transaksi,
+                                                    '%Y-%m-%d'
+                                                    ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
 												panel_utsman.ttw.id_transaksi_wisata
@@ -1079,7 +1092,7 @@ class SavingsModel extends CI_Model
                                     	panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.tahun_ajaran
 									ORDER BY
 										panel_utsman.tb.id_nasabah_bersama
-									DESC");
+									ASC");
         return $sql->result();
     }
 
@@ -1106,10 +1119,10 @@ class SavingsModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 1 AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
-												) BETWEEN '$start_date' AND '$end_date'
+												DATE_FORMAT(
+                                                panel_utsman.ttb.waktu_transaksi,
+                                                '%Y-%m-%d'
+                                                ) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS kredit_bersama,
 									(
@@ -1120,10 +1133,10 @@ class SavingsModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
-												) BETWEEN '$start_date' AND '$end_date'
+												DATE_FORMAT(
+                                                panel_utsman.ttb.waktu_transaksi,
+                                                '%Y-%m-%d'
+                                                ) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_bersama,
 									(
@@ -1133,9 +1146,9 @@ class SavingsModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+													panel_utsman.tt.waktu_transaksi,
+													'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
@@ -1206,9 +1219,9 @@ class SavingsModel extends CI_Model
                                     keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
 									WHERE
 									(
-										STR_TO_DATE(
-											panel_utsman.tt.tanggal_transaksi,
-											'%d/%m/%Y'
+										DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
@@ -1261,9 +1274,9 @@ class SavingsModel extends CI_Model
                                     keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
 									WHERE
 									(
-										STR_TO_DATE(
-											panel_utsman.tt.tanggal_transaksi,
-											'%d/%m/%Y'
+										DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
@@ -1316,9 +1329,9 @@ class SavingsModel extends CI_Model
                                     keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
 									WHERE
 									(
-										STR_TO_DATE(
-											panel_utsman.tt.tanggal_transaksi,
-											'%d/%m/%Y'
+										DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
@@ -1377,12 +1390,12 @@ class SavingsModel extends CI_Model
 									ON
 										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.ttb.id_pegawai
 									WHERE
-										(
-											STR_TO_DATE(
-												panel_utsman.ttb.tanggal_transaksi,
-												'%d/%m/%Y'
-											) BETWEEN '$start_date' AND '$end_date'
-										)
+									(
+										DATE_FORMAT(
+											panel_utsman.tt.waktu_transaksi,
+											'%Y-%m-%d'
+										) BETWEEN '$start_date' AND '$end_date'
+									)
 									ORDER BY
 										panel_utsman.ttb.id_transaksi_bersama
 									DESC
@@ -1878,7 +1891,7 @@ class SavingsModel extends CI_Model
 
         $data = array(
             'nis' => $value['nis'],
-			'password' => $value['password'],
+            'password' => $value['password'],
             'nama_nasabah' => $value['nama_nasabah'],
             'tanggal_transaksi' => $value['tanggal_transaksi'],
             'tahun_ajaran' => $value['tahun_ajaran'],
@@ -1889,7 +1902,8 @@ class SavingsModel extends CI_Model
             'saldo_umum' => @$value['saldo_umum'],
             'saldo_qurban' => @$value['saldo_qurban'],
             'saldo_wisata' => @$value['saldo_wisata'],
-            'status_nasabah' => @$value['status_nasabah'],
+            'status_nasabah' => $value['status_nasabah'],
+            'status_nama_nasabah' => $value['status_nama_nasabah'],
         );
 
         $this->db2->where('id_nasabah', $id);
@@ -2437,6 +2451,38 @@ class SavingsModel extends CI_Model
     }
 
     //-----------------------------------------------------------------------//
+
+    public function delete_import_personal_saving_by_id($id = '')
+    {
+        $this->db2->trans_begin();
+
+        $this->db2->where('id_nasabah', $id);
+        $this->db2->delete($this->table_import_personal_saving);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
+
+    public function delete_import_joint_saving_by_id($id = '')
+    {
+        $this->db2->trans_begin();
+
+        $this->db2->where('id_nasabah_bersama', $id);
+        $this->db2->delete($this->table_import_joint_saving);
+
+        if ($this->db2->trans_status() === false) {
+            $this->db2->trans_rollback();
+            return false;
+        } else {
+            $this->db2->trans_commit();
+            return true;
+        }
+    }
 
     public function clear_import_data_personal_saving()
     {
