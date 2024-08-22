@@ -136,24 +136,31 @@ if (!empty($schoolyear)) {
                                 </div>
                             </div>
                             <div class="row mt-8">
-                                <div class="row col-lg-7">
-                                    <div class="col-lg-12 mb-lg-0 mb-6">
-                                        <button class="btn btn-primary btn-primary--icon" id="kt_search">
-                                            <span>
-                                                <i class="la la-search"></i>
-                                                <span>Cari</span>
-                                            </span>
-                                        </button>&#160;&#160;
-                                        <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
-                                            <span>
-                                                <i class="la la-close"></i>
-                                                <span>Reset</span>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row col-lg-5">
+                                <div class=" col-lg-10">
 
+                                    <button class="btn btn-primary btn-primary--icon" id="kt_search">
+                                        <span>
+                                            <i class="la la-search"></i>
+                                            <span>Cari</span>
+                                        </span>
+                                    </button>&#160;&#160;
+                                    <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+                                        <span>
+                                            <i class="la la-close"></i>
+                                            <span>Reset</span>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-2 text-right">
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-danger font-weight-bold blink_print "
+                                            data-toggle="modal" data-target="#modalKeteranganStatus"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <i class="flaticon-eye"></i>
+                                            Lihat Keterangan Status
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <!--begin: Datatable-->
@@ -373,6 +380,98 @@ if (!empty($schoolyear)) {
     </div>
 </div>
 <!-- End of Modal Debet  -->
+<!-- Modal KETERANGAN import  -->
+<div class="modal fade" tabindex="" role="dialog" id="modalKeteranganStatus">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title font-weight-bolder">Keterangan Status Import Tabungan Bersama
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger blink_print text-center font-weight-bolder font-size-h5">*PASTIKAN ANDA MEMILIH
+                    DATA YANG KEDUANYA BERSTATUS LABEL HIJAU*</p>
+                <div class="row">
+                    <table class="table table-separate table-hover table-light-danger table-checkable text-center">
+                        <thead>
+                            <tr>
+                                <th style="width: 60%">Keterangan</th>
+                                <th>Status PJ</th>
+                                <th>Status Rekening</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold">Semua atribut/inputan telah sesuai dan tidak ada kesalahan
+                                    input.</td>
+                                <td><span class="label label-over font-weight-bolder label-light-success label-inline">
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "NIS Penanggung Jawab"
+                                    (Kemungkinan NIS Siswa yang Menjadi PJ tersebut belum terdaftar di database atau
+                                    salah input)
+                                    <b class="text-danger">*Jika Status Penanggung Jawab berstatus <span
+                                            class="label label-over font-weight-bolder label-light-danger label-inline">TIDAK
+                                            TERDAFTAR
+                                        </span>. Anda dianjurkan untuk
+                                        menginputkan NIS Siswa yang menjadi Penanggung Jawab, Akan tetapi tetap
+                                        diperbolehkan untuk Menyetujui Import meskipun Belum Terdafatar.</b>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">TIDAK
+                                        TERDAFTAR
+                                    </span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "Nomor Rekening"
+                                    (Kolom "Nomor Rekening" terdapat kesamaan didalam file Excel yang di import
+                                    *silahkan
+                                    cek Nomor Rekening di file Excel)</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">DUPLIKAT
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "Nomor Rekening"
+                                    (Kemungkinan Nomor Rekening tersebut telah terdaftar di database sebelumnya)</td>
+                                <td><span class="label label-over font-weight-bolder label-light-success label-inline">
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">TERPAKAI</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of  KETERANGAN import   -->
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/blur.pin.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-import-joint-saving.js">
 </script>

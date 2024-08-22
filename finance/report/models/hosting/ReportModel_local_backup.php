@@ -52,9 +52,9 @@ class ReportModel extends CI_Model
 										panel_utsman.transaksi_tabungan_umum ttu
 									WHERE
 										panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 1 AND(
-											STR_TO_DATE(
-												panel_utsman.ttu.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.ttu.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_umum,
@@ -66,9 +66,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
 											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttu.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttu.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_umum,
@@ -79,9 +79,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
 											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
-												STR_TO_DATE(
-													panel_utsman.ttu.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttu.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
@@ -96,9 +96,9 @@ class ReportModel extends CI_Model
 										panel_utsman.transaksi_tabungan_qurban ttq
 									WHERE
 										panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 1 AND(
-											STR_TO_DATE(
-												panel_utsman.ttq.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.ttq.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_qurban,
@@ -110,9 +110,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
 											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttq.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttq.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_qurban,
@@ -123,9 +123,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
 											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND(
-												STR_TO_DATE(
-													panel_utsman.ttq.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttq.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
@@ -140,9 +140,9 @@ class ReportModel extends CI_Model
 										panel_utsman.transaksi_tabungan_wisata ttw
 									WHERE
 										panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 1 AND(
-											STR_TO_DATE(
-												panel_utsman.ttw.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.ttw.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_wisata,
@@ -153,9 +153,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
 											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttw.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttw.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_wisata,
@@ -166,9 +166,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
 											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND(
-												STR_TO_DATE(
-													panel_utsman.ttw.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttw.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
@@ -217,9 +217,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 1 AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttb.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS kredit_bersama,
@@ -231,9 +231,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttb.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_bersama,
@@ -244,16 +244,16 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttb.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
 											panel_utsman.ttb.id_transaksi_bersama
 										DESC
 									LIMIT 1
-									) AS saldo_bersama, 
+									) AS saldo_bersama,
 									CONCAT(
 										panel_utsman.ta.tahun_awal,
 										'/',
@@ -292,9 +292,9 @@ class ReportModel extends CI_Model
 										panel_utsman.transaksi_tabungan_umum ttu
 									WHERE
 										panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 1 AND(
-											STR_TO_DATE(
-												panel_utsman.ttu.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.ttu.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_umum,
@@ -306,9 +306,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
 											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttu.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttu.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_umum,
@@ -319,9 +319,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
 											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
-												STR_TO_DATE(
-													panel_utsman.ttu.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttu.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
@@ -336,9 +336,9 @@ class ReportModel extends CI_Model
 										panel_utsman.transaksi_tabungan_qurban ttq
 									WHERE
 										panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 1 AND(
-											STR_TO_DATE(
-												panel_utsman.ttq.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.ttq.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_qurban,
@@ -350,9 +350,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
 											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttq.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttq.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttq.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_qurban,
@@ -363,9 +363,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
 											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND(
-												STR_TO_DATE(
-													panel_utsman.ttq.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttq.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
@@ -380,9 +380,9 @@ class ReportModel extends CI_Model
 										panel_utsman.transaksi_tabungan_wisata ttw
 									WHERE
 										panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 1 AND(
-											STR_TO_DATE(
-												panel_utsman.ttw.tanggal_transaksi,
-												'%d/%m/%Y'
+											DATE_FORMAT(
+											panel_utsman.ttw.waktu_transaksi,
+											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									) AS kredit_wisata,
@@ -393,10 +393,10 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
 											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttw.tanggal_transaksi,
-													'%d/%m/%Y'
-												) BETWEEN '$start_date' AND '$end_date'
+											DATE_FORMAT(
+											panel_utsman.ttw.waktu_transaksi,
+											'%Y-%m-%d'
+											) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_wisata,
 									(
@@ -406,9 +406,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
 											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND(
-												STR_TO_DATE(
-													panel_utsman.ttw.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttw.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
@@ -457,9 +457,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 1 AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttb.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS kredit_bersama,
@@ -471,9 +471,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 2 AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttb.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS debet_bersama,
@@ -484,9 +484,9 @@ class ReportModel extends CI_Model
 											panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
-												STR_TO_DATE(
-													panel_utsman.ttb.tanggal_transaksi,
-													'%d/%m/%Y'
+												DATE_FORMAT(
+												panel_utsman.ttb.waktu_transaksi,
+												'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY

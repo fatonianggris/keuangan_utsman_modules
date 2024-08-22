@@ -54,8 +54,8 @@
                         <div class="card-body">
 
                             <!--begin: Search Form-->
-                            <form class="mb-6 mt-4">
-                                <div class="row mb-6">
+                            <form class="mb-4 mt-4">
+                                <div class="row mb-4">
                                     <div class="col-lg-2 mb-lg-0 mb-6">
                                         <label>Invoice:</label>
                                         <input type="text" class="form-control datatable-input"
@@ -88,24 +88,24 @@
                                         <select class="form-control datatable-input" data-col-index="10">
                                             <option value="">Pilih Tahun Ajaran</option>
                                             <?php
-													if (!empty($schoolyear)) {
-														foreach ($schoolyear as $key => $value) {
-															if ($value->status_tahun_ajaran == 1) {
-																?>
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value) {
+        if ($value->status_tahun_ajaran == 1) {
+            ?>
                                             <option value="<?php echo $value->id_tahun_ajaran; ?>" selected>
                                                 <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                             </option>
                                             <?php
-													} else {
-																?>
+} else {
+            ?>
                                             <option value="<?php echo $value->id_tahun_ajaran; ?>">
                                                 <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                             </option>
                                             <?php
-															}
-														}
-													}
-													?>
+}
+    }
+}
+?>
                                             <option value="">Semua</option>
                                         </select>
                                     </div>
@@ -160,36 +160,18 @@
                                     </div>
                                     <div class="col-lg-2 text-right">
                                         <div class="btn-group">
-                                            <button class="btn btn-warning font-weight-bold dropdown-toggle"
-                                                type="button" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="true">
-                                                <i class="flaticon2-download"></i>
-                                                Export
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <form class="form" id="frm-excel" action="<?php echo site_url('//'); ?>"
-                                                    method="POST">
-                                                    <input type="text" id="id_check_excel" class="form-control" value=""
-                                                        name="data_check" style="display:none">
-                                                    <button class="dropdown-item" role="button" type="submit"><i
-                                                            class="flaticon2-checking"></i>
-                                                        Laporan .csv</button>
-                                                </form>
-                                                <form class="form" id="frm-form" action="<?php echo site_url('//'); ?>"
-                                                    method="POST">
-                                                    <input type="text" id="id_check_form" class="form-control" value=""
-                                                        name="data_check" style="display:none">
-                                                    <button class="dropdown-item" role="button" type="submit"><i
-                                                            class="flaticon-doc"></i> Laporan
-                                                        .pdf</button>
-                                                </form>
-                                            </div>
+                                            <a href="#" class="btn btn-danger font-weight-bold blink_print "
+                                                data-toggle="modal" data-target="#modalKeteranganStatus"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="flaticon-eye"></i>
+                                                Lihat Keterangan Status
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </form>
 
-                     		<!--begin: Datatable-->
+                            <!--begin: Datatable-->
                             <table class="table table-separate table-hover table-light-success table-checkable"
                                 id="kt_datatable_income_du_invoice_success">
                                 <thead>
@@ -214,22 +196,22 @@
                                 </thead>
                                 <tbody>
                                     <?php
-										$nama_tingkat = '';
-										if (!empty($income_du)) {
-											foreach ($income_du as $key => $value) {
+$nama_tingkat = '';
+if (!empty($income_du)) {
+    foreach ($income_du as $key => $value) {
 
-												if ($value->level_tingkat == '6') {
-													$nama_tingkat = 'DC';
-												} else if ($value->level_tingkat == '1') {
-													$nama_tingkat = 'KB';
-												} else if ($value->level_tingkat == '2') {
-													$nama_tingkat = 'TK';
-												} else if ($value->level_tingkat == '3') {
-													$nama_tingkat = 'SD';
-												} else if ($value->level_tingkat == '4') {
-													$nama_tingkat = 'SMP';
-												}
-												?>
+        if ($value->level_tingkat == '6') {
+            $nama_tingkat = 'DC';
+        } else if ($value->level_tingkat == '1') {
+            $nama_tingkat = 'KB';
+        } else if ($value->level_tingkat == '2') {
+            $nama_tingkat = 'TK';
+        } else if ($value->level_tingkat == '3') {
+            $nama_tingkat = 'SD';
+        } else if ($value->level_tingkat == '4') {
+            $nama_tingkat = 'SMP';
+        }
+        ?>
                                     <tr>
                                         <td>
                                             <?php echo $value->id_tagihan_pembayaran; ?>
@@ -247,7 +229,7 @@
                                         <td class="font-weight-bolder"><?php echo (($nama_tingkat)); ?></td>
                                         <td class="font-weight-bolder">
                                             <?php $tingkat = explode(":", $value->informasi);
-       										 echo substr($tingkat[1], 0, -1);?>
+        echo substr($tingkat[1], 0, -1);?>
                                         </td>
                                         <td class="font-weight-bold">
                                             <?php echo strtoupper(strtolower(substr($value->rincian, 0, -1))); ?></td>
@@ -427,16 +409,16 @@
                                 <label>Tahun Ajaran</label>
                                 <select name="tahun_ajaran" class="form-control form-control-lg">
                                     <?php
-							if (!empty($schoolyear)) {
-								foreach ($schoolyear as $key => $value_sch) {
-									?>
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value_sch) {
+        ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-								}
-							}
-							?>
+}
+}
+?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,</b> Pilih
                                     TA</span>
@@ -549,6 +531,178 @@
     </div>
 </div>
 <!-- End of Modal DPB  -->
+
+<!-- Modal KETERANGAN DU  -->
+<div class="modal fade" tabindex="" role="dialog" id="modalKeteranganStatus">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title font-weight-bolder">Keterangan Status Data Tagihan DU
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger blink_print text-center font-weight-bolder font-size-h5">*PASTIKAN ANDA MEMILIH DATA YANG KETIGANYA BERSTATUS LABEL HIJAU*</p>
+                <div class="row">
+                    <table class="table table-separate table-hover table-light-danger table-checkable text-center">
+                        <thead>
+                            <tr>
+                                <th style="width: 55%">Keterangan</th>
+                                <th>Status No Bayar</th>
+                                <th>Status Nama</th>
+                                <th>Status Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold">Semua atribut/inputan telah sesuai dan tidak ada kesalahan
+                                    penulisan.</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat peringatan input pada kolom "Nomor Bayar & Nama
+                                    Tertagih/Siswa'
+                                    (Kemungkinan Nomor Bayar dengan Nama Tertagih/Siswa tersebut belum Terdafatar
+                                    didalam database)
+                                    <b class="text-danger">*Anda boleh memilih data tersebut jika memang belum
+                                        Terdaftar atau Siswa baru. Data terpilih akan secara otomatis tersimpan di data
+                                        Siswa dan Tagihan akan ditambahkan di data Tagihan Siswa</b>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-warning label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-warning label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom ID/Kode Invoice
+                                    (ID/Kode Invoice terdapat kesamaan dengan kode tagihan yang telah ditagihkan
+                                    sebelumnya).</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">TERPAKAI</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom ID/Kode Invoice
+                                    (ID/Kode Invoice terdapat kesamaan didalam file Excel yang di import *silahkan cek
+                                    Kode Invoice di file Excel)</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">DUPLIKAT</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat peringatan untuk inputan "Nomor Bayar" kemungkinan
+                                    ada salah inputan Nomor Bayar karena Status Nama telah terdaftar</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-warning label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom Nomor Bayar
+                                    (Nomor Bayar terdapat kesamaan didalam file Excel yang di import *silahkan cek
+                                    Nomor Bayar di file Excel)</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">DUPLIKAT</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat peringatan untuk inputan "Nama Tertagih/Siswa"
+                                    kemungkinan
+                                    ada salah inputan Nama Tertagih/Siswa karena Status Nomor Bayar telah terdaftar</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-warning label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom Nama Tertagih/Siswa
+                                    (Nama Tertagih/Siswa terdapat kesamaan didalam file Excel yang di import *silahkan
+                                    cek Nama Tertagih/Siswa di file Excel)</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">DUPLIKAT</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat peringatan input pada kolom Nama
+                                    Tertagih/Siswa
+                                    (Kemungkinan Nama Tertagih/Siswa dengan Nomor Bayar tersebut terdapat kesalahan
+                                    penulisan dari Nama yang terdaftar sebelumnya *Contoh = 'AHMAD IBRAHIM' salah
+                                    menjadi 'AHMAD IBRAHUM')</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-warning label-inline">MIRIP</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span></td>
+                            </tr>
+
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of  KETERANGAN DU   -->
 <!--end::Content-->
 <script
     src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/crud/datatables/search-options/budget-income-du-transition.js">

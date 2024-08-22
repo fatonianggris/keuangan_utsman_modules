@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="card-body" id="paper">
-							
+
                             <!--begin: Search Form-->
                             <div class="row mb-4">
                                 <div class="col-lg-2 mb-lg-0 mb-6">
@@ -143,37 +143,33 @@ if (!empty($schoolyear)) {
                                 </div>
                             </div>
                             <div class="row mt-8">
-                                <div class="row col-lg-7">
-                                    <div class="col-lg-12 mb-lg-0 mb-6">
-                                        <button class="btn btn-primary btn-primary--icon" id="kt_search">
-                                            <span>
-                                                <i class="la la-search"></i>
-                                                <span>Cari</span>
-                                            </span>
-                                        </button>&#160;&#160;
-                                        <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
-                                            <span>
-                                                <i class="la la-close"></i>
-                                                <span>Reset</span>
-                                            </span>
-                                        </button>
-                                    </div>
+                                <div class="col-lg-10">
+                                    <button class="btn btn-primary btn-primary--icon" id="kt_search">
+                                        <span>
+                                            <i class="la la-search"></i>
+                                            <span>Cari</span>
+                                        </span>
+                                    </button>&#160;&#160;
+                                    <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+                                        <span>
+                                            <i class="la la-close"></i>
+                                            <span>Reset</span>
+                                        </span>
+                                    </button>
                                 </div>
-                                <div class="row col-lg-5">
-                                    <div class="col-lg-4 mb-lg-0 mb-6 text-right">
-
-                                    </div>
-                                    <div class="col-lg-6 mb-lg-0 mb-6">
-
-                                    </div>
-                                    <div class="col-lg-2 mb-lg-0 mb-6">
-
+                                <div class="col-lg-2 text-right">
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-danger font-weight-bold blink_print "
+                                            data-toggle="modal" data-target="#modalKeteranganStatus"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <i class="flaticon-eye"></i>
+                                            Lihat Keterangan Status
+                                        </a>
                                     </div>
                                 </div>
                             </div>
 
                             <!--begin: Datatable-->
-
                             <div class="table-responsive">
                                 <table class="table table-separate table-hover table-light-default table-checkable"
                                     id="table_transcation">
@@ -191,7 +187,7 @@ if (!empty($schoolyear)) {
                                             <th>Saldo Umum</th>
                                             <th>Saldo Qurban</th>
                                             <th>Saldo Wisata</th>
-                                            <th>Status Rekening</th>
+                                            <th>Status NIS/Rekening</th>
                                             <th>Status Nama</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -412,6 +408,121 @@ if (!empty($schoolyear)) {
     </div>
 </div>
 <!-- End of Modal Debet  -->
+<!-- Modal KETERANGAN import  -->
+<div class="modal fade" tabindex="" role="dialog" id="modalKeteranganStatus">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title font-weight-bolder">Keterangan Status Data Tabungan Umum/Qurban/Wisata
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger blink_print text-center font-weight-bolder font-size-h5">*PASTIKAN ANDA MEMILIH
+                    DATA YANG KEDUANYA BERSTATUS LABEL HIJAU*</p>
+                <div class="row">
+                    <table class="table table-separate table-hover table-light-danger table-checkable text-center">
+                        <thead>
+                            <tr>
+                                <th style="width: 60%">Keterangan</th>
+                                <th>Status NIS/Rekening</th>
+                                <th>Status Nama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold">Semua atribut/inputan telah sesuai dan tidak ada kesalahan
+                                    penulisan.</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "NIS/Rekening"
+                                    (Kemungkinan NIS/Rekening tersebut terpakai dengan NIS/Rekening sebemlunya)
+                                    <b class="text-danger">*Jika NIS/Rekening berstatus <span
+                                            class="label label-over font-weight-bolder label-light-danger label-inline">TERPAKAI
+                                        </span>. Anda diwajibkan
+                                        menginputkan saldo secara manual di Menu Setor & Tarik Tabungan, karena Nasabah
+                                        telah terdaftar sebelumnya.</b>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">TERPAKAI
+                                    </span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "NIS/Rekening"
+                                    (Kolom NIS/Rekening terdapat kesamaan didalam file Excel yang di import *silahkan
+                                    cek
+                                    NIS/Rekening di file Excel)</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">DUPLIKAT</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat peringatan untuk inputan "Nama Siswa"
+                                    (Kemungkinan ada kesalahan inputan karena Nama Siswa terdapat kemiripan dengan data
+                                    yang terdaftar sebelumnya *Contoh = 'AHMAD IBRAHIM' salah
+                                    menjadi 'AHMAD IBRAHUM')</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-warning label-inline">MIRIP
+                                    </span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "Nama Siswa"
+                                    (Kolom Nama Siswa terdapat kesamaan didalam file Excel yang di import *silahkan
+                                    cek Nama Siswa di file Excel)</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">DUPLIKAT</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "Nama Siswa"
+                                    (Kemungkinan Nama Siswa tersebut telah terdaftar sebelumnya)</td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-success label-inline">TIDAK
+                                        TERDAFTAR</span>
+                                </td>
+                                <td><span
+                                        class="label label-over font-weight-bolder label-light-danger label-inline">TERPAKAI</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of  KETERANGAN import   -->
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/blur.pin.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-import-personal-saving.js">
 </script>
