@@ -63,8 +63,8 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label>Nomor Rekening/NIS Nasabah</label>
-                                            <input type="text" name="input_nomor_rekening" class="form-control
-                                                class=" form-control form-control-lg"
+                                            <input type="text" name="input_nomor_rekening"
+                                                class="form-control form-control-lg"
                                                 placeholder="Isikan Nomor Rekening" />
                                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,
                                                 </b>isikan Nomor Rekening/NIS Nasabah</span>
