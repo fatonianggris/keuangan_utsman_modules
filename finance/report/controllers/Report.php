@@ -354,7 +354,7 @@ class Report extends MX_Controller
                     );
                 } else {
                     $html = $this->load->view('pdf_template/personal_saving', $get, true);
-                    $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true);
+                    $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
 
                 }
             }
@@ -405,7 +405,7 @@ class Report extends MX_Controller
                     );
                 } else {
                     $html = $this->load->view('pdf_template/joint_saving', $get, true);
-                    $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true);
+                    $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
 
                 }
             }
