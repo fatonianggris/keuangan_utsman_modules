@@ -3344,17 +3344,21 @@ class Savings extends MX_Controller
                     $data['status_nama_nasabah'] = '3';
                 } else {
                     $result = $this->SavingsModel->check_match_name(trim($data['nama_nasabah']));
+
                     if ($result) {
                         for ($j = 0; $j < count($result); $j++) {
                             $score = $this->matching->single_text_match(strtoupper(trim($result[$j]->nama_lengkap)), strtoupper(trim($data['nama_nasabah'])));
                             if ($score >= 80 && $score <= 100) {
                                 $data['status_nama_nasabah'] = '1';
+                                break;
                             } else {
                                 $data['status_nama_nasabah'] = '2';
+                                break;
                             }
                         }
                     } else {
                         $data['status_nama_nasabah'] = '2';
+                        // var_dump($data);exit;
                     }
                 }
 
@@ -3698,14 +3702,15 @@ class Savings extends MX_Controller
         } else {
             $check_pass = $this->SavingsModel->check_pin_admin($this->user_finance[0]->id_akun_keuangan);
 
-            $this->db->query('SET SESSION interactive_timeout = 28000');
-            $this->db->query('SET SESSION wait_timeout = 28000');
-            $this->db2->query('SET SESSION interactive_timeout = 28000');
-            $this->db2->query('SET SESSION wait_timeout = 28000');
             // pass verify
             if (password_verify(($data['pin_verification']), $check_pass[0]->pin_akun)) {
                 // gcaptha verify
                 if ($this->googleCaptachStore($recaptchaResponse, $userIp) == 1) {
+
+                    $this->db->query('SET SESSION interactive_timeout = 28000');
+                    $this->db->query('SET SESSION wait_timeout = 28000');
+                    $this->db2->query('SET SESSION interactive_timeout = 28000');
+                    $this->db2->query('SET SESSION wait_timeout = 28000');
 
                     // If file uploaded
                     $file_mimes = array(
@@ -3855,97 +3860,137 @@ class Savings extends MX_Controller
             // pass verify
             if (password_verify(($data['password']), $check_pass[0]->password)) {
 
-                $input = $this->SavingsModel->accept_import_data_personal_saving($data['data_check']);
+                $this->db->query('SET SESSION interactive_timeout = 28000');
+                $this->db->query('SET SESSION wait_timeout = 28000');
+                $this->db2->query('SET SESSION interactive_timeout = 28000');
+                $this->db2->query('SET SESSION wait_timeout = 28000');
 
-                if ($input == true) {
+                $check_used_number = $this->SavingsModel->check_used_number_import_data_personal_saving($data['data_check']);
+                if ($check_used_number >= 1 && $data['status_similiar'] == 'false') {
 
-                    $transaksi_umum = array();
-                    $transaksi_qurban = array();
-                    $transaksi_wisata = array();
-
-                    $result_import = $this->SavingsModel->get_import_personal_saving($data['data_check'], 2);
-
-                    for ($i = 0; $i < count($result_import); $i++) {
-
-                        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-
-                        if ($result_import[$i]['saldo_umum'] != 0 && $result_import[$i]['saldo_umum'] != null && $result_import[$i]['saldo_umum'] != "" && !empty($result_import[$i]['saldo_umum'])) {
-
-                            $transaksi_umum[$i] = array(
-                                'nomor_transaksi_umum' => "TU01" . $random_number . "/" . date('YmdHis'),
-                                'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
-                                'id_tingkat' => $result_import[$i]['tingkat'],
-                                'nis_siswa' => $result_import[$i]['nis'],
-                                'nominal' => $result_import[$i]['saldo_umum'],
-                                'jenis_tabungan' => 1,
-                                'saldo' => $result_import[$i]['saldo_umum'],
-                                'catatan' => "transaksi import awal",
-                                'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
-                                'status_kredit_debet' => "1",
-                                'th_ajaran' => $result_import[$i]['tahun_ajaran'],
-                            );
-                        }
-
-                        if ($result_import[$i]['saldo_qurban'] != 0 && $result_import[$i]['saldo_qurban'] != null && $result_import[$i]['saldo_qurban'] != "" && !empty($result_import[$i]['saldo_qurban'])) {
-
-                            $transaksi_qurban[$i] = array(
-                                'nomor_transaksi_qurban' => "TQ01" . $random_number . "/" . date('YmdHis'),
-                                'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
-                                'id_tingkat' => $result_import[$i]['tingkat'],
-                                'nis_siswa' => $result_import[$i]['nis'],
-                                'nominal' => $result_import[$i]['saldo_qurban'],
-                                'jenis_tabungan' => 2,
-                                'saldo' => $result_import[$i]['saldo_qurban'],
-                                'catatan' => "transaksi import awal",
-                                'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
-                                'status_kredit_debet' => "1",
-                                'th_ajaran' => $result_import[$i]['tahun_ajaran'],
-                            );
-                        }
-
-                        if ($result_import[$i]['saldo_wisata'] != 0 && $result_import[$i]['saldo_wisata'] != null && $result_import[$i]['saldo_wisata'] != "" && !empty($result_import[$i]['saldo_wisata'])) {
-
-                            $transaksi_wisata[$i] = array(
-                                'nomor_transaksi_wisata' => "TW01" . $random_number . "/" . date('YmdHis'),
-                                'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
-                                'id_tingkat' => $result_import[$i]['tingkat'],
-                                'nis_siswa' => $result_import[$i]['nis'],
-                                'nominal' => $result_import[$i]['saldo_wisata'],
-                                'jenis_tabungan' => 3,
-                                'saldo' => $result_import[$i]['saldo_wisata'],
-                                'catatan' => "transaksi import awal",
-                                'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
-                                'status_kredit_debet' => "1",
-                                'th_ajaran' => $result_import[$i]['tahun_ajaran'],
-                            );
-                        }
-                    }
-
-                    $this->db2->insert_batch('transaksi_tabungan_umum', $transaksi_umum);
-                    $this->db2->insert_batch('transaksi_tabungan_qurban', $transaksi_qurban);
-                    $this->db2->insert_batch('transaksi_tabungan_wisata', $transaksi_wisata);
-
-                    $this->SavingsModel->clear_import_data_personal_saving();
-
-                    $output = array("status" => true,
+                    $output = array("status" => false,
+                        "confirm" => false,
                         "token" => $token,
-                        "messages" => "Berhasil!, Seluruh Data Nasabah telah diimport ke database. Dimohon untuk melakukan <b>PENGECEKAN ULANG</b>. Terima Kasih.",
+                        "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>TERPAKAI</b>. Silahkan revisi data Import Anda.",
                     );
 
                 } else {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan import ulang..",
-                    );
+                    $check_duplicate = $this->SavingsModel->check_duplicate_import_data_personal_saving($data['data_check']);
+                    if ($check_duplicate >= 1 && $data['status_similiar'] == 'false') {
+                        $output = array("status" => false,
+                            "confirm" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>DUPLIKAT</b>. Silahkan revisi data Import Anda.",
+                        );
+
+                    } else {
+                        $check_similiar = $this->SavingsModel->check_similiar_import_data_personal_saving($data['data_check']);
+                        if ($check_similiar >= 1 && $data['status_similiar'] == 'false') {
+                            $output = array("status" => true,
+                                "confirm" => true,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-warning'>MIRIP</b>. Revisi atau Lanjutkan ?.",
+                            );
+
+                        } else if (($check_similiar >= 1 && $data['status_similiar'] == 'true') || ($check_similiar == 0 && $data['status_similiar'] == 'false')) {
+
+                            $input = $this->SavingsModel->accept_import_data_personal_saving($data['data_check']);
+                            if ($input == true) {
+
+                                $transaksi_umum = array();
+                                $transaksi_qurban = array();
+                                $transaksi_wisata = array();
+
+                                $result_import = $this->SavingsModel->get_import_personal_saving($data['data_check'], 2);
+
+                                for ($i = 0; $i < count($result_import); $i++) {
+
+                                    $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+
+                                    if ($result_import[$i]['saldo_umum'] != 0 && $result_import[$i]['saldo_umum'] != null && $result_import[$i]['saldo_umum'] != "" && !empty($result_import[$i]['saldo_umum'])) {
+
+                                        $transaksi_umum[$i] = array(
+                                            'nomor_transaksi_umum' => "TU01" . $random_number . "/" . date('YmdHis'),
+                                            'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
+                                            'id_tingkat' => $result_import[$i]['tingkat'],
+                                            'nis_siswa' => $result_import[$i]['nis'],
+                                            'nominal' => $result_import[$i]['saldo_umum'],
+                                            'jenis_tabungan' => 1,
+                                            'saldo' => $result_import[$i]['saldo_umum'],
+                                            'catatan' => "transaksi import awal",
+                                            'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
+                                            'status_kredit_debet' => "1",
+                                            'th_ajaran' => $result_import[$i]['tahun_ajaran'],
+                                        );
+                                    }
+
+                                    if ($result_import[$i]['saldo_qurban'] != 0 && $result_import[$i]['saldo_qurban'] != null && $result_import[$i]['saldo_qurban'] != "" && !empty($result_import[$i]['saldo_qurban'])) {
+
+                                        $transaksi_qurban[$i] = array(
+                                            'nomor_transaksi_qurban' => "TQ01" . $random_number . "/" . date('YmdHis'),
+                                            'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
+                                            'id_tingkat' => $result_import[$i]['tingkat'],
+                                            'nis_siswa' => $result_import[$i]['nis'],
+                                            'nominal' => $result_import[$i]['saldo_qurban'],
+                                            'jenis_tabungan' => 2,
+                                            'saldo' => $result_import[$i]['saldo_qurban'],
+                                            'catatan' => "transaksi import awal",
+                                            'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
+                                            'status_kredit_debet' => "1",
+                                            'th_ajaran' => $result_import[$i]['tahun_ajaran'],
+                                        );
+                                    }
+
+                                    if ($result_import[$i]['saldo_wisata'] != 0 && $result_import[$i]['saldo_wisata'] != null && $result_import[$i]['saldo_wisata'] != "" && !empty($result_import[$i]['saldo_wisata'])) {
+
+                                        $transaksi_wisata[$i] = array(
+                                            'nomor_transaksi_wisata' => "TW01" . $random_number . "/" . date('YmdHis'),
+                                            'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
+                                            'id_tingkat' => $result_import[$i]['tingkat'],
+                                            'nis_siswa' => $result_import[$i]['nis'],
+                                            'nominal' => $result_import[$i]['saldo_wisata'],
+                                            'jenis_tabungan' => 3,
+                                            'saldo' => $result_import[$i]['saldo_wisata'],
+                                            'catatan' => "transaksi import awal",
+                                            'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
+                                            'status_kredit_debet' => "1",
+                                            'th_ajaran' => $result_import[$i]['tahun_ajaran'],
+                                        );
+                                    }
+                                }
+
+                                $this->db2->insert_batch('transaksi_tabungan_umum', $transaksi_umum);
+                                $this->db2->insert_batch('transaksi_tabungan_qurban', $transaksi_qurban);
+                                $this->db2->insert_batch('transaksi_tabungan_wisata', $transaksi_wisata);
+
+                                $this->SavingsModel->clear_import_data_personal_saving();
+
+                                $output = array("status" => true,
+                                    "token" => $token,
+                                    "confirm" => false,
+                                    "messages" => "Berhasil!, Seluruh Data Nasabah telah diimport ke database. Dimohon untuk melakukan <b>PENGECEKAN ULANG</b>. Terima Kasih.",
+                                );
+
+                            } else {
+                                $output = array("status" => false,
+                                    "token" => $token,
+                                    "confirm" => false,
+                                    "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan import ulang..",
+                                );
+                            }
+                        }
+                    }
                 }
 
             } else {
 
                 $output = array("status" => false,
+                    "confirm" => false,
                     "token" => $token,
                     "messages" => "Opss!, Password Anda salah, Coba ulangi sekali lagi..",
                 );
             }
+
         }
         echo json_encode($output);
     }
@@ -3992,54 +4037,95 @@ class Savings extends MX_Controller
             // pass verify
             if (password_verify(($data['password']), $check_pass[0]->password)) {
 
-                $input = $this->SavingsModel->accept_import_data_joint_saving($data['data_check']);
+                $this->db->query('SET SESSION interactive_timeout = 28000');
+                $this->db->query('SET SESSION wait_timeout = 28000');
+                $this->db2->query('SET SESSION interactive_timeout = 28000');
+                $this->db2->query('SET SESSION wait_timeout = 28000');
 
-                if ($input == true) {
+                $check_used_number = $this->SavingsModel->check_used_number_import_data_joint_saving($data['data_check']);
+                if ($check_used_number >= 1 && $data['status_pj'] == 'false') {
 
-                    $transaksi_bersama = array();
-
-                    $result_import = $this->SavingsModel->get_import_joint_saving($data['data_check'], 2);
-
-                    for ($i = 0; $i < count($result_import); $i++) {
-
-                        $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
-
-                        if ($result_import[$i]['saldo_bersama'] != 0 && $result_import[$i]['saldo_bersama'] != null && $result_import[$i]['saldo_bersama'] != "" && !empty($result_import[$i]['saldo_bersama'])) {
-
-                            $transaksi_bersama[$i] = array(
-                                'nomor_transaksi_bersama' => "TB01" . $random_number . "/" . date('YmdHis'),
-                                'nomor_rekening_bersama' => $result_import[$i]['nomor_rekening_bersama'],
-                                'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
-                                'id_tingkat' => $result_import[$i]['tingkat'],
-                                'saldo' => $result_import[$i]['saldo_bersama'],
-                                'catatan' => "transaksi import awal",
-                                'nominal' => $result_import[$i]['saldo_bersama'],
-                                'status_kredit_debet' => "1",
-                                'th_ajaran' => $result_import[$i]['tahun_ajaran'],
-                                'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
-                            );
-                        }
-                    }
-
-                    $this->db2->insert_batch('transaksi_tabungan_bersama', $transaksi_bersama);
-
-                    $this->SavingsModel->clear_import_data_joint_saving();
-
-                    $output = array("status" => true,
+                    $output = array("status" => false,
+                        "confirm" => false,
                         "token" => $token,
-                        "messages" => "Berhasil!, Seluruh Data Nasabah Tabungan Bersama telah diimport ke database. Dimohon untuk melakukan <b>PENGECEKAN ULANG</b>. Terima Kasih.",
+                        "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>TERPAKAI</b>. Silahkan revisi data Import Anda.",
                     );
 
                 } else {
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan import ulang..",
-                    );
+
+                    $check_duplicate = $this->SavingsModel->check_duplicate_import_data_joint_saving($data['data_check']);
+                    if ($check_duplicate >= 1 && $data['status_pj'] == 'false') {
+                        $output = array("status" => false,
+                            "confirm" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>DUPLIKAT</b>. Silahkan revisi data Import Anda.",
+                        );
+
+                    } else {
+
+                        $check_pj = $this->SavingsModel->check_responsible_person_import_data_joint_saving($data['data_check']);
+
+                        if ($check_pj >= 1 && $data['status_pj'] == 'false') {
+                            $output = array("status" => true,
+                                "confirm" => true,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat Penanggung Jawab yang <b class='text-danger'>TIDAK TERDAFTAR</b>. Revisi atau Lanjutkan ?.",
+                            );
+
+                        } else if (($check_pj >= 1 && $data['status_pj'] == 'true') || ($check_pj == 0 && $data['status_pj'] == 'false')) {
+
+                            $input = $this->SavingsModel->accept_import_data_joint_saving($data['data_check']);
+                            if ($input == true) {
+
+                                $transaksi_bersama = array();
+                                $result_import = $this->SavingsModel->get_import_joint_saving($data['data_check'], 2);
+
+                                for ($i = 0; $i < count($result_import); $i++) {
+
+                                    $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+
+                                    if ($result_import[$i]['saldo_bersama'] != 0 && $result_import[$i]['saldo_bersama'] != null && $result_import[$i]['saldo_bersama'] != "" && !empty($result_import[$i]['saldo_bersama'])) {
+
+                                        $transaksi_bersama[$i] = array(
+                                            'nomor_transaksi_bersama' => "TB01" . $random_number . "/" . date('YmdHis'),
+                                            'nomor_rekening_bersama' => $result_import[$i]['nomor_rekening_bersama'],
+                                            'id_pegawai' => $this->user_finance[0]->id_akun_keuangan,
+                                            'id_tingkat' => $result_import[$i]['tingkat'],
+                                            'saldo' => $result_import[$i]['saldo_bersama'],
+                                            'catatan' => "transaksi import awal",
+                                            'nominal' => $result_import[$i]['saldo_bersama'],
+                                            'status_kredit_debet' => "1",
+                                            'th_ajaran' => $result_import[$i]['tahun_ajaran'],
+                                            'tanggal_transaksi' => $result_import[$i]['tanggal_transaksi'],
+                                        );
+                                    }
+                                }
+
+                                $this->db2->insert_batch('transaksi_tabungan_bersama', $transaksi_bersama);
+
+                                $this->SavingsModel->clear_import_data_joint_saving();
+
+                                $output = array("status" => true,
+                                    "confirm" => false,
+                                    "token" => $token,
+                                    "messages" => "Berhasil!, Seluruh Data Nasabah Tabungan Bersama telah diimport ke database. Dimohon untuk melakukan <b>PENGECEKAN ULANG</b>. Terima Kasih.",
+                                );
+
+                            } else {
+                                $output = array("status" => false,
+                                    "confirm" => false,
+                                    "token" => $token,
+                                    "messages" => "Mohon Maaf!, Terjadi Kesalahan, Silahkan import ulang..",
+                                );
+                            }
+                        }
+                    }
                 }
 
             } else {
 
                 $output = array("status" => false,
+                    "confirm" => false,
                     "token" => $token,
                     "messages" => "Opss!, Password Anda salah, Coba ulangi sekali lagi..",
                 );

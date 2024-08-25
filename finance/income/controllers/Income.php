@@ -1381,34 +1381,73 @@ class Income extends MX_Controller
                 );
             } else {
 
-                $input_siswa = $this->IncomeModel->accept_import_data_siswa_du($data['data_check']);
+                $this->db->query('SET SESSION interactive_timeout = 28000');
+                $this->db->query('SET SESSION wait_timeout = 28000');
+                $this->db2->query('SET SESSION interactive_timeout = 28000');
+                $this->db2->query('SET SESSION wait_timeout = 28000');
 
-                if ($input_siswa == true) {
+                $check_used_number = $this->IncomeModel->check_used_number_import_data_payment($data['data_check']);
+                if ($check_used_number >= 1 && $data['status_similiar'] == 'false') {
 
-                    $input_payment = $this->IncomeModel->accept_import_data_payment_du($data['data_check']);
-
-                    if ($input_payment == true) {
-
-                        $this->IncomeModel->clear_import_data_payment();
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil!, Seluruh Data Tagihan DU & Data Siswa Terpilih telah diimport ke database. dimohon untuk melakukan <b>Pengecekan Ulang</b>. Terima Kasih.",
-                        );
-                    } else {
-                        $output = array("status" => false,
-                            "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                        );
-                    }
-                } else {
                     $output = array("status" => false,
+                        "confirm" => false,
                         "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>TERPAKAI</b>. Silahkan revisi data Import Anda.",
                     );
+
+                } else {
+                    $check_duplicate = $this->IncomeModel->check_duplicate_import_data_payment($data['data_check']);
+                    if ($check_duplicate >= 1 && $data['status_similiar'] == 'false') {
+                        $output = array("status" => false,
+                            "confirm" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>DUPLIKAT</b>. Silahkan revisi data Import Anda.",
+                        );
+
+                    } else {
+                        $check_similiar = $this->IncomeModel->check_similiar_not_registered_import_data_payment($data['data_check']);
+                        if ($check_similiar >= 1 && $data['status_similiar'] == 'false') {
+                            $output = array("status" => true,
+                                "confirm" => true,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status peringatan <b class='text-warning'>TIDAK TERDAFATAR/MIRIP</b>. Revisi atau Lanjutkan ?.",
+                            );
+
+                        } else if (($check_similiar >= 1 && $data['status_similiar'] == 'true') || ($check_similiar == 0 && $data['status_similiar'] == 'false')) {
+
+                            $input_siswa = $this->IncomeModel->accept_import_data_siswa_du($data['data_check']);
+                            if ($input_siswa == true) {
+
+                                $input_payment = $this->IncomeModel->accept_import_data_payment_du($data['data_check']);
+                                if ($input_payment == true) {
+
+                                    $this->IncomeModel->clear_import_data_payment();
+                                    $output = array("status" => true,
+										"confirm" => false,
+                                        "token" => $token,
+                                        "messages" => "Berhasil!, Seluruh Data Tagihan DU & Data Siswa Terpilih telah diimport ke database. dimohon untuk melakukan <b>Pengecekan Ulang</b>. Terima Kasih.",
+                                    );
+                                } else {
+                                    $output = array("status" => false,
+										"confirm" => false,
+                                        "token" => $token,
+                                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                                    );
+                                }
+                            } else {
+                                $output = array("status" => false,
+									"confirm" => false,
+                                    "token" => $token,
+                                    "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                                );
+                            }
+                        }
+                    }
                 }
             }
         } else {
             $output = array("status" => false,
+				"confirm" => false,
                 "token" => $token,
                 "messages" => "Mohon Maaf., Password yang Anda inputkan salah!",
             );
@@ -1442,34 +1481,74 @@ class Income extends MX_Controller
                 );
             } else {
 
-                $input_siswa = $this->IncomeModel->accept_import_data_siswa_dpb($data['data_check']);
+                $this->db->query('SET SESSION interactive_timeout = 28000');
+                $this->db->query('SET SESSION wait_timeout = 28000');
+                $this->db2->query('SET SESSION interactive_timeout = 28000');
+                $this->db2->query('SET SESSION wait_timeout = 28000');
 
-                if ($input_siswa == true) {
+                $check_used_number = $this->IncomeModel->check_used_number_import_data_payment($data['data_check']);
+                if ($check_used_number >= 1 && $data['status_similiar'] == 'false') {
 
-                    $input_payment = $this->IncomeModel->accept_import_data_payment_dpb($data['data_check']);
-
-                    if ($input_payment == true) {
-
-                        $this->IncomeModel->clear_import_data_payment();
-                        $output = array("status" => true,
-                            "token" => $token,
-                            "messages" => "Berhasil!, Seluruh Data Tagihan DPB & Data Siswa Terpilih telah diimport ke database. dimohon untuk melakukan <b>Pengecekan Ulang</b>. Terima Kasih.",
-                        );
-                    } else {
-                        $output = array("status" => false,
-                            "token" => $token,
-                            "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
-                        );
-                    }
-                } else {
                     $output = array("status" => false,
+                        "confirm" => false,
                         "token" => $token,
-                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                        "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>TERPAKAI</b>. Silahkan revisi data Import Anda.",
                     );
+
+                } else {
+                    $check_duplicate = $this->IncomeModel->check_duplicate_import_data_payment($data['data_check']);
+                    if ($check_duplicate >= 1 && $data['status_similiar'] == 'false') {
+                        $output = array("status" => false,
+                            "confirm" => false,
+                            "token" => $token,
+                            "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status <b class='text-danger'>DUPLIKAT</b>. Silahkan revisi data Import Anda.",
+                        );
+
+                    } else {
+                        $check_similiar = $this->IncomeModel->check_similiar_not_registered_import_data_payment($data['data_check']);
+                        if ($check_similiar >= 1 && $data['status_similiar'] == 'false') {
+                            $output = array("status" => true,
+                                "confirm" => true,
+                                "token" => $token,
+                                "messages" => "Mohon Maaf!, Data yang Anda pilih terdapat status peringatan <b class='text-warning'>TIDAK TERDAFATAR/MIRIP</b>. Revisi atau Lanjutkan ?.",
+                            );
+
+                        } else if (($check_similiar >= 1 && $data['status_similiar'] == 'true') || ($check_similiar == 0 && $data['status_similiar'] == 'false')) {
+
+                            $input_siswa = $this->IncomeModel->accept_import_data_siswa_dpb($data['data_check']);
+                            if ($input_siswa == true) {
+
+                                $input_payment = $this->IncomeModel->accept_import_data_payment_dpb($data['data_check']);
+
+                                if ($input_payment == true) {
+
+                                    $this->IncomeModel->clear_import_data_payment();
+                                    $output = array("status" => true,
+										"confirm" => false,
+                                        "token" => $token,
+                                        "messages" => "Berhasil!, Seluruh Data Tagihan DPB & Data Siswa Terpilih telah diimport ke database. dimohon untuk melakukan <b>Pengecekan Ulang</b>. Terima Kasih.",
+                                    );
+                                } else {
+                                    $output = array("status" => false,
+										"confirm" => false,
+                                        "token" => $token,
+                                        "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                                    );
+                                }
+                            } else {
+                                $output = array("status" => false,
+									"confirm" => false,
+                                    "token" => $token,
+                                    "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
+                                );
+                            }
+                        }
+                    }
                 }
             }
         } else {
             $output = array("status" => false,
+				"confirm" => false,
                 "token" => $token,
                 "messages" => "Mohon Maaf., Password yang Anda inputkan salah!",
             );

@@ -74,7 +74,7 @@ class ReportModel extends CI_Model
 									) AS debet_umum,
 									(
 										SELECT
-											COALESCE(panel_utsman.ttu.nominal, 0)
+											COALESCE(panel_utsman.ttu.saldo, 0)
 										FROM
 											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
@@ -118,7 +118,7 @@ class ReportModel extends CI_Model
 									) AS debet_qurban,
 									(
 										SELECT
-											COALESCE(panel_utsman.ttq.nominal, 0)
+											COALESCE(panel_utsman.ttq.saldo, 0)
 										FROM
 											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
@@ -161,7 +161,7 @@ class ReportModel extends CI_Model
 									) AS debet_wisata,
 									(
 										SELECT
-											COALESCE(panel_utsman.ttw.nominal, 0)
+											COALESCE(panel_utsman.ttw.saldo, 0)
 										FROM
 											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
@@ -314,7 +314,7 @@ class ReportModel extends CI_Model
 									) AS debet_umum,
 									(
 										SELECT
-											COALESCE(panel_utsman.ttu.nominal, 0)
+											COALESCE(panel_utsman.ttu.saldo, 0)
 										FROM
 											panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
@@ -358,7 +358,7 @@ class ReportModel extends CI_Model
 									) AS debet_qurban,
 									(
 										SELECT
-											COALESCE(panel_utsman.ttq.nominal, 0)
+											COALESCE(panel_utsman.ttq.saldo, 0)
 										FROM
 											panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
@@ -401,7 +401,7 @@ class ReportModel extends CI_Model
 									) AS debet_wisata,
 									(
 										SELECT
-											COALESCE(panel_utsman.ttw.nominal, 0)
+											COALESCE(panel_utsman.ttw.saldo, 0)
 										FROM
 											panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE

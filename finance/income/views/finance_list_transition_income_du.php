@@ -721,7 +721,7 @@ function act_confirm_data_payment() {
 
     Swal.fire({
         title: "Peringatan!",
-        html: "Apakah anda yakin ingin <b>MENYETUJUI</b> Impor Data Tagihan DU ini?",
+        html: "Apakah anda yakin ingin <b>MENYETUJUI</b> Impor Data Tagihan DU yang Terpilih?",
         icon: "warning",
         input: 'password',
         inputLabel: 'Password Anda',
@@ -741,65 +741,133 @@ function act_confirm_data_payment() {
         showLoaderOnConfirm: true,
         closeOnConfirm: false,
         closeOnCancel: true,
-        preConfirm: (text) => {
-            return $.ajax({
-                type: "POST",
-                url: "<?php echo site_url("finance/income/income/accept_import_payment_du") ?>",
-                data: {
-                    data_check: rows_selected.join(","),
-                    password: text,
-                    [csrfName]: csrfHash
-                },
-                dataType: 'JSON',
-                success: function(data) {
-                    $('.txt_csrfname').val(data.token);
+		preConfirm: (text) => {
+			return $.ajax({
+				type: "post",
+				url: `${HOST_URL}/finance/income/income/accept_import_payment_du`,
+				data: {
+					password: text,
+					data_check: rows_selected.join(","),
+					status_similiar: false,
+					[csrfName]: csrfHash
+				},
+				dataType: 'JSON',
+				success: function (data) {
 
-                    if (data.status) {
-                        Swal.fire({
-                            html: data.messages,
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Oke!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-success"
-                            }
-                        }).then(function() {
-                            setTimeout(function() {
-                                window.location.replace(
-                                    `${HOST_URL}/finance/income/income/list_income_du`
-                                );
-                            }, 1000);
-                        });
+					if (data.status == true && data.confirm == true) {
+						Swal.fire({
+							html: data.messages,
+							icon: "warning",
+							showCancelButton: true,
+							confirmButtonColor: "#1BC5BD",
+							confirmButtonText: "Ya, Lanjutkan!",
+							cancelButtonText: "Tidak, Revisi!",
+							showLoaderOnConfirm: true,
+							closeOnConfirm: false,
+							closeOnCancel: true,
+						}).then(function (result) {
 
-                    } else {
-                        Swal.fire({
-                            html: data.messages,
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Oke!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-danger"
-                            }
-                        }).then(function() {
-                            KTUtil.scrollTop();
-                        });
-                    }
-                },
-                error: function(data) {
-                    console.log(data);
-                    Swal.fire("Opsss!", "Koneksi Internet Bermasalah.", "error");
-                }
-            });
-        },
-        allowOutsideClick: () => !Swal.isLoading()
+							if (result.isConfirmed) {
+
+								$.ajax({
+									type: "post",
+									url: `${HOST_URL}/finance/income/income/accept_import_payment_du`,
+									data: {
+										password: text,
+										data_check: rows_selected.join(","),
+										status_similiar: true,
+										[csrfName]: csrfHash
+									},
+									dataType: 'JSON',
+									success: function (data) {
+
+										$('.txt_csrfname').val(data.token);
+
+										if (data.status == true) {
+											Swal.fire({
+												html: data.messages,
+												icon: "success",
+												buttonsStyling: false,
+												confirmButtonText: "Oke!",
+												customClass: {
+													confirmButton: "btn font-weight-bold btn-success"
+												}
+											}).then(function () {
+												setTimeout(function () {
+													window.location.replace(`${HOST_URL}/finance/income/income/list_income_du`);
+												}, 500);
+											});
+
+										} else {
+											Swal.fire({
+												html: data.messages,
+												icon: "error",
+												buttonsStyling: false,
+												confirmButtonText: "Oke!",
+												customClass: {
+													confirmButton: "btn font-weight-bold btn-danger"
+												}
+											}).then(function () {
+												KTUtil.scrollTop();
+											});
+										}
+									},
+									error: function (result) {
+										// console.log(result);
+										Swal.fire("Opsss!", "Koneksi Internet Bermasalah.", "error");
+									}
+								});
+							} else {
+								Swal.fire("Dibatalkan!", "Persetujuan Impor Data Tagihan DU telah dibatalkan.", "error");
+							}
+						});
+						return false;
+					} else if (data.status == true && data.confirm == false) {
+						Swal.fire({
+							html: data.messages,
+							icon: "success",
+							buttonsStyling: false,
+							confirmButtonText: "Oke!",
+							customClass: {
+								confirmButton: "btn font-weight-bold btn-success"
+							}
+						}).then(function () {
+							setTimeout(function () {
+								window.location.replace(`${HOST_URL}/finance/income/income/list_income_du`);
+							}, 500);
+						});
+
+					} else {
+						Swal.fire({
+							html: data.messages,
+							icon: "error",
+							buttonsStyling: false,
+							confirmButtonText: "Oke!",
+							customClass: {
+								confirmButton: "btn font-weight-bold btn-danger"
+							}
+						}).then(function () {
+							KTUtil.scrollTop();
+						});
+					}
+				},
+				error: function (result) {
+					// console.log(result);
+					Swal.fire("Opsss!", "Koneksi Internet Bermasalah.", "error");
+				}
+			});
+		},
+		allowOutsideClick: () => !Swal.isLoading()
     }).then(function(data) {
-        if (!result.isConfirm) {
+        if (!result.isConfirmed) {
             Swal.fire("Dibatalkan!", "Persetujuan Impor Data Tagihan DU telah dibatalkan.", "error");
         }
     });
+	return false;
 }
 
 function act_reject_data_payment() {
+	
     var csrfName = $('.txt_csrfname').attr('name');
     var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 
@@ -828,18 +896,18 @@ function act_reject_data_payment() {
                     if (data.status) {
                         Swal.fire({
                             html: data.messages,
-                            icon: "success",
+                            icon: "warning",
                             buttonsStyling: false,
                             confirmButtonText: "Oke!",
                             customClass: {
-                                confirmButton: "btn font-weight-bold btn-success"
+                                confirmButton: "btn font-weight-bold btn-warning"
                             }
                         }).then(function() {
                             setTimeout(function() {
                                 window.location.replace(
                                     `${HOST_URL}/finance/income/income/list_income_du`
                                 );
-                            }, 1000);
+                            }, 500);
                         });
                     } else {
                         Swal.fire({
@@ -863,9 +931,10 @@ function act_reject_data_payment() {
         },
         allowOutsideClick: () => !Swal.isLoading()
     }).then(function(data) {
-        if (!result.isConfirm) {
+        if (!result.isConfirmed) {
             Swal.fire("Dibatalkan!", "Pembatalan Impor Data Tagihan DU telah dibatalkan.", "error");
         }
     });
+	return false;
 }
 </script>

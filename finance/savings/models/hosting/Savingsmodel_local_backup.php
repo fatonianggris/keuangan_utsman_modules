@@ -93,6 +93,90 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function check_duplicate_import_data_personal_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+									panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+									FROM
+										panel_utsman.import_nasabah_personal inp
+									WHERE
+										panel_utsman.inp.id_nasabah IN ($id)
+									AND(
+										(panel_utsman.inp.status_nasabah = 3) +
+										(panel_utsman.inp.status_nama_nasabah = 3) >= 1
+									)");
+
+        return $sql->num_rows();
+    }
+
+    public function check_used_number_import_data_personal_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+							FROM
+								panel_utsman.import_nasabah_personal inp
+							WHERE
+								panel_utsman.inp.id_nasabah IN ($id)
+							AND(
+								(panel_utsman.inp.status_nasabah = 1) +
+								(panel_utsman.inp.status_nama_nasabah = 4) >= 1
+							)");
+
+        return $sql->num_rows();
+    }
+
+    public function check_similiar_import_data_personal_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+							FROM
+								panel_utsman.import_nasabah_personal inp
+							WHERE
+								panel_utsman.inp.id_nasabah IN ($id)
+							AND panel_utsman.inp.status_nama_nasabah = 1");
+
+        return $sql->num_rows();
+    }
+
+    public function check_duplicate_import_data_joint_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_nasabah_bersama
+							FROM
+								panel_utsman.import_nasabah_bersama inb
+							WHERE
+								panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND panel_utsman.inb.status_nasabah_bersama = 3");
+
+        return $sql->num_rows();
+    }
+
+    public function check_used_number_import_data_joint_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_nasabah_bersama
+							FROM
+								panel_utsman.import_nasabah_bersama inb
+							WHERE
+								panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND panel_utsman.inb.status_nasabah_bersama = 1");
+
+        return $sql->num_rows();
+    }
+
+    public function check_responsible_person_import_data_joint_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_penanggung_jawab
+							FROM
+								panel_utsman.import_nasabah_bersama inb
+							WHERE
+								panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND panel_utsman.inb.status_penanggung_jawab = 2");
+
+        return $sql->num_rows();
+    }
+
     public function get_import_personal_saving($id = '', $status = '')
     {
         $sql = $this->db2->query("SELECT
@@ -942,7 +1026,7 @@ class SavingsModel extends CI_Model
 										) AS debet_umum,
 										(
 											SELECT
-												COALESCE(ttu.nominal, 0)
+												COALESCE(panel_utsman.ttu.saldo, 0)
 											FROM panel_utsman.transaksi_tabungan_umum ttu
 											WHERE
 												panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
@@ -985,7 +1069,7 @@ class SavingsModel extends CI_Model
 										) AS debet_qurban,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttq.nominal, 0)
+												COALESCE(panel_utsman.ttq.saldo, 0)
 											FROM
 												panel_utsman.transaksi_tabungan_qurban ttq
 											WHERE
@@ -1029,7 +1113,7 @@ class SavingsModel extends CI_Model
 										) AS debet_wisata,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttw.nominal, 0)
+												COALESCE(panel_utsman.ttw.saldo, 0)
 											FROM
 												panel_utsman.transaksi_tabungan_wisata ttw
 											WHERE
@@ -1147,7 +1231,7 @@ class SavingsModel extends CI_Model
 										WHERE
 											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
 												DATE_FORMAT(
-													panel_utsman.tt.waktu_transaksi,
+													panel_utsman.ttb.waktu_transaksi,
 													'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)

@@ -87,24 +87,24 @@
                                         <select class="form-control datatable-input" data-col-index="10">
                                             <option value="">Pilih Tahun Ajaran</option>
                                             <?php
-													if (!empty($schoolyear)) {
-														foreach ($schoolyear as $key => $value) {
-															if ($value->status_tahun_ajaran == 1) {
-																?>
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value) {
+        if ($value->status_tahun_ajaran == 1) {
+            ?>
                                             <option value="<?php echo $value->id_tahun_ajaran; ?>" selected>
                                                 <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                             </option>
                                             <?php
-													} else {
-																?>
+} else {
+            ?>
                                             <option value="<?php echo $value->id_tahun_ajaran; ?>">
                                                 <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                             </option>
                                             <?php
-															}
-														}
-													}
-													?>
+}
+    }
+}
+?>
                                             <option value="">Semua</option>
                                         </select>
                                     </div>
@@ -227,7 +227,7 @@ if (!empty($income_dpb)) {
                                         <td class="font-weight-bolder"><?php echo (($nama_tingkat)); ?></td>
                                         <td class="font-weight-bolder">
                                             <?php $tingkat = explode(":", $value->informasi);
-       										 echo substr($tingkat[1], 0, -1);?>
+        echo substr($tingkat[1], 0, -1);?>
                                         </td>
                                         <td class="font-weight-bold">
                                             <?php echo strtoupper(strtolower(substr($value->rincian, 0, -1))); ?></td>
@@ -720,7 +720,7 @@ function act_confirm_data_payment() {
 
     Swal.fire({
         title: "Peringatan!",
-        html: "Apakah anda yakin ingin <b>MENYETUJUI</b> Impor Data Tagihan DPB ini?",
+        html: "Apakah anda yakin ingin <b>MENYETUJUI</b> Impor Data Tagihan DPB yang Terpilih?",
         icon: "warning",
         input: 'password',
         inputLabel: 'Password Anda',
@@ -740,61 +740,129 @@ function act_confirm_data_payment() {
         showLoaderOnConfirm: true,
         closeOnConfirm: false,
         closeOnCancel: true,
-        preConfirm: (text) => {
-            return $.ajax({
-                type: "post",
-                url: "<?php echo site_url("finance/income/income/accept_import_payment_dpb") ?>",
-                data: {
-                    data_check: rows_selected.join(","),
-                    password: text,
-                    [csrfName]: csrfHash
-                },
-                dataType: 'json',
-                success: function(data) {
-                    $('.txt_csrfname').val(data.token);
-                    if (data.status) {
-                        Swal.fire({
-                            html: data.messages,
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Oke!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-success"
-                            }
-                        }).then(function() {
-                            setTimeout(function() {
-                                window.location.replace(
-                                    `${HOST_URL}/finance/income/income/list_income_dpb`
-                                );
-                            }, 1000);
-                        });
+		preConfirm: (text) => {
+			return $.ajax({
+				type: "post",
+				url: `${HOST_URL}/finance/income/income/accept_import_payment_dpb`,
+				data: {
+					password: text,
+					data_check: rows_selected.join(","),
+					status_similiar: false,
+					[csrfName]: csrfHash
+				},
+				dataType: 'JSON',
+				success: function (data) {
 
-                    } else {
-                        Swal.fire({
-                            html: data.messages,
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Oke!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-danger"
-                            }
-                        }).then(function() {
-                            KTUtil.scrollTop();
-                        });
-                    }
-                },
-                error: function(data) {
-                    console.log(data);
-                    Swal.fire("Opsss!", "Koneksi Internet Bermasalah.", "error");
-                }
-            });
-        },
-        allowOutsideClick: () => !Swal.isLoading()
+					if (data.status == true && data.confirm == true) {
+						Swal.fire({
+							html: data.messages,
+							icon: "warning",
+							showCancelButton: true,
+							confirmButtonColor: "#1BC5BD",
+							confirmButtonText: "Ya, Lanjutkan!",
+							cancelButtonText: "Tidak, Revisi!",
+							showLoaderOnConfirm: true,
+							closeOnConfirm: false,
+							closeOnCancel: true,
+						}).then(function (result) {
+
+							if (result.isConfirmed) {
+
+								$.ajax({
+									type: "post",
+									url: `${HOST_URL}/finance/income/income/accept_import_payment_dpb`,
+									data: {
+										password: text,
+										data_check: rows_selected.join(","),
+										status_similiar: true,
+										[csrfName]: csrfHash
+									},
+									dataType: 'JSON',
+									success: function (data) {
+
+										$('.txt_csrfname').val(data.token);
+
+										if (data.status == true) {
+											Swal.fire({
+												html: data.messages,
+												icon: "success",
+												buttonsStyling: false,
+												confirmButtonText: "Oke!",
+												customClass: {
+													confirmButton: "btn font-weight-bold btn-success"
+												}
+											}).then(function () {
+												setTimeout(function () {
+													window.location.replace(`${HOST_URL}/finance/income/income/list_income_dpb`);
+												}, 500);
+											});
+
+										} else {
+											Swal.fire({
+												html: data.messages,
+												icon: "error",
+												buttonsStyling: false,
+												confirmButtonText: "Oke!",
+												customClass: {
+													confirmButton: "btn font-weight-bold btn-danger"
+												}
+											}).then(function () {
+												KTUtil.scrollTop();
+											});
+										}
+									},
+									error: function (result) {
+										// console.log(result);
+										Swal.fire("Opsss!", "Koneksi Internet Bermasalah.", "error");
+									}
+								});
+							} else {
+								Swal.fire("Dibatalkan!", "Persetujuan Impor Data Tagihan DPB telah dibatalkan.", "error");
+							}
+						});
+						return false;
+					} else if (data.status == true && data.confirm == false) {
+						Swal.fire({
+							html: data.messages,
+							icon: "success",
+							buttonsStyling: false,
+							confirmButtonText: "Oke!",
+							customClass: {
+								confirmButton: "btn font-weight-bold btn-success"
+							}
+						}).then(function () {
+							setTimeout(function () {
+								window.location.replace(`${HOST_URL}/finance/income/income/list_income_dpb`);
+							}, 500);
+						});
+
+					} else {
+						Swal.fire({
+							html: data.messages,
+							icon: "error",
+							buttonsStyling: false,
+							confirmButtonText: "Oke!",
+							customClass: {
+								confirmButton: "btn font-weight-bold btn-danger"
+							}
+						}).then(function () {
+							KTUtil.scrollTop();
+						});
+					}
+				},
+				error: function (result) {
+					// console.log(result);
+					Swal.fire("Opsss!", "Koneksi Internet Bermasalah.", "error");
+				}
+			});
+		},
+		allowOutsideClick: () => !Swal.isLoading()
     }).then(function(data) {
         if (!data.isConfirm) {
             Swal.fire("Dibatalkan!", "Persetujuan Impor Data Tagihan DPB telah dibatalkan.", "error");
         }
     });
+	return false;
 }
 
 function act_reject_data_payment(id, name) {
@@ -826,11 +894,11 @@ function act_reject_data_payment(id, name) {
                     if (data.status) {
                         Swal.fire({
                             html: data.messages,
-                            icon: "success",
+                            icon: "warning",
                             buttonsStyling: false,
                             confirmButtonText: "Oke!",
                             customClass: {
-                                confirmButton: "btn font-weight-bold btn-success"
+                                confirmButton: "btn font-weight-bold btn-warning"
                             }
                         }).then(function() {
                             setTimeout(function() {
@@ -865,5 +933,6 @@ function act_reject_data_payment(id, name) {
             Swal.fire("Dibatalkan!", "Pembatalan Impor Data Tagihan DPB telah dibatalkan.", "error");
         }
     });
+	return false;
 }
 </script>

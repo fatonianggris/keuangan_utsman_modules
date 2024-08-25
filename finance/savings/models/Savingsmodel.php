@@ -93,6 +93,90 @@ class SavingsModel extends CI_Model
         return $sql->result();
     }
 
+    public function check_duplicate_import_data_personal_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+									u8514965_panel_utsman.inp.nis, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
+									FROM
+										u8514965_panel_utsman.import_nasabah_personal inp
+									WHERE
+										u8514965_panel_utsman.inp.id_nasabah IN ($id)
+									AND(
+										(u8514965_panel_utsman.inp.status_nasabah = 3) +
+										(u8514965_panel_utsman.inp.status_nama_nasabah = 3) >= 1
+									)");
+
+        return $sql->num_rows();
+    }
+
+    public function check_used_number_import_data_personal_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								u8514965_panel_utsman.inp.nis, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
+							FROM
+								u8514965_panel_utsman.import_nasabah_personal inp
+							WHERE
+								u8514965_panel_utsman.inp.id_nasabah IN ($id)
+							AND(
+								(u8514965_panel_utsman.inp.status_nasabah = 1) +
+								(u8514965_panel_utsman.inp.status_nama_nasabah = 4) >= 1
+							)");
+
+        return $sql->num_rows();
+    }
+
+    public function check_similiar_import_data_personal_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								u8514965_panel_utsman.inp.nis, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
+							FROM
+								u8514965_panel_utsman.import_nasabah_personal inp
+							WHERE
+								u8514965_panel_utsman.inp.id_nasabah IN ($id)
+							AND u8514965_panel_utsman.inp.status_nama_nasabah = 1");
+
+        return $sql->num_rows();
+    }
+
+    public function check_duplicate_import_data_joint_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								u8514965_panel_utsman.inb.nomor_rekening_bersama, u8514965_panel_utsman.inb.nama_tabungan_bersama, u8514965_panel_utsman.inb.status_nasabah_bersama
+							FROM
+								u8514965_panel_utsman.import_nasabah_bersama inb
+							WHERE
+								u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND u8514965_panel_utsman.inb.status_nasabah_bersama = 3");
+
+        return $sql->num_rows();
+    }
+
+    public function check_used_number_import_data_joint_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								u8514965_panel_utsman.inb.nomor_rekening_bersama, u8514965_panel_utsman.inb.nama_tabungan_bersama, u8514965_panel_utsman.inb.status_nasabah_bersama
+							FROM
+								u8514965_panel_utsman.import_nasabah_bersama inb
+							WHERE
+								u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND u8514965_panel_utsman.inb.status_nasabah_bersama = 1");
+
+        return $sql->num_rows();
+    }
+
+    public function check_responsible_person_import_data_joint_saving($id = '')
+    {
+        $sql = $this->db->query("SELECT
+								u8514965_panel_utsman.inb.nomor_rekening_bersama, u8514965_panel_utsman.inb.nama_tabungan_bersama, u8514965_panel_utsman.inb.status_penanggung_jawab
+							FROM
+								u8514965_panel_utsman.import_nasabah_bersama inb
+							WHERE
+								u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND u8514965_panel_utsman.inb.status_penanggung_jawab = 2");
+
+        return $sql->num_rows();
+    }
+
     public function get_import_personal_saving($id = '', $status = '')
     {
         $sql = $this->db2->query("SELECT
@@ -1147,7 +1231,7 @@ class SavingsModel extends CI_Model
 										WHERE
 											u8514965_panel_utsman.ttb.nomor_rekening_bersama = u8514965_panel_utsman.tb.nomor_rekening_bersama AND(
 												DATE_FORMAT(
-													u8514965_panel_utsman.tt.waktu_transaksi,
+													u8514965_panel_utsman.ttb.waktu_transaksi,
 													'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)

@@ -211,6 +211,61 @@ class IncomeModel extends CI_Model
         return $sql->result();
     }
 
+    public function check_duplicate_import_data_payment($id = '')
+    {
+        $sql = $this->db->query("SELECT
+										panel_utsman.ttp.id_tagihan_pembayaran,
+										panel_utsman.ttp.nomor_siswa,
+										panel_utsman.ttp.status_nomor_terdaftar,
+										panel_utsman.ttp.status_nama_duplikat,
+										panel_utsman.ttp.status_invoice_duplikat
+									FROM
+										panel_utsman.transisi_tagihan_pembayaran ttp
+									WHERE
+										panel_utsman.ttp.id_tagihan_pembayaran IN($id)
+									AND(
+										(panel_utsman.ttp.status_nomor_terdaftar = 3) +
+										(panel_utsman.ttp.status_nama_duplikat = 3) +
+										(panel_utsman.ttp.status_invoice_duplikat = 3) >= 1
+									)");
+
+        return $sql->num_rows();
+    }
+
+    public function check_used_number_import_data_payment($id = '')
+    {
+        $sql = $this->db->query("SELECT
+										panel_utsman.ttp.nomor_siswa, panel_utsman.ttp.status_nomor_terdaftar, panel_utsman.ttp.status_nama_duplikat, panel_utsman.ttp.status_invoice_duplikat
+									FROM
+										panel_utsman.transisi_tagihan_pembayaran ttp
+									WHERE
+										panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
+									AND panel_utsman.ttp.status_invoice_duplikat = 2");
+
+        return $sql->num_rows();
+    }
+
+    public function check_similiar_not_registered_import_data_payment($id = '')
+    {
+        $sql = $this->db->query("SELECT
+										panel_utsman.ttp.id_tagihan_pembayaran,
+										panel_utsman.ttp.nomor_siswa,
+										panel_utsman.ttp.status_nomor_terdaftar,
+										panel_utsman.ttp.status_nama_duplikat,
+										panel_utsman.ttp.status_invoice_duplikat
+									FROM
+										panel_utsman.transisi_tagihan_pembayaran ttp
+									WHERE
+										panel_utsman.ttp.id_tagihan_pembayaran IN($id)
+									AND(
+										(panel_utsman.ttp.status_nomor_terdaftar = 2) +
+										(panel_utsman.ttp.status_nama_duplikat = 2) +
+										(panel_utsman.ttp.status_nama_duplikat = 4) >= 1
+									)");
+
+        return $sql->num_rows();
+    }
+
     public function get_structure_account()
     {
         $this->db->select('*');
@@ -993,20 +1048,20 @@ class IncomeModel extends CI_Model
 
         $data_invoice = array(
             'id_invoice' => $value['nomor_invoice'],
-			'tipe_tagihan' => 2,
+            'tipe_tagihan' => 2,
             'nomor_siswa' => $value['nomor_pembayaran'],
             'nominal_tagihan' => $value['nominal_tagihan'],
             'nama' => $value['nama_siswa'],
             'level_tingkat' => $value['level_tingkat'],
             'tanggal_invoice' => $value['tanggal_invoice'],
-			'th_ajaran' => $value['tahun_ajaran'],
+            'th_ajaran' => $value['tahun_ajaran'],
             'nama_kelas' => @$value['nama_kelas'],
             'email' => @$value['email'],
             'nomor_hp' => @$value['nomor_hp'],
             'rincian' => @$value['rincian'],
             'informasi' => @$value['informasi'],
             'catatan' => @$value['catatan'],
-			'status_pembayaran' => "MENUNGGU",
+            'status_pembayaran' => "MENUNGGU",
         );
 
         $data_profile = array(
@@ -1016,7 +1071,7 @@ class IncomeModel extends CI_Model
             'password' => $value['password'],
             'nama_lengkap' => $value['nama_siswa'],
             'level_tingkat' => $value['level_tingkat'],
-			'th_ajaran' => $value['th_ajaran'],
+            'th_ajaran' => $value['th_ajaran'],
             'email' => @$value['email'],
             'nomor_handphone' => @$value['nomor_hp'],
         );
@@ -1041,20 +1096,20 @@ class IncomeModel extends CI_Model
 
         $data_invoice = array(
             'id_invoice' => $value['nomor_invoice'],
-			'tipe_tagihan' => 1,
+            'tipe_tagihan' => 1,
             'nomor_siswa' => $value['nomor_pembayaran'],
             'nominal_tagihan' => $value['nominal_tagihan'],
             'nama' => $value['nama_siswa'],
             'level_tingkat' => $value['level_tingkat'],
             'tanggal_invoice' => $value['tanggal_invoice'],
-			'th_ajaran' => $value['tahun_ajaran'],
+            'th_ajaran' => $value['tahun_ajaran'],
             'nama_kelas' => @$value['nama_kelas'],
             'email' => @$value['email'],
             'nomor_hp' => @$value['nomor_hp'],
             'rincian' => @$value['rincian'],
             'informasi' => @$value['informasi'],
             'catatan' => @$value['catatan'],
-			'status_pembayaran' => "MENUNGGU",
+            'status_pembayaran' => "MENUNGGU",
         );
 
         $data_profile = array(
@@ -1064,7 +1119,7 @@ class IncomeModel extends CI_Model
             'nama_lengkap' => $value['nama_siswa'],
             'password' => $value['password'],
             'level_tingkat' => $value['level_tingkat'],
-			'th_ajaran' => $value['th_ajaran'],
+            'th_ajaran' => $value['th_ajaran'],
             'email' => @$value['email'],
             'nomor_handphone' => @$value['nomor_hp'],
         );
@@ -1089,7 +1144,7 @@ class IncomeModel extends CI_Model
 
         $data_invoice = array(
             'id_invoice' => $value['nomor_invoice'],
-			'tipe_tagihan' => 2,
+            'tipe_tagihan' => 2,
             'nomor_siswa' => $value['nomor_pembayaran'],
             'nominal_tagihan' => $value['nominal_tagihan'],
             'nama' => $value['nama_siswa'],
@@ -1160,7 +1215,7 @@ class IncomeModel extends CI_Model
             'level_tingkat' => $value['level_tingkat'],
             'email' => @$value['email'],
             'nomor_handphone' => @$value['nomor_hp'],
-			'th_ajaran' => $value['th_ajaran'],
+            'th_ajaran' => $value['th_ajaran'],
         );
 
         $this->db2->where('id_tagihan_pembayaran_du', $id);
