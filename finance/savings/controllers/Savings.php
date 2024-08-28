@@ -764,7 +764,7 @@ class Savings extends MX_Controller
                     $status_qurban = "";
                     $status_wisata = "";
 
-                    if ($data['input_saldo_tabungan_umum'] >= 2000) {
+                    if ($data['input_saldo_tabungan_umum'] >= 1000) {
 
                         $data_umum = array(
                             'nomor_transaksi_umum' => "TU01" . $random_number . "/" . date('YmdHis'),
@@ -794,10 +794,10 @@ class Savings extends MX_Controller
                         $keterangan_umum = "";
                     } else {
 
-                        $keterangan_umum = "<b>->TRANSAKSI DI TABUNGAN UMUM SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
+                        $keterangan_umum = "<b>->TRANSAKSI DI TABUNGAN UMUM SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 1000)</b><br>";
                     }
 
-                    if ($data['input_saldo_tabungan_qurban'] >= 2000) {
+                    if ($data['input_saldo_tabungan_qurban'] >= 1000) {
 
                         $data_qurban = array(
                             'nomor_transaksi_qurban' => "TQ01/" . $random_number . "/" . date('YmdHis'),
@@ -826,10 +826,10 @@ class Savings extends MX_Controller
                         $keterangan_qurban = "";
                     } else {
 
-                        $keterangan_qurban = "<b>->TRANSAKSI DI TABUNGAN QURBAN SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
+                        $keterangan_qurban = "<b>->TRANSAKSI DI TABUNGAN QURBAN SEBESAR Rp. $data[input_saldo_tabungan_umum], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 1000)</b><br>";
                     }
 
-                    if ($data['input_saldo_tabungan_wisata'] >= 2000) {
+                    if ($data['input_saldo_tabungan_wisata'] >= 1000) {
 
                         $data_wisata = array(
                             'nomor_transaksi_wisata' => "TW01/" . $random_number . "/" . date('YmdHis'),
@@ -858,7 +858,7 @@ class Savings extends MX_Controller
                         $keterangan_wisata = "";
                     } else {
 
-                        $keterangan_wisata = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
+                        $keterangan_wisata = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_saldo_tabungan_wisata], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 1000)</b><br>";
                     }
 
                     $transaction = array(
@@ -938,7 +938,7 @@ class Savings extends MX_Controller
 
                 if ($input == true) {
 
-                    if ($data['input_nominal_saldo'] != "" or $data['input_nominal_saldo'] >= 2000 or $data['input_nominal_saldo'] != null) {
+                    if ($data['input_nominal_saldo'] != "" or $data['input_nominal_saldo'] >= 1000 or $data['input_nominal_saldo'] != null) {
 
                         $data['saldo_akhir'] = $data['input_nominal_saldo'];
 
@@ -953,7 +953,7 @@ class Savings extends MX_Controller
                         $transaksi_bersama = "<b>TRANSAKSI DI TABUNGAN BERSAMA SEBESAR </b>$status_transaksi<br>";
                     } else {
 
-                        $transaksi_bersama = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_nominal_saldo], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 2000)</b><br>";
+                        $transaksi_bersama = "<b>->TRANSAKSI DI TABUNGAN WISATA SEBESAR Rp. $data[input_nominal_saldo], STATUS:</b> <b class='text-danger'>GAGAL</b> <b>(NOMINAL TIDAK BOLEH KURANG DARI 1000)</b><br>";
                     }
 
                     $trans_msg = array("nama_tabungan" => strtoupper($data['input_nama_tabungan_bersama']),
@@ -1109,11 +1109,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['input_nominal_saldo'];
 
-                    } else if ($data['input_nominal_saldo'] < 2000) {
+                    } else if ($data['input_nominal_saldo'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -1194,11 +1194,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['nominal'];
 
-                    } else if ($data['nominal'] < 2000) {
+                    } else if ($data['nominal'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -1281,11 +1281,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['nominal'];
 
-                    } else if ($data['nominal'] < 2000) {
+                    } else if ($data['nominal'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -1368,11 +1368,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['nominal'];
 
-                    } else if ($data['nominal'] < 2000) {
+                    } else if ($data['nominal'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -1649,11 +1649,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['input_nominal_saldo'];
 
-                    } else if ($data['input_nominal_saldo'] < 2000) {
+                    } else if ($data['input_nominal_saldo'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -1733,11 +1733,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['nominal'];
 
-                    } else if ($data['nominal'] < 2000) {
+                    } else if ($data['nominal'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -1818,11 +1818,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['nominal'];
 
-                    } else if ($data['nominal'] < 2000) {
+                    } else if ($data['nominal'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -1902,11 +1902,11 @@ class Savings extends MX_Controller
 
                         $data['saldo_akhir'] = $data['nominal'];
 
-                    } else if ($data['nominal'] < 2000) {
+                    } else if ($data['nominal'] < 1000) {
 
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                         echo json_encode($output);
@@ -2014,10 +2014,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['input_nominal_saldo'] < 2000)) {
+                    } else if (($data['input_nominal_saldo'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['input_nominal_saldo'] > $get_balance[0]->saldo_tabungan_bersama)) {
@@ -2104,10 +2104,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['nominal'] < 2000)) {
+                    } else if (($data['nominal'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_umum)) {
@@ -2194,10 +2194,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['nominal'] < 2000)) {
+                    } else if (($data['nominal'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_qurban)) {
@@ -2284,10 +2284,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['nominal'] < 2000)) {
+                    } else if (($data['nominal'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_wisata)) {
@@ -2372,10 +2372,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['input_nominal_saldo'] < 2000)) {
+                    } else if (($data['input_nominal_saldo'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['input_nominal_saldo'] > $get_balance[0]->saldo_tabungan_bersama)) {
@@ -2457,10 +2457,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['nominal'] < 2000)) {
+                    } else if (($data['nominal'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_umum)) {
@@ -2544,10 +2544,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['nominal'] < 2000)) {
+                    } else if (($data['nominal'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_qurban)) {
@@ -2632,10 +2632,10 @@ class Savings extends MX_Controller
                             "token" => $token,
                             "messages" => "Opps!, Pastikan Saldo Mencukupi, Tidak Boleh <= 0, Silahkan input ulang.",
                         );
-                    } else if (($data['nominal'] < 2000)) {
+                    } else if (($data['nominal'] < 1000)) {
                         $output = array("status" => false,
                             "token" => $token,
-                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 2000, Silahkan input ulang.",
+                            "messages" => "Opps!, Pastikan Inputan Terisi dengan Benar & Tidak Boleh < 1000, Silahkan input ulang.",
                         );
 
                     } else if (($data['nominal'] > $get_balance[0]->saldo_tabungan_wisata)) {
