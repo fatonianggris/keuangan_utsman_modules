@@ -290,6 +290,7 @@ class Savings extends MX_Controller
         $name = $this->input->post('nama');
         $name = $this->security->xss_clean($name);
 
+        $name = preg_replace("/['\"-]/", "", $name);
         $check = $this->SavingsModel->check_student_by_name_and_number($number, strtoupper($name));
 
         if ($check) {
@@ -741,6 +742,7 @@ class Savings extends MX_Controller
         $this->form_validation->set_rules('input_tanggal_transaksi', 'Tanggal Transaksi', 'required');
 
         $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
+		$data['input_nama_nasabah'] = preg_replace("/['\"-]/", "", $data['input_nama_nasabah']);
 
         if ($this->form_validation->run() == false) {
 
@@ -923,6 +925,7 @@ class Savings extends MX_Controller
         $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
         $data['input_status_kredit_debet'] = "1";
         $data['input_nomor_transaksi_bersama'] = "TB01" . $random_number . "/" . date('YmdHis');
+        $data['input_nama_tabungan_bersama'] = preg_replace("/['\"-]/", "", $data['input_nama_tabungan_bersama']);
 
         if ($this->form_validation->run() == false) {
 
@@ -1433,6 +1436,8 @@ class Savings extends MX_Controller
         $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
         $data['status_kredit_debet'] = "1";
         $data['nomor_transaksi_umum'] = "TU01" . $random_number . "/" . date('YmdHis');
+        $data['nama_nasabah'] = preg_replace("/['\"-]/", "", $data['nama_nasabah']);
+
         $token = $this->security->get_csrf_hash();
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
@@ -1498,6 +1503,8 @@ class Savings extends MX_Controller
         $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
         $data['status_kredit_debet'] = "1";
         $data['nomor_transaksi_qurban'] = "TQ01" . $random_number . "/" . date('YmdHis');
+        $data['nama_nasabah'] = preg_replace("/['\"-]/", "", $data['nama_nasabah']);
+
         $token = $this->security->get_csrf_hash();
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
@@ -1563,6 +1570,8 @@ class Savings extends MX_Controller
         $random_number = str_pad(rand(0, pow(10, 2) - 1), 2, '0', STR_PAD_LEFT);
         $data['status_kredit_debet'] = "1";
         $data['nomor_transaksi_wisata'] = "TW01" . $random_number . "/" . date('YmdHis');
+        $data['nama_nasabah'] = preg_replace("/['\"-]/", "", $data['nama_nasabah']);
+
         $token = $this->security->get_csrf_hash();
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
@@ -3310,6 +3319,8 @@ class Savings extends MX_Controller
         $param = $this->input->post();
         $data = $this->security->xss_clean($param);
 
+        $data['nama_nasabah'] = preg_replace("/['\"-]/", "", $data['nama_nasabah']);
+
         $token = $this->security->get_csrf_hash();
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
@@ -3481,7 +3492,7 @@ class Savings extends MX_Controller
 
                         for ($i = 1; $i < count($sheetData); $i++) {
 
-                            $currentName = trim($sheetData[$i]['1']);
+                            $currentName = trim(preg_replace("/['\"-]/", "", $sheetData[$i]['1']));
                             $currentNIS = trim($sheetData[$i]['0']);
 
                             $student = $this->SavingsModel->get_student_nis($sheetData[$i]['0']);
@@ -3493,10 +3504,10 @@ class Savings extends MX_Controller
                                     $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
-                                    $result = $this->SavingsModel->check_match_name(trim($sheetData[$i]['1']));
+                                    $result = $this->SavingsModel->check_match_name(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['1'])));
                                     if ($result) {
                                         for ($j = 0; $j < count($result); $j++) {
-                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['1'])));
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['1']))));
                                             if ($score >= 80 && $score <= 100) {
                                                 $status_nama = 1;
                                                 break;
@@ -3527,10 +3538,10 @@ class Savings extends MX_Controller
                                     $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
-                                    $result = $this->SavingsModel->check_match_name(trim($sheetData[$i]['1']));
+                                    $result = $this->SavingsModel->check_match_name(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['1'])));
                                     if ($result) {
                                         for ($j = 0; $j < count($result); $j++) {
-                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['1'])));
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['1']))));
                                             if ($score >= 80 && $score <= 100) {
                                                 $status_nama = 1;
                                                 break;
@@ -3544,7 +3555,7 @@ class Savings extends MX_Controller
                                     }
                                 }
 
-                                $check_student_name_and_number = $this->SavingsModel->check_student_by_name_and_number(trim($sheetData[$i]['0']), trim($sheetData[$i]['1']));
+                                $check_student_name_and_number = $this->SavingsModel->check_student_by_name_and_number(trim($sheetData[$i]['0']), trim(preg_replace("/['\"-]/", "", $sheetData[$i]['1'])));
                                 if ($check_student_name_and_number) {
                                     $password = $student[0]->password;
                                     $status_nama = 4;
@@ -3569,7 +3580,7 @@ class Savings extends MX_Controller
                                 $data_array[$i] = array(
                                     'nis' => (filter_var(trim($sheetData[$i]['0']), FILTER_SANITIZE_STRING)),
                                     'password' => (trim($password)),
-                                    'nama_nasabah' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
+                                    'nama_nasabah' => (filter_var(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['1'])), FILTER_SANITIZE_STRING)),
                                     'tanggal_transaksi' => (filter_var(trim($data['input_tanggal_transaksi']), FILTER_SANITIZE_STRING)),
                                     'tahun_ajaran' => (filter_var(trim($data['input_tahun_ajaran']), FILTER_SANITIZE_STRING)),
                                     'tingkat' => (filter_var(trim($tingkat), FILTER_SANITIZE_STRING)),
@@ -3798,7 +3809,7 @@ class Savings extends MX_Controller
                                     'id_pegawai' => (filter_var(trim($this->user_finance[0]->id_akun_keuangan), FILTER_SANITIZE_STRING)),
                                     'nomor_rekening_bersama' => (filter_var(trim($sheetData[$i]['0']), FILTER_SANITIZE_STRING)),
                                     'id_siswa_penanggung_jawab' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
-                                    'nama_tabungan_bersama' => (filter_var(trim($sheetData[$i]['2']), FILTER_SANITIZE_STRING)),
+                                    'nama_tabungan_bersama' => (filter_var(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['2'])), FILTER_SANITIZE_STRING)),
                                     'saldo_bersama' => (filter_var(trim($sheetData[$i]['3']), FILTER_SANITIZE_STRING)),
                                     'tahun_ajaran' => (filter_var(trim($data['input_tahun_ajaran']), FILTER_SANITIZE_STRING)),
                                     'tingkat' => (filter_var(trim($tingkat), FILTER_SANITIZE_STRING)),
@@ -3959,9 +3970,17 @@ class Savings extends MX_Controller
                                     }
                                 }
 
-                                $this->db2->insert_batch('transaksi_tabungan_umum', $transaksi_umum);
-                                $this->db2->insert_batch('transaksi_tabungan_qurban', $transaksi_qurban);
-                                $this->db2->insert_batch('transaksi_tabungan_wisata', $transaksi_wisata);
+                                if ($transaksi_umum) {
+                                    $this->db2->insert_batch('transaksi_tabungan_umum', $transaksi_umum);
+                                }
+
+                                if ($transaksi_qurban) {
+                                    $this->db2->insert_batch('transaksi_tabungan_qurban', $transaksi_qurban);
+                                }
+
+                                if ($transaksi_wisata) {
+                                    $this->db2->insert_batch('transaksi_tabungan_wisata', $transaksi_wisata);
+                                }
 
                                 $this->SavingsModel->clear_import_data_personal_saving();
 
@@ -4101,7 +4120,9 @@ class Savings extends MX_Controller
                                     }
                                 }
 
-                                $this->db2->insert_batch('transaksi_tabungan_bersama', $transaksi_bersama);
+                                if ($transaksi_bersama) {
+                                    $this->db2->insert_batch('transaksi_tabungan_bersama', $transaksi_bersama);
+                                }
 
                                 $this->SavingsModel->clear_import_data_joint_saving();
 
@@ -4289,7 +4310,7 @@ class Savings extends MX_Controller
     public function get_name_similliar($names = '')
     {
         $name = $this->security->xss_clean(urldecode(str_replace('_', '-', $names)));
-        $name = preg_replace("/'/", "", $name);
+        $name = preg_replace("/['\"-]/", "", $name);
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             $transaction = array();

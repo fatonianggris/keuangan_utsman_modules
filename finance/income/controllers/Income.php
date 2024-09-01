@@ -140,6 +140,7 @@ class Income extends MX_Controller
         $pay = $this->input->post('nomor_pembayaran');
         $pay = $this->security->xss_clean($pay);
 
+        $name = preg_replace("/['\"-]/", "", $name);
         $check = $this->IncomeModel->check_payment_dpb_duplicate($pay);
 
         if ($pay == null || $pay == "") {
@@ -194,6 +195,7 @@ class Income extends MX_Controller
         $pay = $this->input->post('nomor_pembayaran');
         $pay = $this->security->xss_clean($pay);
 
+        $name = preg_replace("/['\"-]/", "", $name);
         $check = $this->IncomeModel->check_payment_du_duplicate($pay);
 
         if ($pay == null || $pay == "") {
@@ -314,6 +316,7 @@ class Income extends MX_Controller
         $pay = $this->input->post('nomor_pembayaran');
         $pay = $this->security->xss_clean($pay);
 
+        $name = preg_replace("/['\"-]/", "", $name);
         $check = $this->IncomeModel->check_payment_dpb_duplicate($pay);
 
         if ($old_number == null || $pay == null || $old_number == "" || $pay == "") {
@@ -375,6 +378,7 @@ class Income extends MX_Controller
         $pay = $this->input->post('nomor_pembayaran');
         $pay = $this->security->xss_clean($pay);
 
+        $name = preg_replace("/['\"-]/", "", $name);
         $check = $this->IncomeModel->check_payment_du_duplicate($pay);
 
         if ($old_number == null || $pay == null || $old_number == "" || $pay == "") {
@@ -580,6 +584,7 @@ class Income extends MX_Controller
         $number_pay = $this->input->post('nomor_pembayaran');
         $number_pay = $this->security->xss_clean($number_pay);
 
+        $name = preg_replace("/['\"-]/", "", $name);
         $check_transition = $this->IncomeModel->get_transition_income_du_by_number_name($number_pay, strtoupper($name));
 
         if ($check_transition >= 2) {
@@ -614,6 +619,7 @@ class Income extends MX_Controller
         $number_pay = $this->input->post('nomor_pembayaran');
         $number_pay = $this->security->xss_clean($number_pay);
 
+        $name = preg_replace("/['\"-]/", "", $name);
         $check_transition = $this->IncomeModel->get_transition_income_dpb_by_number_name($number_pay, strtoupper($name));
 
         if ($check_transition >= 2) {
@@ -705,7 +711,7 @@ class Income extends MX_Controller
     public function get_name_similliar($names = '')
     {
         $name = $this->security->xss_clean(urldecode(str_replace('_', '-', $names)));
-        $name = preg_replace("/'/", "", $name);
+        $name = preg_replace("/['\"-]/", "", $name);
 
         if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
             $transaction = array();
@@ -830,6 +836,8 @@ class Income extends MX_Controller
         $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
         $this->form_validation->set_rules('tahun_ajaran', 'Tahun Ajaran', 'required');
 
+        $data['nama_siswa'] = preg_replace("/['\"-]/", "", $data['nama_siswa']);
+
         $invoice = $this->IncomeModel->check_invoice_dpb_duplicate($data['nomor_invoice']);
         $check = $this->IncomeModel->check_payment_dpb_duplicate($data['nomor_pembayaran']);
 
@@ -905,6 +913,8 @@ class Income extends MX_Controller
         $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
         $this->form_validation->set_rules('tahun_ajaran', 'Tahun Ajaran', 'required');
 
+        $data['nama_siswa'] = preg_replace("/['\"-]/", "", $data['nama_siswa']);
+
         $invoice = $this->IncomeModel->check_invoice_du_duplicate($data['nomor_invoice']);
         $check = $this->IncomeModel->check_payment_du_duplicate($data['nomor_pembayaran']);
 
@@ -979,6 +989,8 @@ class Income extends MX_Controller
         $this->form_validation->set_rules('nis', 'NIS Siswa', 'required');
         $this->form_validation->set_rules('level_tingkat', 'Tingkat Siswa', 'required');
         $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
+
+        $data['nama_siswa'] = preg_replace("/['\"-]/", "", $data['nama_siswa']);
 
         $invoice = $this->IncomeModel->check_invoice_dpb_duplicate($data['nomor_invoice']);
         $check = $this->IncomeModel->check_payment_dpb_duplicate($data['nomor_pembayaran']);
@@ -1062,6 +1074,8 @@ class Income extends MX_Controller
         $this->form_validation->set_rules('nis', 'NIS Siswa', 'required');
         $this->form_validation->set_rules('level_tingkat', 'Tingkat Siswa', 'required');
         $this->form_validation->set_rules('tanggal_invoice', 'Tanggal Invoice', 'required');
+
+        $data['nama_siswa'] = preg_replace("/['\"-]/", "", $data['nama_siswa']);
 
         $invoice = $this->IncomeModel->check_invoice_du_duplicate($data['nomor_invoice']);
         $check = $this->IncomeModel->check_payment_du_duplicate($data['nomor_pembayaran']);
@@ -1148,6 +1162,7 @@ class Income extends MX_Controller
         $this->form_validation->set_rules('level_tingkat', 'Tingkat', 'required');
 
         $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
+        $data['nama'] = preg_replace("/['\"-]/", "", $data['nama']);
 
         $cek_invoice = $this->IncomeModel->check_invoice_du_duplicate($data['id_invoice']);
         $check_name = $this->IncomeModel->check_student_by_name_and_number_du($data['nomor_bayar'], strtoupper($data['nama']));
@@ -1259,6 +1274,7 @@ class Income extends MX_Controller
         $this->form_validation->set_rules('level_tingkat', 'Tingkat', 'required');
 
         $data['tanggal_invoice'] = date('Y-m-d', strtotime(str_replace('/', '-', $data['tanggal_invoice'])));
+        $data['nama'] = preg_replace("/['\"-]/", "", $data['nama']);
 
         $cek_invoice = $this->IncomeModel->check_invoice_dpb_duplicate($data['id_invoice']);
         $check_name = $this->IncomeModel->check_student_by_name_and_number_dpb($data['nomor_bayar'], strtoupper($data['nama']));
@@ -1423,20 +1439,20 @@ class Income extends MX_Controller
 
                                     $this->IncomeModel->clear_import_data_payment();
                                     $output = array("status" => true,
-										"confirm" => false,
+                                        "confirm" => false,
                                         "token" => $token,
                                         "messages" => "Berhasil!, Seluruh Data Tagihan DU & Data Siswa Terpilih telah diimport ke database. dimohon untuk melakukan <b>Pengecekan Ulang</b>. Terima Kasih.",
                                     );
                                 } else {
                                     $output = array("status" => false,
-										"confirm" => false,
+                                        "confirm" => false,
                                         "token" => $token,
                                         "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
                                     );
                                 }
                             } else {
                                 $output = array("status" => false,
-									"confirm" => false,
+                                    "confirm" => false,
                                     "token" => $token,
                                     "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
                                 );
@@ -1447,7 +1463,7 @@ class Income extends MX_Controller
             }
         } else {
             $output = array("status" => false,
-				"confirm" => false,
+                "confirm" => false,
                 "token" => $token,
                 "messages" => "Mohon Maaf., Password yang Anda inputkan salah!",
             );
@@ -1524,20 +1540,20 @@ class Income extends MX_Controller
 
                                     $this->IncomeModel->clear_import_data_payment();
                                     $output = array("status" => true,
-										"confirm" => false,
+                                        "confirm" => false,
                                         "token" => $token,
                                         "messages" => "Berhasil!, Seluruh Data Tagihan DPB & Data Siswa Terpilih telah diimport ke database. dimohon untuk melakukan <b>Pengecekan Ulang</b>. Terima Kasih.",
                                     );
                                 } else {
                                     $output = array("status" => false,
-										"confirm" => false,
+                                        "confirm" => false,
                                         "token" => $token,
                                         "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
                                     );
                                 }
                             } else {
                                 $output = array("status" => false,
-									"confirm" => false,
+                                    "confirm" => false,
                                     "token" => $token,
                                     "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
                                 );
@@ -1548,7 +1564,7 @@ class Income extends MX_Controller
             }
         } else {
             $output = array("status" => false,
-				"confirm" => false,
+                "confirm" => false,
                 "token" => $token,
                 "messages" => "Mohon Maaf., Password yang Anda inputkan salah!",
             );
@@ -1697,7 +1713,7 @@ class Income extends MX_Controller
                             $last_index_info = "";
                             $currentIdInv = trim($sheetData[$i]['0']);
                             $currentNoPay = trim($sheetData[$i]['1']);
-                            $currentName = trim($sheetData[$i]['3']);
+                            $currentName = trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3']));
 
                             $student = $this->IncomeModel->check_student_by_nomor_pembayaran_dpb($sheetData[$i]['1']);
                             $invoice = $this->IncomeModel->check_invoice_dpb_duplicate($sheetData[$i]['0']);
@@ -1717,10 +1733,10 @@ class Income extends MX_Controller
                                     $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
-                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    $result = $this->IncomeModel->check_match_name(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])));
                                     if ($result) {
                                         for ($j = 0; $j < count($result); $j++) {
-                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3']))));
                                             if ($score == 100) {
                                                 $status_nama = 1;
                                                 break;
@@ -1737,7 +1753,7 @@ class Income extends MX_Controller
                                     }
                                 }
 
-                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_dpb(trim($sheetData[$i]['1']), trim($sheetData[$i]['3']));
+                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_dpb(trim($sheetData[$i]['1']), trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])));
                                 if ($check_student_name_and_number) {
                                     $status_nama = 1;
                                     $password = $student[0]->password;
@@ -1760,10 +1776,10 @@ class Income extends MX_Controller
                                     $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
-                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    $result = $this->IncomeModel->check_match_name(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])));
                                     if ($result) {
                                         for ($j = 0; $j < count($result); $j++) {
-                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3']))));
                                             if ($score >= 80 && $score <= 100) {
                                                 $status_nama = 4;
                                                 break;
@@ -1821,7 +1837,7 @@ class Income extends MX_Controller
                                     'tanggal_invoice' => (filter_var(date('Y-m-d', strtotime("$start_date + " . ((int) $sheetData[$i]['4'] - 2) . " days")), FILTER_SANITIZE_STRING)),
                                     'nomor_siswa' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
                                     'password' => (trim($password)),
-                                    'nama' => (filter_var(trim($sheetData[$i]['3']), FILTER_SANITIZE_STRING)),
+                                    'nama' => (filter_var(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])), FILTER_SANITIZE_STRING)),
                                     'informasi' => (filter_var(trim($info), FILTER_SANITIZE_STRING)),
                                     'nama_kelas' => (filter_var(trim($sheetData[$i][(intval($last_index_info))]), FILTER_SANITIZE_STRING)),
                                     'rincian' => (filter_var(trim($rincian), FILTER_SANITIZE_STRING)),
@@ -1964,7 +1980,7 @@ class Income extends MX_Controller
                             $last_index_info = "";
                             $currentIdInv = trim($sheetData[$i]['0']);
                             $currentNoPay = trim($sheetData[$i]['1']);
-                            $currentName = trim($sheetData[$i]['3']);
+                            $currentName = trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3']));
 
                             $student = $this->IncomeModel->check_student_by_nomor_pembayaran_du($sheetData[$i]['1']);
                             $invoice = $this->IncomeModel->check_invoice_du_duplicate($sheetData[$i]['0']);
@@ -1984,10 +2000,10 @@ class Income extends MX_Controller
                                     $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
-                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    $result = $this->IncomeModel->check_match_name(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])));
                                     if ($result) {
                                         for ($j = 0; $j < count($result); $j++) {
-                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3']))));
                                             if ($score == 100) {
                                                 $status_nama = 1;
                                                 break;
@@ -2004,7 +2020,7 @@ class Income extends MX_Controller
                                     }
                                 }
 
-                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_du(trim($sheetData[$i]['1']), trim($sheetData[$i]['3']));
+                                $check_student_name_and_number = $this->IncomeModel->check_student_by_name_and_number_du(trim($sheetData[$i]['1']), trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])));
                                 if ($check_student_name_and_number) {
                                     $status_nama = 1;
                                     $password = $student[0]->password;
@@ -2027,10 +2043,10 @@ class Income extends MX_Controller
                                     $status_nama = 3;
                                 } else {
                                     $seenName[$currentName] = true;
-                                    $result = $this->IncomeModel->check_match_name(trim($sheetData[$i]['3']));
+                                    $result = $this->IncomeModel->check_match_name(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])));
                                     if ($result) {
                                         for ($j = 0; $j < count($result); $j++) {
-                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim($sheetData[$i]['3'])));
+                                            $score = $this->matching->single_text_match(strtoupper($result[$j]->nama_lengkap), strtoupper(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3']))));
                                             if ($score >= 80 && $score <= 100) {
                                                 $status_nama = 4;
                                                 break;
@@ -2088,7 +2104,7 @@ class Income extends MX_Controller
                                     'tanggal_invoice' => (filter_var(date('Y-m-d', strtotime("$start_date + " . ((int) $sheetData[$i]['4'] + 80) . " days")), FILTER_SANITIZE_STRING)),
                                     'nomor_siswa' => (filter_var(trim($sheetData[$i]['1']), FILTER_SANITIZE_STRING)),
                                     'password' => (trim($password)),
-                                    'nama' => (filter_var(trim($sheetData[$i]['3']), FILTER_SANITIZE_STRING)),
+                                    'nama' => (filter_var(trim(preg_replace("/['\"-]/", "", $sheetData[$i]['3'])), FILTER_SANITIZE_STRING)),
                                     'informasi' => (filter_var(trim($info), FILTER_SANITIZE_STRING)),
                                     'nama_kelas' => (filter_var(trim($sheetData[$i][(intval($last_index_info))]), FILTER_SANITIZE_STRING)),
                                     'rincian' => (filter_var(trim(strtoupper($rincian)), FILTER_SANITIZE_STRING)),
@@ -2469,27 +2485,24 @@ class Income extends MX_Controller
                 }
             }
         }
-
         // sort
         if (isset($_REQUEST['order'][0]['column']) && $_REQUEST['order'][0]['dir']) {
             $column = $_REQUEST['order'][0]['column'];
             $dir = $_REQUEST['order'][0]['dir'];
             usort($data, function ($a, $b) use ($column, $dir) {
-                $a = array_slice($a, $column, 1);
-                $b = array_slice($b, $column, 1);
-                $a = array_pop($a);
-                $b = array_pop($b);
+                $aValue = array_values($a)[$column];
+                $bValue = array_values($b)[$column];
 
                 if ($dir === 'asc') {
-                    return $a > $b ? true : false;
+                    return $aValue > $bValue ? 1 : -1;
                 }
 
-                return $a < $b ? true : false;
+                return $aValue < $bValue ? 1 : -1;
             });
         }
 
         // pagination length
-        if (isset($_REQUEST['length'])) {
+        if (isset($_REQUEST['length']) && $_REQUEST['length'] > 0) {
             $data = array_splice($data, $_REQUEST['start'], $_REQUEST['length']);
         }
 
@@ -2521,8 +2534,10 @@ class Income extends MX_Controller
         // get all raw data
         $data = $this->IncomeModel->get_all_income_dpb();
 
-        for ($i = 0; $i < count($data); $i++) {
+        // Encrypt the 'id_tagihan_pembayaran_dpb' and add it to each item in the array
+        for ($i = 0; $i < count($data); $i++) { // Use '<' instead of '<='
             $data[$i]['id_encrypt'] = paramEncrypt($data[$i]['id_tagihan_pembayaran_dpb']);
+            $data[$i]['nominal_tagihan_formated'] = number_format($data[$i]['nominal_tagihan'], 0, ',', '.');
         }
 
         // count data
@@ -2536,7 +2551,7 @@ class Income extends MX_Controller
 
         if (isset($_REQUEST['columns']) && is_array($_REQUEST['columns'])) {
             foreach ($_REQUEST['columns'] as $column) {
-                if (isset($column['search'])) {
+                if (isset($column['search']) && $column['search'] !== '') {
                     $data = $this->filterKeyword($data, $column['search'], $column['data']);
                     $totalDisplay = count($data);
                 }
@@ -2548,21 +2563,19 @@ class Income extends MX_Controller
             $column = $_REQUEST['order'][0]['column'];
             $dir = $_REQUEST['order'][0]['dir'];
             usort($data, function ($a, $b) use ($column, $dir) {
-                $a = array_slice($a, $column, 1);
-                $b = array_slice($b, $column, 1);
-                $a = array_pop($a);
-                $b = array_pop($b);
+                $aValue = array_values($a)[$column];
+                $bValue = array_values($b)[$column];
 
                 if ($dir === 'asc') {
-                    return $a > $b ? true : false;
+                    return $aValue > $bValue ? 1 : -1;
                 }
 
-                return $a < $b ? true : false;
+                return $aValue < $bValue ? 1 : -1;
             });
         }
 
         // pagination length
-        if (isset($_REQUEST['length'])) {
+        if (isset($_REQUEST['length']) && $_REQUEST['length'] > 0) {
             $data = array_splice($data, $_REQUEST['start'], $_REQUEST['length']);
         }
 
@@ -2588,7 +2601,6 @@ class Income extends MX_Controller
 
         echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
-
     //--------------------------------------------------------------------------------------//
     //-----------------------------------REMOTE---------------------------------------------//
     //
