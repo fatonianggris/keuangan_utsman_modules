@@ -861,7 +861,7 @@ class Income extends MX_Controller
                     $status_data = true;
                     $data['password'] = $student[0]->password;
                     $data['th_ajaran'] = $student[0]->th_ajaran;
-                    $message = "Berhasil DiTambahkan, Data Tagihan Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan. Terima Kasih";
+                    $message = "Berhasil Ditambahkan, Data Tagihan Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan. Terima Kasih";
                 } else {
                     $status_data = false;
                     $message = "Mohon Maaf, Nomor Pembayaran yang anda inputkan telah Terdafatar Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> ";
@@ -938,7 +938,7 @@ class Income extends MX_Controller
                     $status_data = true;
                     $data['password'] = $student[0]->password;
                     $data['th_ajaran'] = $student[0]->th_ajaran;
-                    $message = "Berhasil DiTambahkan, Data Tagihan Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan. Terima Kasih";
+                    $message = "Berhasil Ditambahkan, Data Tagihan Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> telah ditambahkan. Terima Kasih";
                 } else {
                     $status_data = false;
                     $message = "Mohon Maaf, Nomor Pembayaran yang anda inputkan telah Terdafatar Atas Nama <b>" . strtoupper($data['nama_siswa']) . " (" . ($data['nomor_pembayaran']) . ")</b> ";

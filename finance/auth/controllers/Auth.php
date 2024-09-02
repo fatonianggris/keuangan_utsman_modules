@@ -24,6 +24,12 @@ class Auth extends MX_Controller {
         $this->load->view('finance_auth_login', $data);
     }
 
+	public function under_dev() {
+        $data['title'] = 'UNDER DEVELOPMENT | Sekolah Utsman ';
+        $data['page'] = $this->AuthModel->get_page();
+        $this->load->view('under_dev', $data);
+    }
+
     public function login() {
         $param = $this->input->post();
         $data = $this->security->xss_clean($param);

@@ -251,9 +251,9 @@ if ($income_du[0]->level_tingkat == '6') {
                                         <div class="text-center">
                                             <label class="font-weight-bolder font-size-h6 ">Tipe Tagihan</label>
                                         </div>
-                                        <?php if ($income_du[0]->tipe_tagihan == 1) {?>
+                                        <?php if ($income_du[0]->tipe_tagihan == 2) {?>
                                         <p class="font-weight-boldest display-3 mb-1 text-warning text-center">DPB</p>
-                                        <?php } elseif ($income_du[0]->tipe_tagihan == 2) {?>
+                                        <?php } elseif ($income_du[0]->tipe_tagihan == 1) {?>
                                         <p class="font-weight-boldest display-3 mb-1 text-success text-center">DU</p>
                                         <?php }?>
                                     </div>
