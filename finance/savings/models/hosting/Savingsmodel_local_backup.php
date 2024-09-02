@@ -2036,7 +2036,7 @@ class SavingsModel extends CI_Model
     {
         $this->db2->trans_begin();
 
-        $this->db2->query("REPLACE INTO siswa(
+        $this->db2->query("INSERT INTO siswa(
 											nis,
 											nomor_pembayaran_dpb,
 											nomor_pembayaran_du,
@@ -2071,7 +2071,18 @@ class SavingsModel extends CI_Model
 										FROM
 											panel_utsman.import_nasabah_personal inp
 										WHERE
-											panel_utsman.inp.id_nasabah IN ($id)");
+											panel_utsman.inp.id_nasabah IN ($id)
+										ON DUPLICATE KEY UPDATE
+											password = VALUES(password),
+											level_tingkat = VALUES(level_tingkat),
+											nama_lengkap = VALUES(nama_lengkap),
+											nomor_handphone = VALUES(nomor_handphone),
+											email = VALUES(email),
+											nama_wali = VALUES(nama_wali),
+											th_ajaran = VALUES(th_ajaran),
+											saldo_tabungan_umum = VALUES(saldo_tabungan_umum),
+											saldo_tabungan_qurban = VALUES(saldo_tabungan_qurban),
+											saldo_tabungan_wisata = VALUES(saldo_tabungan_wisata)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -2086,7 +2097,7 @@ class SavingsModel extends CI_Model
     {
         $this->db2->trans_begin();
 
-        $this->db2->query("REPLACE INTO tabungan_bersama (
+        $this->db2->query("INSERT INTO tabungan_bersama (
 											id_siswa_penanggung_jawab,
 											id_pegawai,
 											id_tingkat,
@@ -2108,7 +2119,15 @@ class SavingsModel extends CI_Model
 										FROM
 											panel_utsman.import_nasabah_bersama inb
 										WHERE
-											panel_utsman.inb.id_nasabah_bersama IN ($id)");
+											panel_utsman.inb.id_nasabah_bersama IN ($id)
+										ON DUPLICATE KEY UPDATE
+											id_siswa_penanggung_jawab = VALUES(id_siswa_penanggung_jawab),
+											id_pegawai = VALUES(id_pegawai),
+											id_tingkat = VALUES(id_tingkat),
+											id_th_ajaran = VALUES(id_th_ajaran),
+											nama_tabungan_bersama = VALUES(nama_tabungan_bersama),
+											saldo_tabungan_bersama = VALUES(saldo_tabungan_bersama),
+											keterangan_tabungan_bersama = VALUES(keterangan_tabungan_bersama)");
 
         $this->db2->query("UPDATE
 								panel_utsman.siswa AS s,
