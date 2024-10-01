@@ -141,20 +141,35 @@ if (!empty($schoolyear)) {
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="row">
-                                            <div class="col-lg-7">
+                                            <div class="col-lg-3">
                                                 <div class="form-group">
-                                                    <label>Nama Siswa Penanggung Jawab</label>
-                                                    <select name="input_nama_siswa_penanggungjawab"
-                                                        id="input_nama_siswa_penanggungjawab"
-                                                        class="form-control form-control-lg select2 input_nama_siswa_penanggungjawab">
+                                                    <label> Jenis Tabungan </label>
+                                                    <select name="input_jenis_tabungan"
+                                                        class="form-control form-control-lg input_jenis_tabungan"
+                                                        id="input_jenis_tabungan">
+                                                        <option value="">Pilih Tabungan</option>
+                                                        <option value="1">KOMITE</option>
+                                                        <option value="2">KELAS</option>
+                                                    </select>
+                                                    <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                            DIPILIH,
+                                                        </b>pilih Jenis Tabungan</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Nama Penanggung Jawab</label>
+                                                    <select name="input_nama_penanggungjawab"
+                                                        id="input_nama_penanggungjawab"
+                                                        class="form-control form-control-lg select2 input_nama_penanggungjawab">
                                                     </select>
                                                     <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                                             DIISI,
-                                                        </b>isikan Siswa Penanggung Jawab, Perwakilan salah satu
+                                                        </b>isikan Penanggung Jawab, Perwakilan salah satu
                                                         satu</span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-5">
+                                            <div class="col-lg-3">
                                                 <div class="form-group">
                                                     <label>Tanggal Transaksi</label>
                                                     <input type="text" name="input_tanggal_transaksi"
@@ -169,24 +184,24 @@ if (!empty($schoolyear)) {
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label>Nama Wali/Orang Tua Penanggung Jawab</label>
-                                                    <input class="form-control" name="input_nama_wali"
+                                                    <label>Nama Wali Penanggung Jawab</label>
+                                                    <input class="form-control form-control-lg" name="input_nama_wali"
                                                         placeholder='Inputkan Nama Wali Penanggung Jawab' />
-                                                    <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                    <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
                                                             DIISI,</b>
                                                         isikan
-                                                        nama Penanggung Jawab</span>
+                                                        Nama Penanggung Jawab</span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label>Nomor HP Wali/Orang Tua Penanggung Jawab</label>
-                                                    <input class="form-control" name="input_nomor_hp_wali"
+                                                    <label>Nomor HP Penanggung Jawab</label>
+                                                    <input class="form-control form-control-lg" name="input_nomor_hp_wali"
                                                         placeholder='Inputkan Nomor HP Wali Penanggung Jawab' />
-                                                    <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                    <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
                                                             DIISI,</b>
                                                         isikan
-                                                        nomor HP Penanggung Jawab</span>
+                                                        Nomor HP Penanggung Jawab</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,7 +211,7 @@ if (!empty($schoolyear)) {
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label>Keterangan Saldo Awal</label>
-                                                    <textarea class="form-control"
+                                                    <textarea class="form-control form-control-lg"
                                                         placeholder="Isikan Catatan Saldo Awal"
                                                         name="input_catatan_saldo" rows="7"></textarea>
                                                     <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
@@ -208,7 +223,7 @@ if (!empty($schoolyear)) {
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label>Keterangan Tabungan Bersama</label>
-                                                    <textarea class="form-control"
+                                                    <textarea class="form-control form-control-lg"
                                                         placeholder="Isikan Catatan Tabungan Bersama"
                                                         name="input_catatan_tabungan_bersama" rows="7"></textarea>
                                                     <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
@@ -240,63 +255,114 @@ if (!empty($schoolyear)) {
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-joint-saving.js"></script>
 <script>
 $(document).ready(function() {
-    list_all_student();
 
-    $('#input_nama_siswa_penanggungjawab').select2({
-        placeholder: "Pilih Siswa Penanggung Jawab",
-    });
+    $("#input_jenis_tabungan").on("change", function() {
 
-    function list_all_student() {
+        var jenis_tabungan = $("#input_jenis_tabungan").find(":selected").val();
+
+        if (jenis_tabungan == "2") {
+            $('[name="input_nama_wali"]').attr("disabled", true);
+            $('[name="input_nomor_hp_wali"]').attr("disabled", true);
+            $('[name="input_nama_wali"]').val("");
+            $('[name="input_nomor_hp_wali"]').val("");
+        } else {
+            $('[name="input_nama_wali"]').attr("disabled", false);
+            $('[name="input_nomor_hp_wali"]').attr("disabled", false);
+        }
+
         $.ajax({
             type: "GET",
-            url: `${HOST_URL}/finance/savings/savings/get_all_student`,
+            url: `${HOST_URL}/finance/savings/savings/get_all_student_or_employee/`,
             contentType: 'application/json; charset=utf-8',
+            data: {
+                jenis_tabungan: jenis_tabungan,
+            },
             dataType: 'json',
             success: function(data) {
-                var html = "";
-                var option = "<option></option>";
-                var i;
-                for (i = 0; i < data.length; i++) {
-                    html +=
-                        '<option value="' +
-                        data[i].nis +
-                        '"> ' + `${data[i].nama_lengkap} ` + `(${data[i].nis})` +
-                        "</option>";
+                $('[name="input_nama_penanggungjawab"]').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('[name="input_nama_penanggungjawab"]').append($("<option></option>").attr(
+                        "value", data[i].number).text(
+                        `${data[i].nama_lengkap.toUpperCase()} ` +
+                        `(${data[i].number})`));
                 }
-                $("#input_nama_siswa_penanggungjawab").html(option + html);
             },
-        });
-    }
-
-    $("#input_nama_siswa_penanggungjawab").on("change", function() {
-
-        var nis = $("#input_nama_siswa_penanggungjawab").find(":selected").val();
-
-        $.ajax({
-            type: "GET",
-            url: `${HOST_URL}/finance/savings/get_student_by_nis/${nis}`,
-            async: false,
-            dataType: "JSON",
-            success: function(data) {
-                if (data['data_siswa'][0]) {
-                    nis = data['data_siswa'][0]['nis'];
-                    nama_lengkap = data['data_siswa'][0]['nama_lengkap'];
-                    nama_wali = data['data_siswa'][0]['nama_wali'];
-                    nomor_handphone = data['data_siswa'][0]['nomor_handphone'];
-                    email = data['data_siswa'][0]['email'];
-                } else {
-                    nis = "";
-                    nama_lengkap = "";
-                    nama_wali = "";
-                    nomor_handphone = "";
-                    email = "";
-                }
-
-                $('[name="input_nama_wali"]').val(nama_wali);
-                $('[name="input_nomor_hp_wali"]').val(nomor_handphone);
-            }
         });
 
     });
+
+    $('#input_nama_penanggungjawab').select2({
+        placeholder: "Pilih Nama Penanggung Jawab",
+    });
+
+    $("#input_nama_penanggungjawab").on("change", function() {
+
+        var jenis_tabungan = $("#input_jenis_tabungan").find(":selected").val();
+        var number = $("#input_nama_penanggungjawab").find(":selected").val();
+
+        if (jenis_tabungan == '2') {
+            $.ajax({
+                type: "GET",
+                url: `${HOST_URL}/finance/savings/get_employee_by_nip/${number}`,
+                async: false,
+                dataType: "JSON",
+                success: function(data) {
+                    if (data['data_pegawai'][0]) {
+                        nip = data['data_pegawai'][0]['nip'];
+                        nama_lengkap = data['data_pegawai'][0]['nama_lengkap'];
+                        nomor_handphone = data['data_pegawai'][0]['nomor_hp'];
+                        email = data['data_pegawai'][0]['email'];
+                    } else {
+                        nip = "";
+                        nama_lengkap = "";
+                        nomor_handphone = "";
+                        email = "";
+                    }
+
+                    $('[name="input_nama_wali"]').attr("disabled", true);
+                    $('[name="input_nomor_hp_wali"]').attr("disabled", true);
+                }
+            });
+
+        } else {
+            $.ajax({
+                type: "GET",
+                url: `${HOST_URL}/finance/savings/get_student_by_nis/${number}`,
+                async: false,
+                dataType: "JSON",
+                success: function(data) {
+                    if (data['data_siswa'][0]) {
+                        nis = data['data_siswa'][0]['nis'];
+                        nama_lengkap = data['data_siswa'][0]['nama_lengkap'];
+                        nama_wali = data['data_siswa'][0]['nama_wali'];
+                        nomor_handphone = data['data_siswa'][0]['nomor_handphone'];
+                        email = data['data_siswa'][0]['email'];
+                    } else {
+                        nis = "";
+                        nama_lengkap = "";
+                        nama_wali = "";
+                        nomor_handphone = "";
+                        email = "";
+                    }
+
+                    $('[name="input_nama_wali"]').attr("disabled", false);
+                    $('[name="input_nomor_hp_wali"]').attr("disabled", false);
+
+                    if (nama_wali == null || nama_wali == "") {
+                        $('[name="input_nama_wali"]').val('');
+                    } else {
+                        $('[name="input_nama_wali"]').val(nama_wali.toUpperCase());
+                    }
+
+                    if (nomor_handphone == null || nomor_handphone == "") {
+                        $('[name="input_nomor_hp_wali"]').val('');
+                    } else {
+                        $('[name="input_nomor_hp_wali"]').val(nomor_handphone);
+                    }
+                }
+            });
+        }
+    });
+
 });
 </script>

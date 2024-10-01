@@ -562,7 +562,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Jenis Tabungan </label>
-                                <select name="jenis_tabungan_kredit_edit" class="form-control form-control-lg" disabled>
+                                <select name="jenis_tabungan_kredit" class="form-control form-control-lg" disabled>
                                     <option value="3" selected>WISATA</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
@@ -572,7 +572,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_kredit_edit" class="form-control form-control-lg">
+                                <select name="tingkat_kredit" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
                                     <option value="6">DC</option>
                                     <option value="1">KB</option>
@@ -884,7 +884,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Jenis Tabungan </label>
-                                <select name="jenis_tabungan_debet_edit" class="form-control form-control-lg" disabled>
+                                <select name="jenis_tabungan_debet" class="form-control form-control-lg" disabled>
                                     <option value="3" selected>WISATA</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
@@ -894,7 +894,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_debet_edit" class="form-control form-control-lg">
+                                <select name="tingkat_debet" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
                                     <option value="6">DC</option>
                                     <option value="1">KB</option>
@@ -985,6 +985,8 @@ if (!empty($schoolyear)) {
             <form class="form" novalidate="novalidate"
                 action="<?php echo site_url('finance/savings/get_student_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
+				<input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+				value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">

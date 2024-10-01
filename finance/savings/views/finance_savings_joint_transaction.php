@@ -126,9 +126,8 @@ if (!empty($schoolyear)) {
                                         </select>
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6 ">
-                                        <label>Tingkat</label>
-                                        <select name="input_tingkat" class="form-control datatable-input"
-                                            data-col-index="6">
+                                        <label>Tingkat:</label>
+                                        <select class="form-control datatable-input" data-col-index="6">
                                             <option value="">Pilih Tingkat</option>
                                             <option value="DC">DC</option>
                                             <option value="KB">KB</option>
@@ -145,6 +144,16 @@ if (!empty($schoolyear)) {
                                             <option value="DEBET">Debet</option>
                                             <option value="KREDIT">Kredit</option>
                                             <option value="">SEMUA</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6 mt-6">
+                                        <label>Jenis Tabungan</label>
+                                        <select class="form-control datatable-input" data-col-index="12">
+                                            <option value="">Pilih Jenis</option>
+                                            <option value="KOMITE">KOMITE</option>
+                                            <option value="KELAS">KELAS</option>
+                                            <option value="">SEMUA</option>
+                                            <!-- <option value="5">SMA</option> -->
                                         </select>
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6 mt-6">
@@ -225,6 +234,7 @@ if (!empty($schoolyear)) {
                                             <th>Kredit (Rp)</th>
                                             <th>Debet (Rp)</th>
                                             <th>Saldo (Rp)</th>
+                                            <th>Jenis Tabungan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -243,6 +253,7 @@ if (!empty($schoolyear)) {
                                             <th class="font-weight-bolder">TOTAL TRANSAKSI</th>
                                             <th class="font-weight-bolder text-success">-</th>
                                             <th class="font-weight-bolder text-danger">-</th>
+                                            <th></th>
                                             <th class="font-weight-bolder"></th>
                                             <th></th>
                                         </tr>
@@ -275,7 +286,7 @@ if (!empty($schoolyear)) {
             <form class="form needs-validation" novalidate="novalidate" action="#" id="kt_add_transaction_credit">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-5">
+                        <div class="form-group col-6">
                             <label> Input Nomor Rekening Tabungan</label>
                             <select class="form-control select2 findTabunganKredit" name="inputCariTabunganKredit"
                                 id="findTabunganKredit" required>
@@ -283,18 +294,20 @@ if (!empty($schoolyear)) {
                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Inputkan
                                 Nomor Rekening Tabungan Bersama</span>
                         </div>
-                        <div class="form-group col-4">
-                            <label> Nominal </label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text font-weight-bolder">
-                                        Rp
-                                    </span>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label> Nominal </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text font-weight-bolder">
+                                            Rp
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-lg" name="inputNominalKredit"
+                                        id="inputNominalKredit" placeholder="Input nominal" />
                                 </div>
-                                <input type="text" class="form-control form-control-lg" name="inputNominalKredit"
-                                    id="inputNominalKredit" placeholder="Input nominal" />
-                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> isikan
-                                    nominal</span>
+								<span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> isikan
+								nominal</span>
                             </div>
                         </div>
                         <div class="col-lg-3">
@@ -352,7 +365,18 @@ if (!empty($schoolyear)) {
                                         DIPILIH,</b> Pilih Tingkat</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label> Jenis Tabungan </label>
+                                <select name="input_jenis_tabungan" class="form-control form-control-lg"
+                                    id="inputJenisTabunganKredit" disabled>
+									<option value="">Pilih Tabungan</option>
+                                    <option value="1">KOMITE</option>
+                                    <option value="2">KELAS</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Catatan Kredit</label>
                                 <textarea class="form-control" id="inputCatatanKredit"
@@ -551,6 +575,7 @@ if (!empty($schoolyear)) {
                                 id="infoTerakhirTransaksiKreditEdit">-</label><br>
                             Saldo Awal : <label class="font-weight-bold" id="userJumlahSaldoKreditEdit">-</label> ||
                             Saldo Sekarang : <label class="font-weight-bold" id="userJumlahSaldoKreditEditNow">-</label>
+							Jenis Tabungan : <label class="font-weight-bold" id="infoJenisTabunganKreditEdit">-</label>
                         </div>
                     </div>
                 </div>
@@ -579,7 +604,7 @@ if (!empty($schoolyear)) {
             <form class="form needs-validation" novalidate="novalidate" action="#" id="kt_add_transaction_debet">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-5">
+                        <div class="form-group col-6">
                             <label> Input Nomor Rekening Tabungan</label>
                             <select class="form-control select2 findTabunganDebet" name="inputCariTabunganDebet"
                                 id="findTabunganDebet">
@@ -587,7 +612,7 @@ if (!empty($schoolyear)) {
                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Inputkan
                                 Nomor Rekening Tabungan Bersama</span>
                         </div>
-                        <div class="form-group col-4">
+                        <div class="form-group col-6">
                             <label> Nominal </label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -597,9 +622,9 @@ if (!empty($schoolyear)) {
                                 </div>
                                 <input type="text" class="form-control form-control-lg" name="inputNominalDebet"
                                     id="inputNominalDebet" placeholder="Input Nominal" />
-                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> isikan
-                                    nominal, pastikan saldo mencukupi</span>
                             </div>
+							<span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> isikan
+                                    nominal, pastikan saldo mencukupi</span>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
@@ -656,7 +681,18 @@ if (!empty($schoolyear)) {
                                         DIPILIH,</b> Pilih Tingkat</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+						<div class="col-lg-3">
+                            <div class="form-group">
+                                <label> Jenis Tabungan </label>
+                                <select name="input_jenis_tabungan" class="form-control form-control-lg"
+                                    id="inputJenisTabunganDebet" disabled>
+									<option value="">Pilih Tabungan</option>
+                                    <option value="1">KOMITE</option>
+                                    <option value="2">KELAS</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Catatan Debet</label>
                                 <textarea class="form-control" id="inputCatatanDebet" placeholder="Isikan Catatan Debet"
@@ -855,6 +891,7 @@ if (!empty($schoolyear)) {
                                 id="infoTerakhirTransaksiDebetEdit">-</label><br>
                             Saldo Awal : <label class="font-weight-bold" id="userJumlahSaldoDebetEdit">-</label> ||
                             Saldo Sekarang : <label class="font-weight-bold" id="userJumlahSaldoDebetEditNow">-</label>
+							Jenis Tabungan : <label class="font-weight-bold" id="infoJenisTabunganDebetEdit">-</label>
                         </div>
                     </div>
                 </div>

@@ -532,7 +532,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_kredit_edit" class="form-control form-control-lg">
+                                <select name="tingkat_kredit" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
                                     <option value="6">DC</option>
                                     <option value="1">KB</option>
@@ -865,7 +865,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_debet_edit" class="form-control form-control-lg">
+                                <select name="tingkat_debet" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
                                     <option value="6">DC</option>
                                     <option value="1">KB</option>
@@ -945,7 +945,5 @@ if (!empty($schoolyear)) {
 <!-- End of Modal Debet  -->
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/config.pin.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction-recap.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction-recap.js">
-</script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction-recap.js">
-</script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction-recap.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction-recap.js"></script>

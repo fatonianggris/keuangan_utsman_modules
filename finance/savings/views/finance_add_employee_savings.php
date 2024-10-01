@@ -55,7 +55,7 @@
                         </div>
                         <!--begin::Form-->
                         <form class="form" novalidate="novalidate"
-                            action="<?php echo site_url('finance/savings/post_personal_savings'); ?>"
+                            action="<?php echo site_url('finance/savings/post_employee_savings'); ?>"
                             enctype="multipart/form-data" method="post" id="kt_add_employee_saving">
                             <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>"
                                 value="<?php echo $this->security->get_csrf_hash(); ?>">
@@ -64,8 +64,7 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label>Nomor Rekening/NIP Nasabah</label>
-                                            <input type="text" name="input_nomor_rekening" class="form-control
-                                                class=" form-control form-control-lg"
+                                            <input type="text" name="input_nomor_rekening" class="form-control form-control-lg"
                                                 placeholder="Isikan Nomor Rekening" />
                                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,
                                                 </b>isikan Nomor Rekening/NIP Nasabah</span>
@@ -96,14 +95,14 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label> Jenis Kelamin </label>
-                                            <select name="jenis_kelamin"
+                                            <select name="input_jenis_kelamin"
                                                 class="form-control form-control-lg jenis_kelamin">
                                                 <option value="">Pilih Jenis Kelamin</option>
                                                 <option value="1">Laki-Laki</option>
                                                 <option value="2">Perempuan</option>
                                             </select>
                                             <span class="form-text text-dark"><b class="text-danger">*WAJIB
-                                                    DIPILIH</b></span>
+                                                    DIPILIH, </b>pilih Jenis Kelamin</span>
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
@@ -130,10 +129,9 @@ if (!empty($schoolyear)) {
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label>Tingkat</label>
-                                            <select name="input_tingkat" class="form-control form-control-lg">
+                                            <select name="input_tingkat"  id="tingkat" class="form-control form-control-lg">
                                                 <option value="">Pilih Tingkat</option>
-                                                <option value="7">DC</option>
-                                                <option value="1">KB/TK</option>
+                                                <option value="1">DC/KB/TK</option>
                                                 <option value="3">SD</option>
                                                 <option value="4">SMP</option>
                                                 <option value="6">UMUM</option>
@@ -143,74 +141,86 @@ if (!empty($schoolyear)) {
                                                 </b>pilih Tingkat</span>
                                         </div>
                                     </div>
+									<div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label> Jabatan Pegawai </label>
+                                            <select name="input_jabatan_pegawai" id="jabatan" 
+                                                class="form-control form-control-lg jabatan">
+                                                <option value="">Pilih Jabatan Pegawai</option>
+                                            </select>
+                                            <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                    DIPILIH, </b>pilih Jabatan Pegawai</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label> Status Pegawai </label>
+                                            <select name="input_status_pegawai"
+                                                class="form-control form-control-lg status_pegawai">
+                                                <option value="">Pilih Status Pegawai</option>
+                                                <option value="1">Tetap</option>
+                                                <option value="2">Tidak Tetap</option>
+                                                <option value="3">Honorer</option>
+                                            </select>
+                                            <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                    DIPILIH, </b>pilih Status Pegawai</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label>Nominal Saldo Tabungan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text font-weight-bolder">
+                                                        Rp
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control form-control-lg"
+                                                    name="input_saldo_tabungan_umum" id="input_saldo_tabungan_umum"
+                                                    placeholder="Input Nominal Saldo" />
+                                            </div>
+                                            <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
+                                                    DIISI,</b>
+                                                Isikkan Nominal Tabungan Saldo</span>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="row ">
                                     <div class="col-lg-3">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label> Status Pegawai </label>
-                                                    <select name="status_pegawai"
-                                                        class="form-control form-control-lg status_pegawai">
-                                                        <option value="">Pilih Status Pegawai</option>
-                                                        <option value="1">Tetap</option>
-                                                        <option value="2">Tidak Tetap</option>
-                                                        <option value="3">Honorer</option>
-                                                    </select>
-                                                    <span class="form-text text-dark"><b class="text-danger">*WAJIB
-                                                            DIPILIH</b></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
                                                     <label>Nomor HP Pegawai</label>
                                                     <input class="form-control form-control-lg"
-                                                        name="input_nomor_hp_pegawai"
+                                                        name="nomor_handphone_pegawai"
                                                         placeholder='Inputkan Nomor HP Pegawai' />
                                                     <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
                                                             DIISI,</b> isikan nomor HP Pegawai</span>
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label>Email Nasabah/Pegawai</label>
                                                     <input type="text" name="input_email_nasabah"
                                                         class="form-control form-control-lg"
-                                                        placeholder="Isikan Email Nasabah/Pegawai/Orangtua" />
+                                                        placeholder="Isikan Email Nasabah/Pegawai" />
                                                     <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
                                                             DIISI,
                                                         </b>isikan Email Nasabah/Pegawai</span>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="row">
-                                            <div class="col-lg-4">
-                                                <div class="form-group">
-                                                    <label>Nominal Saldo Tabungan</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text font-weight-bolder">
-                                                                Rp
-                                                            </span>
-                                                        </div>
-                                                        <input type="text" class="form-control form-control-lg"
-                                                            name="input_saldo_tabungan_umum"
-                                                            id="input_saldo_tabungan_umum"
-                                                            placeholder="Input Nominal Saldo" />
-                                                    </div>
-                                                    <span class="form-text text-dark"><b class="text-danger">*WAJIB
-                                                            DIISI,</b>
-                                                        Isikkan Nominal Tabungan Saldo</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label>Keterangan Tabungan</label>
                                                     <textarea class="form-control" placeholder="Isikan Catatan Tabungan"
-                                                        name="input_catatan_umum" rows="6"></textarea>
+                                                        name="input_catatan_umum" rows="7"></textarea>
                                                     <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB
                                                             DIISI,
                                                         </b>Isikan
@@ -239,3 +249,15 @@ if (!empty($schoolyear)) {
 </div>
 <!--end::Content-->
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-employee-saving.js"></script>
+<script>
+    $(document).ready(function () {
+        var id_pos;
+
+        $("#tingkat").change(function () {
+            id_pos = $(this).val();
+            var url = "<?php echo site_url('finance/savings/add_ajax_position'); ?>/" + id_pos;
+            $('#jabatan').load(url);
+            return false;
+        });
+    });
+</script>

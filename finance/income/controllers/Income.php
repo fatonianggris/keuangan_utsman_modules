@@ -1450,6 +1450,7 @@ class Income extends MX_Controller
                                         "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
                                     );
                                 }
+                                $this->session->set_flashdata('data_result', succ_msg("Berikut Merupakan Hasil Data NIS dan Nama Lengkap Siswa yang telah <b>DIPERBARUI & DITAMBAHKAN</b>:<br><b> >TOTAL: " . $input_siswa['count_added'] . "</b> Data Nasabah/Siswa Baru telah <b>DITAMBAHKAN</b>: <b>'" . json_encode($input_siswa['added']) . "</b>. <br> <b>>TOTAL: " . $input_siswa['count_updated'] . "</b> Data Nasabah/Siswa Baru telah <b>DIPERBARUI</b>: <b>'" . json_encode($input_siswa['updated']) . "'</b>. <br><b class='text-danger'>*Silahkan cek Data Siswa di menu Daftar List Tagihan, Terima Kasih.</b>"));
                             } else {
                                 $output = array("status" => false,
                                     "confirm" => false,
@@ -1532,7 +1533,7 @@ class Income extends MX_Controller
                         } else if (($check_similiar >= 1 && $data['status_similiar'] == 'true') || ($check_similiar == 0 && $data['status_similiar'] == 'false')) {
 
                             $input_siswa = $this->IncomeModel->accept_import_data_siswa_dpb($data['data_check']);
-                            if ($input_siswa == true) {
+                            if ($input_siswa['status'] == true) {
 
                                 $input_payment = $this->IncomeModel->accept_import_data_payment_dpb($data['data_check']);
 
@@ -1551,6 +1552,7 @@ class Income extends MX_Controller
                                         "messages" => "Mohon Maaf!, Terjadi kesalahan, Silahkan input ulang.",
                                     );
                                 }
+                                $this->session->set_flashdata('data_result', succ_msg("Berikut Merupakan Hasil Data NIS dan Nama Lengkap Siswa yang telah <b>DIPERBARUI & DITAMBAHKAN</b>:<br><b> >TOTAL: " . $input_siswa['count_added'] . "</b> Data Nasabah/Siswa Baru telah <b>DITAMBAHKAN</b>: <b>'" . json_encode($input_siswa['added']) . "</b>. <br> <b>>TOTAL: " . $input_siswa['count_updated'] . "</b> Data Nasabah/Siswa Baru telah <b>DIPERBARUI</b>: <b>'" . json_encode($input_siswa['updated']) . "'</b>. <br><b class='text-danger'>*Silahkan cek Data Siswa di menu Daftar List Tagihan, Terima Kasih.</b>"));
                             } else {
                                 $output = array("status" => false,
                                     "confirm" => false,

@@ -39,6 +39,7 @@
         <div class="container">
             <!--begin::Notice-->
             <?php echo $this->session->flashdata('flash_message'); ?>
+			<?php if ($this->session->flashdata('data_result')): echo $this->session->flashdata('data_result');endif;?>
             <!--end::Notice-->
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -98,7 +99,7 @@
                                 </h2>
                             </div>
                             <div class="card-toolbar">
-                                <a href="<?php echo site_url('finance/income/add_income_dpb');?>"
+                                <a href="<?php echo site_url('finance/income/add_income_dpb'); ?>"
                                     class="btn btn-success btn-md mr-5">
                                     <i class="flaticon-add"></i>Tambah Tagihan DPB
                                 </a>

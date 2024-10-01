@@ -214,19 +214,19 @@ class IncomeModel extends CI_Model
     public function check_duplicate_import_data_payment($id = '')
     {
         $sql = $this->db->query("SELECT
-										u8514965_panel_utsman.ttp.id_tagihan_pembayaran,
-										u8514965_panel_utsman.ttp.nomor_siswa,
-										u8514965_panel_utsman.ttp.status_nomor_terdaftar,
-										u8514965_panel_utsman.ttp.status_nama_duplikat,
-										u8514965_panel_utsman.ttp.status_invoice_duplikat
+										panel_utsman.ttp.id_tagihan_pembayaran,
+										panel_utsman.ttp.nomor_siswa,
+										panel_utsman.ttp.status_nomor_terdaftar,
+										panel_utsman.ttp.status_nama_duplikat,
+										panel_utsman.ttp.status_invoice_duplikat
 									FROM
-										u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+										panel_utsman.transisi_tagihan_pembayaran ttp
 									WHERE
-										u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN($id)
+										panel_utsman.ttp.id_tagihan_pembayaran IN($id)
 									AND(
-										(u8514965_panel_utsman.ttp.status_nomor_terdaftar = 3) +
-										(u8514965_panel_utsman.ttp.status_nama_duplikat = 3) +
-										(u8514965_panel_utsman.ttp.status_invoice_duplikat = 3) >= 1
+										(panel_utsman.ttp.status_nomor_terdaftar = 3) +
+										(panel_utsman.ttp.status_nama_duplikat = 3) +
+										(panel_utsman.ttp.status_invoice_duplikat = 3) >= 1
 									)");
 
         return $sql->num_rows();
@@ -235,12 +235,12 @@ class IncomeModel extends CI_Model
     public function check_used_number_import_data_payment($id = '')
     {
         $sql = $this->db->query("SELECT
-										u8514965_panel_utsman.ttp.nomor_siswa, u8514965_panel_utsman.ttp.status_nomor_terdaftar, u8514965_panel_utsman.ttp.status_nama_duplikat, u8514965_panel_utsman.ttp.status_invoice_duplikat
+										panel_utsman.ttp.nomor_siswa, panel_utsman.ttp.status_nomor_terdaftar, panel_utsman.ttp.status_nama_duplikat, panel_utsman.ttp.status_invoice_duplikat
 									FROM
-										u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+										panel_utsman.transisi_tagihan_pembayaran ttp
 									WHERE
-										u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
-									AND u8514965_panel_utsman.ttp.status_invoice_duplikat = 2");
+										panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
+									AND panel_utsman.ttp.status_invoice_duplikat = 2");
 
         return $sql->num_rows();
     }
@@ -248,19 +248,19 @@ class IncomeModel extends CI_Model
     public function check_similiar_not_registered_import_data_payment($id = '')
     {
         $sql = $this->db->query("SELECT
-										u8514965_panel_utsman.ttp.id_tagihan_pembayaran,
-										u8514965_panel_utsman.ttp.nomor_siswa,
-										u8514965_panel_utsman.ttp.status_nomor_terdaftar,
-										u8514965_panel_utsman.ttp.status_nama_duplikat,
-										u8514965_panel_utsman.ttp.status_invoice_duplikat
+										panel_utsman.ttp.id_tagihan_pembayaran,
+										panel_utsman.ttp.nomor_siswa,
+										panel_utsman.ttp.status_nomor_terdaftar,
+										panel_utsman.ttp.status_nama_duplikat,
+										panel_utsman.ttp.status_invoice_duplikat
 									FROM
-										u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+										panel_utsman.transisi_tagihan_pembayaran ttp
 									WHERE
-										u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN($id)
+										panel_utsman.ttp.id_tagihan_pembayaran IN($id)
 									AND(
-										(u8514965_panel_utsman.ttp.status_nomor_terdaftar = 2) +
-										(u8514965_panel_utsman.ttp.status_nama_duplikat = 2) +
-										(u8514965_panel_utsman.ttp.status_nama_duplikat = 4) >= 1
+										(panel_utsman.ttp.status_nomor_terdaftar = 2) +
+										(panel_utsman.ttp.status_nama_duplikat = 2) +
+										(panel_utsman.ttp.status_nama_duplikat = 4) >= 1
 									)");
 
         return $sql->num_rows();
@@ -859,6 +859,17 @@ class IncomeModel extends CI_Model
     public function accept_import_data_siswa_du($id = '')
     {
         $this->db2->trans_begin();
+        // Ambil data yang sudah ada sebelumnya berdasarkan `nis`
+        $query_existing = $this->db2->query("SELECT nis
+												FROM siswa
+												WHERE nis IN (
+													SELECT nomor_siswa
+													FROM panel_utsman.transisi_tagihan_pembayaran
+													WHERE id_tagihan_pembayaran IN ($id)
+												)");
+
+        $existing_data = $query_existing->result_array();
+        $existing_nis = array_column($existing_data, 'nis');
 
         $this->db2->query("INSERT INTO siswa(
 											nis,
@@ -872,22 +883,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											u8514965_panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
 											CONCAT(
 												'9',
-												SUBSTRING(u8514965_panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_dpb,
-											u8514965_panel_utsman.ttp.nomor_siswa,
-											u8514965_panel_utsman.ttp.password,
-											u8514965_panel_utsman.ttp.level_tingkat,
-											u8514965_panel_utsman.ttp.nama,
-											u8514965_panel_utsman.ttp.nomor_hp,
-											u8514965_panel_utsman.ttp.email,
-											u8514965_panel_utsman.ttp.th_ajaran
+											panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.password,
+											panel_utsman.ttp.level_tingkat,
+											panel_utsman.ttp.nama,
+											panel_utsman.ttp.nomor_hp,
+											panel_utsman.ttp.email,
+											panel_utsman.ttp.th_ajaran
 										FROM
-											u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+											panel_utsman.transisi_tagihan_pembayaran ttp
 										WHERE
-											u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
+											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -896,18 +907,60 @@ class IncomeModel extends CI_Model
 											email = VALUES(email),
 											th_ajaran = VALUES(th_ajaran)");
 
+        // Ambil data setelah operasi INSERT untuk mendapatkan semua `nis` yang ada
+        $query_all = $this->db2->query("SELECT nis, nama_lengkap
+		 FROM siswa
+		 WHERE nis IN (
+			 SELECT nomor_siswa
+			 FROM panel_utsman.transisi_tagihan_pembayaran
+			 WHERE id_tagihan_pembayaran IN ($id)
+		 )");
+
+        $all_data = $query_all->result_array();
+		// Cari `nis` yang baru ditambahkan
+        $added_data = [];
+        foreach ($all_data as $row) {
+            if (!in_array($row['nis'], $existing_nis)) {
+                $added_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+		// Cari `nis` yang diperbarui (sudah ada sebelumnya)
+        $updated_data = [];
+        foreach ($all_data as $row) {
+            if (in_array($row['nis'], $existing_nis)) {
+                $updated_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array(
+                'status' => true,
+                'added' => $added_data,
+                'count_added' => count($added_data),
+                'updated' => $updated_data,
+                'count_updated' => count($updated_data),
+            );
         }
     }
 
     public function accept_import_data_siswa_dpb($id = '')
     {
         $this->db2->trans_begin();
+        // Ambil data yang sudah ada sebelumnya berdasarkan `nis`
+        $query_existing = $this->db2->query("SELECT nis
+												FROM siswa
+												WHERE nis IN (
+													SELECT nomor_siswa
+													FROM panel_utsman.transisi_tagihan_pembayaran
+													WHERE id_tagihan_pembayaran IN ($id)
+												)");
+
+        $existing_data = $query_existing->result_array();
+        $existing_nis = array_column($existing_data, 'nis');
 
         $this->db2->query("INSERT INTO siswa(
 											nis,
@@ -921,22 +974,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											u8514965_panel_utsman.ttp.nomor_siswa,
-											u8514965_panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
+											panel_utsman.ttp.nomor_siswa,
 											CONCAT(
 												'8',
-												SUBSTRING(u8514965_panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_du,
-											u8514965_panel_utsman.ttp.password,
-											u8514965_panel_utsman.ttp.level_tingkat,
-											u8514965_panel_utsman.ttp.nama,
-											u8514965_panel_utsman.ttp.nomor_hp,
-											u8514965_panel_utsman.ttp.email,
-											u8514965_panel_utsman.ttp.th_ajaran
+											panel_utsman.ttp.password,
+											panel_utsman.ttp.level_tingkat,
+											panel_utsman.ttp.nama,
+											panel_utsman.ttp.nomor_hp,
+											panel_utsman.ttp.email,
+											panel_utsman.ttp.th_ajaran
 										FROM
-											u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+											panel_utsman.transisi_tagihan_pembayaran ttp
 										WHERE
-											u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
+											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -945,12 +998,43 @@ class IncomeModel extends CI_Model
 											email = VALUES(email),
 											th_ajaran = VALUES(th_ajaran)");
 
+        // Ambil data setelah operasi INSERT untuk mendapatkan semua `nis` yang ada
+        $query_all = $this->db2->query("SELECT nis, nama_lengkap
+										FROM siswa
+										WHERE nis IN (
+											SELECT nomor_siswa
+											FROM panel_utsman.transisi_tagihan_pembayaran
+											WHERE id_tagihan_pembayaran IN ($id)
+										)");
+
+        $all_data = $query_all->result_array();
+        // Cari `nis` yang baru ditambahkan
+        $added_data = [];
+        foreach ($all_data as $row) {
+            if (!in_array($row['nis'], $existing_nis)) {
+                $added_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+        // Cari `nis` yang diperbarui (sudah ada sebelumnya)
+        $updated_data = [];
+        foreach ($all_data as $row) {
+            if (in_array($row['nis'], $existing_nis)) {
+                $updated_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array(
+                'status' => true,
+                'added' => $added_data,
+                'count_added' => count($added_data),
+                'updated' => $updated_data,
+                'count_updated' => count($updated_data),
+            );
         }
     }
 
@@ -976,25 +1060,25 @@ class IncomeModel extends CI_Model
 															status_pembayaran
 														)
 														SELECT
-															u8514965_panel_utsman.ttp.id_invoice,
-															u8514965_panel_utsman.ttp.level_tingkat,
-															u8514965_panel_utsman.ttp.tipe_tagihan,
-															u8514965_panel_utsman.ttp.tanggal_invoice,
-															u8514965_panel_utsman.ttp.nomor_siswa,
-															u8514965_panel_utsman.ttp.nama,
-															u8514965_panel_utsman.ttp.nominal_tagihan,
-															u8514965_panel_utsman.ttp.informasi,
-															u8514965_panel_utsman.ttp.nama_kelas,
-															u8514965_panel_utsman.ttp.rincian,
-															u8514965_panel_utsman.ttp.catatan,
-															u8514965_panel_utsman.ttp.email,
-															u8514965_panel_utsman.ttp.nomor_hp,
-															u8514965_panel_utsman.ttp.th_ajaran,
-															u8514965_panel_utsman.ttp.status_pembayaran
+															panel_utsman.ttp.id_invoice,
+															panel_utsman.ttp.level_tingkat,
+															panel_utsman.ttp.tipe_tagihan,
+															panel_utsman.ttp.tanggal_invoice,
+															panel_utsman.ttp.nomor_siswa,
+															panel_utsman.ttp.nama,
+															panel_utsman.ttp.nominal_tagihan,
+															panel_utsman.ttp.informasi,
+															panel_utsman.ttp.nama_kelas,
+															panel_utsman.ttp.rincian,
+															panel_utsman.ttp.catatan,
+															panel_utsman.ttp.email,
+															panel_utsman.ttp.nomor_hp,
+															panel_utsman.ttp.th_ajaran,
+															panel_utsman.ttp.status_pembayaran
 														FROM
-															u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+															panel_utsman.transisi_tagihan_pembayaran ttp
 														WHERE
-															u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+															panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -1027,25 +1111,25 @@ class IncomeModel extends CI_Model
 															status_pembayaran
 														)
 														SELECT
-															u8514965_panel_utsman.ttp.id_invoice,
-															u8514965_panel_utsman.ttp.level_tingkat,
-															u8514965_panel_utsman.ttp.tipe_tagihan,
-															u8514965_panel_utsman.ttp.tanggal_invoice,
-															u8514965_panel_utsman.ttp.nomor_siswa,
-															u8514965_panel_utsman.ttp.nama,
-															u8514965_panel_utsman.ttp.nominal_tagihan,
-															u8514965_panel_utsman.ttp.informasi,
-															u8514965_panel_utsman.ttp.nama_kelas,
-															u8514965_panel_utsman.ttp.rincian,
-															u8514965_panel_utsman.ttp.catatan,
-															u8514965_panel_utsman.ttp.email,
-															u8514965_panel_utsman.ttp.nomor_hp,
-															u8514965_panel_utsman.ttp.th_ajaran,
-															u8514965_panel_utsman.ttp.status_pembayaran
+															panel_utsman.ttp.id_invoice,
+															panel_utsman.ttp.level_tingkat,
+															panel_utsman.ttp.tipe_tagihan,
+															panel_utsman.ttp.tanggal_invoice,
+															panel_utsman.ttp.nomor_siswa,
+															panel_utsman.ttp.nama,
+															panel_utsman.ttp.nominal_tagihan,
+															panel_utsman.ttp.informasi,
+															panel_utsman.ttp.nama_kelas,
+															panel_utsman.ttp.rincian,
+															panel_utsman.ttp.catatan,
+															panel_utsman.ttp.email,
+															panel_utsman.ttp.nomor_hp,
+															panel_utsman.ttp.th_ajaran,
+															panel_utsman.ttp.status_pembayaran
 														FROM
-															u8514965_panel_utsman.transisi_tagihan_pembayaran ttp
+															panel_utsman.transisi_tagihan_pembayaran ttp
 														WHERE
-															u8514965_panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+															panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();

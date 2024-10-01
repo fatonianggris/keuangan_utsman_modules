@@ -383,6 +383,8 @@ if (!empty($schoolyear)) {
             <form class="form" novalidate="novalidate"
                 action="<?php echo site_url('finance/savings/get_student_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
+				<input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+				value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">

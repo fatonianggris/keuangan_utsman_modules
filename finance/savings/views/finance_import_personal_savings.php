@@ -101,7 +101,7 @@ if (!empty($schoolyear)) {
 } //ngatur nomor urut
 }
 ?>
-                                        <option value="">Semua</option>
+                                        <option value="">SEMUA</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-2 mb-lg-0 mb-6">
@@ -308,8 +308,8 @@ if (!empty($schoolyear)) {
                             <div class="form-group">
                                 <label> Tanggal Transaksi</label>
                                 <input type="text" name="tanggal_transaksi"
-                                    class="form-control form-control-lg tanggal_transaksi"
-                                    placeholder="Inputkan Tanggal Transaksi" disabled />
+                                    class="form-control form-control-lg tanggal_transaksi kt_datepicker_kredit"
+                                    placeholder="Inputkan Tanggal Transaksi"/>
                             </div>
                         </div>
                         <div class="col-lg-7">

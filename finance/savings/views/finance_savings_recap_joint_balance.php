@@ -154,9 +154,18 @@ if (!empty($schoolyear)) {
                                             <option value="">SEMUA</option>
                                         </select>
                                     </div>
-
                                 </div>
                                 <div class="row mb-4">
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <label>Jenis Tabungan</label>
+                                        <select class="form-control datatable-input-disabled form-control-solid" data-col-index="11">
+                                            <?php if ($info_joint[0]->jenis_tabungan == "1") {?>
+                                            <option value="KOMITE" selected>KOMITE</option>
+                                            <?php } else {?>
+                                            <option value="KELAS" selected>KELAS</option>
+                                            <?php }?>
+                                        </select>
+                                    </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
                                         <label>Tanggal Transaksi:</label>
                                         <input type="text" class="form-control datatable-input"
@@ -233,6 +242,7 @@ if (!empty($schoolyear)) {
                                             <th>Kredit (Rp)</th>
                                             <th>Debet (Rp)</th>
                                             <th>Saldo (Rp)</th>
+											<th>Jenis Tabungan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -250,6 +260,7 @@ if (!empty($schoolyear)) {
                                             <th class="font-weight-bolder">TOTAL TRANSAKSI</th>
                                             <th class="font-weight-bolder text-success">-</th>
                                             <th class="font-weight-bolder text-danger">-</th>
+											<th></th>
                                             <th class="font-weight-bolder"></th>
                                             <th></th>
                                         </tr>

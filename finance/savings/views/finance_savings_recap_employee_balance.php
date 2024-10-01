@@ -129,11 +129,10 @@ if (!empty($schoolyear)) {
                                         <select name="input_tingkat" class="form-control datatable-input"
                                             data-col-index="5">
                                             <option value="">Pilih Tingkat</option>
-                                            <option value="DC">DC</option>
-                                            <option value="KB">KB</option>
-                                            <option value="TK">TK</option>
+                                            <option value="DC/KB/TK">DC/KB/TK</option>
                                             <option value="SD">SD</option>
                                             <option value="SMP">SMP</option>
+											<option value="UMUM">UMUM</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
@@ -370,11 +369,10 @@ if (!empty($schoolyear)) {
                                 <select name="inputTingkatKredit" class="form-control form-control-lg"
                                     id="inputTingkatKredit">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+									<option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -528,13 +526,12 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_kredit_edit" class="form-control form-control-lg">
+                                <select name="tingkat_kredit" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+									<option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -703,11 +700,10 @@ if (!empty($schoolyear)) {
                                 <select name="inputTingkatDebet" class="form-control form-control-lg"
                                     id="inputTingkatDebet">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+									<option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -861,13 +857,12 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_debet_edit" class="form-control form-control-lg">
+                                <select name="tingkat_debet" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+									<option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -940,8 +935,6 @@ if (!empty($schoolyear)) {
 </div>
 <!-- End of Modal Debet  -->
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/config.pin.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction-recap.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction-recap.js">
-</script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction-recap.js">
-</script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction-employee-recap.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction-employee-recap.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction-employee-recap.js"></script>

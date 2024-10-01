@@ -132,6 +132,16 @@ if (!empty($schoolyear)) {
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
                                     </div>
+									<div class="col-lg-2 mb-lg-0 mb-6 mt-5">
+                                        <label>Jenis Tabungan</label>
+                                        <select class="form-control datatable-input" data-col-index="11">
+                                            <option value="">Pilih Jenis</option>
+                                            <option value="KOMITE">KOMITE</option>
+                                            <option value="KELAS">KELAS</option>
+                                            <option value="">SEMUA</option>
+                                            <!-- <option value="5">SMA</option> -->
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="row mt-8">
                                     <div class="row col-lg-7">
@@ -204,6 +214,7 @@ if (!empty($schoolyear)) {
                                             <th>Kredit (Rp)</th>
                                             <th>Debet (Rp)</th>
                                             <th>Saldo (Rp)</th>
+											<th>Jenis Tabungan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -222,6 +233,7 @@ if (!empty($schoolyear)) {
                                             <th class="font-weight-bolder text-success">-</th>
                                             <th class="font-weight-bolder text-danger">-</th>
                                             <th class="font-weight-bolder text-dark">-</th>
+											<th></th>
                                             <th></th>
                                         </tr>
                                     </tfoot>
@@ -286,6 +298,30 @@ if (!empty($schoolyear)) {
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
                         </div>
+						<div class="col-lg-3">
+                            <div class="form-group">
+                                <label> Jenis Tabungan </label>
+                                <select name="jenis_tabungan" class="form-control form-control-lg jenis_tabungan" id="jenis_tabungan">
+                                    <option value="">Pilih Jenis Tabungan</option>
+                                    <option value="1">KOMITE</option>
+                                    <option value="2">KELAS</option>
+                                </select>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,</b> Pilih Jenis Tabungan</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Nama Penanggung Jawab</label>
+                                <select name="id_penanggung_jawab" id="id_penanggung_jawab"
+                                    class="form-control form-control-lg select2 id_penanggung_jawab">
+                                </select>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                        DIISI,
+                                    </b>isikan Siswa Penanggung Jawab, Perwakilan salah satu
+                                    satu</span>
+                            </div>
+                        </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Tahun Ajaran</label>
@@ -307,21 +343,10 @@ if (!empty($schoolyear)) {
                                     </b>isikan Tahun Ajaran</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+
+                        <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Nama Siswa Penanggung Jawab</label>
-                                <select name="id_siswa_penanggung_jawab" id="id_siswa_penanggung_jawab"
-                                    class="form-control form-control-lg select2 id_siswa_penanggung_jawab">
-                                </select>
-                                <span class="form-text text-dark"><b class="text-danger">*WAJIB
-                                        DIISI,
-                                    </b>isikan Siswa Penanggung Jawab, Perwakilan salah satu
-                                    satu</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Nama Wali/Orang Tua Penanggung Jawab</label>
+                                <label>Nama Wali Penanggung Jawab</label>
                                 <input type="text" name="nama_wali" class="form-control form-control-lg"
                                     placeholder="Inputkan Nama Wali" />
                                 <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
@@ -329,9 +354,9 @@ if (!empty($schoolyear)) {
                                     Wali/Nasabah</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-5">
                             <div class="form-group">
-                                <label>Nomor HP Wali/Orang Tua Penanggung Jawab</label>
+                                <label>Nomor HP Wali Penanggung Jawab</label>
                                 <input type="text" name="nomor_handphone_wali" class="form-control form-control-lg"
                                     placeholder="Inputkan Nomor Handphone Wali" />
                                 <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan

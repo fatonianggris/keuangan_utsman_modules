@@ -65,6 +65,7 @@
                 <th>Kredit</th>
                 <th>Debit</th>
                 <th>Saldo</th>
+				<th>Jenis Tabungan</th>
         </thead>
         <tbody>
             <?php
@@ -74,6 +75,7 @@ $total_kredit = 0;
 $total_saldo = 0;
 
 $tingkat = '';
+$jenis_tabungan = '';
 
 $number = 1;
 
@@ -96,18 +98,25 @@ if (!empty($saving)) {
             $tingkat = 'SMP';
         }
 
+        if ($value->jenis_tabungan == '1') {
+            $jenis_tabungan = 'KOMITE';
+        } else if ($value->jenis_tabungan == '2') {
+            $jenis_tabungan = 'KELAS';
+        }
+
         ?>
             <tr>
                 <th scope="row"><?php echo $number; ?></th>
                 <td align="left"><?php echo (($value->nomor_rekening_bersama)); ?></td>
                 <td align="left"><?php echo (strtoupper($value->nama_tabungan_bersama)); ?></td>
-                <td align="left"><?php echo ucwords(strtoupper($value->nama_lengkap)); ?></td>
+                <td align="left"><?php echo strtoupper(strtoupper($value->nama_lengkap)) . " (" . $value->number . ")"; ?></td>
                 <td align="left"><?php echo (($value->nomor_handphone)); ?></td>
                 <td align="left"><?php echo (($value->tahun_ajaran)); ?></td>
                 <td align="left"><?php echo (($tingkat)); ?></td>
                 <td align="left"><?php echo number_format($value->kredit_bersama, 0, ',', '.'); ?></td>
                 <td align="left"><?php echo number_format($value->debet_bersama, 0, ',', '.'); ?></td>
                 <td align="left"><?php echo number_format($value->saldo_bersama, 0, ',', '.'); ?></td>
+                <td align="left"><?php echo (($jenis_tabungan)); ?></td>
             </tr>
             <?php
 $number++;

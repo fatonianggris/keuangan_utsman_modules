@@ -125,11 +125,10 @@ if (!empty($schoolyear)) {
                                         <select name="input_tingkat" class="form-control datatable-input"
                                             data-col-index="6">
                                             <option value="">Pilih Tingkat</option>
-                                            <option value="DC">DC</option>
-                                            <option value="KB">KB</option>
-                                            <option value="TK">TK</option>
+                                            <option value="DC/KB/TK">DC/KB/TK</option>
                                             <option value="SD">SD</option>
                                             <option value="SMP">SMP</option>
+                                            <option value="UMUM">UMUM</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
@@ -359,11 +358,10 @@ if (!empty($schoolyear)) {
                                 <select name="inputTingkatKredit" class="form-control form-control-lg"
                                     id="inputTingkatKredit">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -424,34 +422,53 @@ if (!empty($schoolyear)) {
                                             nama
                                             lengkap Nasabah/Pegawai
                                         </span>
-
                                     </div>
-                                    <div class="form-group col-6">
-                                        <label> Nama Orang Tua/Wali </label>
-                                        <input type="text" class="form-control form-control-lg" name="nama_orangtua"
-                                            id="nama_orangtua" placeholder="Input Nama Orang Tua Wali" />
-                                        <span class="form-text text-dark"><b class="">*TIDAK WAJIB DIISI,</b> Nama
-                                            Orang
-                                            Tua/Wali
-                                        </span>
+                                    <div class="form-group col-3">
+                                        <label> Status Pegawai </label>
+                                        <select name="status_pegawai" id="status_pegawai"
+                                            class="form-control form-control-lg">
+                                            <option value="">Pilih Status</option>
+                                            <option value="1">Tetap</option>
+                                            <option value="2">Tidak Tetap</option>
+                                            <option value="3">Honorer</option>
+                                        </select>
+                                        <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                DIPILIH, </b>pilih Status Pegawai</span>
                                     </div>
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-3">
+                                        <label> Jenis Kelamin </label>
+                                        <select name="jenis_kelamin" id="jenis_kelamin"
+                                            class="form-control form-control-lg">
+                                            <option value="">Pilih JK</option>
+                                            <option value="1">Laki-laki</option>
+                                            <option value="2">Perempuan</option>
+                                        </select>
+                                        <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                DIPILIH, </b>pilih Status Pegawai</span>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label> Jabatan Pegawai </label>
+                                        <select name="jabatan" id="jabatan"
+                                            class="form-control form-control-lg jabatan">
+                                            <option value="">Pilih Jabatan Pegawai</option>
+                                        </select>
+                                        <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                DIPILIH, </b>pilih Jabatan Pegawai</span>
+                                    </div>
+                                    <div class="form-group col-4">
                                         <label> Nomor HP Aktif </label>
-
                                         <input type="number" class="form-control form-control-lg" name="nomor_hp_aktif"
                                             id="nomor_hp_aktif" placeholder="Input Nomor HP Aktif" />
                                         <span class="form-text text-dark"><b class="">*TIDAK WAJIB DIISI,</b>
                                             isikan
                                             Nomor Handphone</span>
                                     </div>
-                                    <div class="form-group col-6">
-                                        <label> Email Orang Tua/Wali </label>
-
-                                        <input type="text" class="form-control form-control-lg" name="email_orangtua"
-                                            name="email_orangtua" placeholder="Input Email Orang Tua Wali" />
+                                    <div class="form-group col-4">
+                                        <label> Email Pegawai </label>
+                                        <input type="text" class="form-control form-control-lg" id="email_pegawai"
+                                            name="email_pegawai" placeholder="Input Email Pegawai" />
                                         <span class="form-text text-dark"><b class="">*TIDAK WAJIB DIISI,</b> Email
-                                            Orang
-                                            Tua/Wali
+                                            Pegawai
                                         </span>
                                     </div>
                                 </div>
@@ -560,7 +577,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Jenis Tabungan </label>
-                                <select name="jenis_tabungan_kredit_edit" class="form-control form-control-lg" disabled>
+                                <select name="jenis_tabungan_kredit" class="form-control form-control-lg" disabled>
                                     <option value="1" selected>UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
@@ -570,13 +587,12 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_kredit_edit" class="form-control form-control-lg">
+                                <select name="tingkat_kredit" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -739,11 +755,10 @@ if (!empty($schoolyear)) {
                                 <select name="inputTingkatDebet" class="form-control form-control-lg"
                                     id="inputTingkatDebet">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -883,7 +898,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Jenis Tabungan </label>
-                                <select name="jenis_tabungan_debet_edit" class="form-control form-control-lg" disabled>
+                                <select name="jenis_tabungan_debet" class="form-control form-control-lg" disabled>
                                     <option value="1" selected>UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
@@ -893,13 +908,12 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="tingkat_debet_edit" class="form-control form-control-lg">
+                                <select name="tingkat_debet" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -982,8 +996,10 @@ if (!empty($schoolyear)) {
                 </button>
             </div>
             <form class="form" novalidate="novalidate"
-                action="<?php echo site_url('finance/savings/get_student_transaction_recap'); ?>"
+                action="<?php echo site_url('finance/savings/get_employee_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
+                <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+                    value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">
@@ -1055,6 +1071,18 @@ var id_role = 7;
 </script>
 
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/config.pin.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction-employee.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction-employee.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction-employee.js"></script>
+<script>
+    $(document).ready(function () {
+        var id_pos;
+        $("#inputTingkatKredit").change(function () {
+            id_pos = $(this).val();
+            var url = "<?php echo site_url('finance/savings/add_ajax_position'); ?>/" + id_pos;
+            $('#jabatan').load(url);
+            return false;
+        });
+    });
+</script>
+

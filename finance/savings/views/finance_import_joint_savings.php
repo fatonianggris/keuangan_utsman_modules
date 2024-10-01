@@ -134,6 +134,16 @@ if (!empty($schoolyear)) {
                                         <!-- <option value="5">SMA</option> -->
                                     </select>
                                 </div>
+                                <div class="col-lg-2 mb-lg-0 mb-6 mt-5">
+                                    <label>Jenis Tabungan</label>
+                                    <select class="form-control datatable-input" data-col-index="12">
+                                        <option value="">Pilih Jenis</option>
+                                        <option value="KOMITE">KOMITE</option>
+                                        <option value="KELAS">KELAS</option>
+                                        <option value="">SEMUA</option>
+                                        <!-- <option value="5">SMA</option> -->
+                                    </select>
+                                </div>
                             </div>
                             <div class="row mt-8">
                                 <div class=" col-lg-10">
@@ -173,7 +183,7 @@ if (!empty($schoolyear)) {
                                             <th class="text-center"></th>
                                             <th>No. Rekening</th>
                                             <th>Nama Tabungan</th>
-                                            <th>NIS PJ</th>
+                                            <th>ID PJ</th>
                                             <th>Status PJ</th>
                                             <th>Nama Wali</th>
                                             <th>No. Handphone</th>
@@ -182,6 +192,7 @@ if (!empty($schoolyear)) {
                                             <th>Tingkat</th>
                                             <th>Saldo (Rp)</th>
                                             <th>Status Rekening</th>
+                                            <th>Jenis Tabungan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -200,6 +211,7 @@ if (!empty($schoolyear)) {
                                             <th></th>
                                             <th class="font-weight-bolder">TOTAL SALDO</th>
                                             <th class="font-weight-bolder text-dark">-</th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -241,7 +253,7 @@ if (!empty($schoolyear)) {
                 <div class="modal-body">
                     <input type="hidden" class="hidden" name="id_nasabah_bersama">
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label> Nomor Rekening Bersama</label>
                                 <input class="form-control form-control-lg nomor_rekening_bersama"
@@ -251,7 +263,7 @@ if (!empty($schoolyear)) {
                                     Rekening Tabungan</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-8">
                             <div class="form-group">
                                 <label> Nama Tabungan Bersama</label>
                                 <input type="text" name="nama_tabungan_bersama"
@@ -259,6 +271,61 @@ if (!empty($schoolyear)) {
                                     placeholder="Inputkan Nama Tabungan Bersama" />
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan Nama
                                     Tabungan Bersama</span>
+                            </div>
+                        </div>
+						<div class="col-lg-4">
+                            <div class="form-group">
+                                <label> Jenis Tabungan </label>
+                                <select name="jenis_tabungan" class="form-control form-control-lg jenis_tabungan" id="jenis_tabungan">
+                                    <option value="">Pilih Jenis Tabungan</option>
+                                    <option value="1">KOMITE</option>
+                                    <option value="2">KELAS</option>
+                                </select>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,</b> Pilih Jenis Tabungan</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label>Nama Penanggung Jawab</label>
+                                <select name="id_penanggung_jawab" id="id_penanggung_jawab"
+                                    class="form-control form-control-lg select2 id_penanggung_jawab">
+                                </select>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                        DIISI,
+                                    </b>isikan Penanggung Jawab, Perwakilan salah satu
+                                    satu</span>
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label> Tanggal Transaksi</label>
+                                <input type="text" name="tanggal_transaksi"
+                                    class="form-control form-control-lg tanggal_transaksi kt_datepicker_kredit"
+                                    placeholder="Inputkan Tanggal Transaksi" />
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                        DIISI,
+                                    </b>Tanggal Transaksi</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label>Nama Wali Penanggung Jawab</label>
+                                <input type="text" name="nama_wali" class="form-control form-control-lg"
+                                    placeholder="Inputkan Nama Wali" />
+                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
+                                    Nama
+                                    Wali/Nasabah</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Nomor HP Wali Penanggung Jawab</label>
+                                <input type="text" name="nomor_handphone_wali" class="form-control form-control-lg"
+                                    placeholder="Inputkan Nomor Handphone Wali" />
+                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
+                                    Nomor Handphone
+                                    Wali/Nasabah</span>
                             </div>
                         </div>
                         <div class="col-lg-3">
@@ -292,22 +359,11 @@ if (!empty($schoolyear)) {
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
                                 </select>
-                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,</b> Pilih
+                                    Tingkat</span>
                             </div>
                         </div>
-                        <div class="col-lg-5">
-                            <div class="form-group">
-                                <label>Nama Siswa Penanggung Jawab</label>
-                                <select name="id_siswa_penanggung_jawab" id="id_siswa_penanggung_jawab"
-                                    class="form-control form-control-lg select2 id_siswa_penanggung_jawab">
-                                </select>
-                                <span class="form-text text-dark"><b class="text-danger">*WAJIB
-                                        DIISI,
-                                    </b>isikan Siswa Penanggung Jawab, Perwakilan salah satu
-                                    satu</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
+						<div class="col-lg-6">
                             <div class="form-group">
                                 <label> Saldo Bersama</label>
                                 <input type="text" name="saldo_bersama"
@@ -315,34 +371,6 @@ if (!empty($schoolyear)) {
                                     placeholder="Inputkan Saldo Bersama" />
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan
                                     Nominal Saldo Bersama</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label> Tanggal Transaksi</label>
-                                <input type="text" name="tanggal_transaksi"
-                                    class="form-control form-control-lg tanggal_transaksi"
-                                    placeholder="Inputkan Tanggal Transaksi" disabled />
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="form-group">
-                                <label>Nama Wali Penanggung Jawab</label>
-                                <input type="text" name="nama_wali" class="form-control form-control-lg"
-                                    placeholder="Inputkan Nama Wali" />
-                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
-                                    Nama
-                                    Wali/Nasabah</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label>Nomor HP Wali Penanggung Jawab</label>
-                                <input type="text" name="nomor_handphone_wali" class="form-control form-control-lg"
-                                    placeholder="Inputkan Nomor Handphone Wali" />
-                                <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
-                                    Nomor Handphone
-                                    Wali/Nasabah</span>
                             </div>
                         </div>
                         <div class="col-12">
@@ -416,14 +444,14 @@ if (!empty($schoolyear)) {
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "NIS Penanggung Jawab"
-                                    (Kemungkinan NIS Siswa yang Menjadi PJ tersebut belum terdaftar di database atau
+                                <td class="font-weight-bold">Terdapat kesalahan input pada kolom "Nomor ID Penanggung Jawab"
+                                    (Kemungkinan Nomor ID yang Menjadi PJ tersebut belum terdaftar di database atau
                                     salah input)
                                     <b class="text-danger">*Jika Status Penanggung Jawab berstatus <span
                                             class="label label-over font-weight-bolder label-light-danger label-inline">TIDAK
                                             TERDAFTAR
                                         </span>. Anda dianjurkan untuk
-                                        menginputkan NIS Siswa yang menjadi Penanggung Jawab, Akan tetapi tetap
+                                        menginputkan Nomor ID yang menjadi Penanggung Jawab, Akan tetapi tetap
                                         diperbolehkan untuk Menyetujui Import meskipun Belum Terdafatar.</b>
                                 <td><span
                                         class="label label-over font-weight-bolder label-light-danger label-inline">TIDAK

@@ -86,12 +86,12 @@
                                         <input type="text" class="form-control datatable-input"
                                             placeholder="Inputkan Nama Pegawai" data-col-index="2" />
                                     </div>
-									<div class="col-lg-2 mb-lg-0 mb-6">
+                                    <div class="col-lg-2 mb-lg-0 mb-6">
                                         <label>Jenis Kelamin</label>
                                         <select type="text" class="form-control datatable-input" data-col-index="3">
                                             <option value="">Pilih JK</option>
-                                            <option value="Laki-Laki">Laki-Laki</option>
-                                            <option value="Perempuan">Perempuan</option>
+                                            <option value="L">Laki-Laki</option>
+                                            <option value="P">Perempuan</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
@@ -112,17 +112,15 @@ if (!empty($schoolyear)) {
 } //ngatur nomor urut
 }
 ?>
-                                            <option value="">Semua</option>
+                                            <option value="">SEMUA</option>
                                         </select>
                                     </div>
-
                                     <div class="col-lg-2 mb-lg-0 mb-6">
                                         <label>Tingkat</label>
                                         <select name="input_tingkat" class="form-control datatable-input"
                                             data-col-index="5">
                                             <option value="">Pilih Tingkat</option>
-                                            <option value="DC">DC</option>
-                                            <option value="KB/TK">KB/TK</option>
+                                            <option value="DC/KB/TK">DC/KB/TK</option>
                                             <option value="SD">SD</option>
                                             <option value="SMP">SMP</option>
                                             <option value="UMUM">UMUM</option>
@@ -130,12 +128,36 @@ if (!empty($schoolyear)) {
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
                                     </div>
-                                    <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Status Nasabah</label>
+                                    <div class="col-lg-2 mb-lg-0 mb-6 mt-6">
+                                        <label>Status Pegawai</label>
+                                        <select class="form-control datatable-input" data-col-index="6">
+                                            <option value="">Pilih Status</option>
+                                            <option value="TETAP">TETAP</option>
+                                            <option value="TIDAK TETAP">TIDAK TETAP</option>
+                                            <option value="HONORER">HONORER</option>
+                                            <option value="">SEMUA</option>
+                                            <!-- <option value="5">SMA</option> -->
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6  mt-6">
+                                        <label>Status Rekening</label>
                                         <select class="form-control datatable-input" data-col-index="12">
                                             <option value="">Pilih Status</option>
+                                            <option value="TIDAK TERDAFTAR">TIDAK TERDAFTAR</option>
+                                            <option value="TERPAKAI">TERPAKAI</option>
                                             <option value="DUPLIKAT">DUPLIKAT</option>
-                                            <option value="NON DUPLIKAT">NON DUPLIKAT</option>
+                                            <option value="">SEMUA</option>
+                                            <!-- <option value="5">SMA</option> -->
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 mb-lg-0 mb-6 mt-6">
+                                        <label>Status Nama</label>
+                                        <select class="form-control datatable-input" data-col-index="13">
+                                            <option value="">Pilih Status</option>
+                                            <option value="MIRIP">MIRIP</option>
+                                            <option value="TIDAK TERDAFTAR">TIDAK TERDAFTAR</option>
+                                            <option value="TERPAKAI">TERPAKAI</option>
+                                            <option value="DUPLIKAT">DUPLIKAT</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
@@ -181,14 +203,17 @@ if (!empty($schoolyear)) {
                                             <th class="text-center"></th>
                                             <th>NIP</th>
                                             <th>Nama Nasabah/Pegawai</th>
-											<th>JK</th>
-                                            <th>Tanggal Transaksi</th>
+                                            <th>JK</th>
                                             <th>Tahun Ajaran</th>
                                             <th>Tingkat</th>
                                             <th>Status Pegawai</th>
                                             <th>Nomor HP</th>
                                             <th>Email</th>
-                                            <th>Saldo</th>
+                                            <th>Saldo Umum</th>
+											<th>Saldo Qurban</th>
+											<th>Saldo Wisata</th>
+                                            <th>Status NIP/Rekening</th>
+                                            <th>Status Nama</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -198,7 +223,6 @@ if (!empty($schoolyear)) {
                                         <tr>
                                             <th></th>
                                             <th></th>
-											<th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -207,6 +231,10 @@ if (!empty($schoolyear)) {
                                             <th></th>
                                             <th class="font-weight-bolder">TOTAL SALDO</th>
                                             <th class="font-weight-bolder text-dark">-</th>
+											<th class="font-weight-bolder text-dark">-</th>
+											<th class="font-weight-bolder text-dark">-</th>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </tfoot>
@@ -239,7 +267,7 @@ if (!empty($schoolyear)) {
     <div class="modal-dialog modal-lg" role="document" id="kt_form_edit_import_pegawai">
         <div class="modal-content">
             <div class="modal-header bg-default">
-                <h5 class="modal-title font-weight-bolder">Edit Profil Nasabah</h5>
+                <h5 class="modal-title font-weight-bolder">Edit Profil Nasabah Pegawai</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -251,7 +279,7 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> NIP Nasabah</label>
-                                <input type="text" class="form-control form-control-lg nip_pegawai" name="nip_pegewai">
+                                <input type="text" class="form-control form-control-lg nip_pegawai" name="nip_pegawai">
                                 <input type="hidden" name="old_nip">
                                 </input>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan NIP
@@ -263,17 +291,18 @@ if (!empty($schoolyear)) {
                                 <label> Nama Pegawai/Nasabah</label>
                                 <input type="text" name="nama_pegawai" class="form-control form-control-lg nama_pegawai"
                                     placeholder="Inputkan Nama Lengkap Pegawai" />
+								<input type="hidden" name="old_nama_pegawai">
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan Nama
                                     Pegawai/Nasabah</span>
                             </div>
                         </div>
-						<div class="col-lg-2">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Jenis Kelamin </label>
                                 <select name="jenis_kelamin" class="form-control form-control-lg jenis_kelamin">
                                     <option value="">Pilih Jenis Kelamin</option>
-									<option value="1">Laki-Laki</option>
-									<option value="2">Perempuan</option>
+                                    <option value="1">Laki-Laki</option>
+                                    <option value="2">Perempuan</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -297,13 +326,12 @@ if (!empty($schoolyear)) {
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
                                 <select name="level_tingkat" class="form-control form-control-lg level_tingkat">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="7">DC</option>
-                                    <option value="1">KB/TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
                                     <option value="6">UMUM</option>
@@ -315,11 +343,11 @@ if (!empty($schoolyear)) {
                             <div class="form-group">
                                 <label> Tanggal Transaksi </label>
                                 <input type="text" name="tanggal_transaksi"
-                                    class="form-control form-control-lg tanggal_transaksi"
-                                    placeholder="Inputkan Tanggal Transaksi" disabled />
+                                    class="form-control form-control-lg tanggal_transaksi kt_datepicker_kredit"
+                                    placeholder="Inputkan Tanggal Transaksi" />
                             </div>
                         </div>
-                        <div class="col-lg-7">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Status Pegawai </label>
                                 <select name="status_pegawai" class="form-control form-control-lg status_pegawai">
@@ -335,8 +363,8 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label> Nomor Handphone </label>
-                                <input type="text" name="nomor_handphone"
-                                    class="form-control form-control-lg nomor_handphone"
+                                <input type="text" name="nomor_handphone_pegawai"
+                                    class="form-control form-control-lg nomor_handphone_pegawai"
                                     placeholder="Inputkan Nomor Handphone" />
                                 <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
                                     Nomor Handphone
@@ -346,8 +374,8 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label> Email Nasabah/Pegawai </label>
-                                <input type="text" name="email_pegawai"
-                                    class="form-control form-control-lg email_pegawai"
+                                <input type="text" name="email_nasabah"
+                                    class="form-control form-control-lg email_nasabah"
                                     placeholder="Inputkan Email Pegawai" />
                                 <span class="form-text text-dark"><b class="text-dark">*TIDAK WAJIB DIISI,</b> Isikan
                                     Email
@@ -356,11 +384,29 @@ if (!empty($schoolyear)) {
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label> Saldo </label>
+                                <label> Saldo Umum </label>
                                 <input type="text" name="saldo_umum" class="form-control form-control-lg saldo_umum"
-                                    placeholder="Inputkan Saldo" />
+                                    placeholder="Inputkan Saldo Umum" />
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan
-                                    Nominal Saldo</span>
+                                    Nominal Saldo Umum</span>
+                            </div>
+                        </div>
+						<div class="col-lg-4">
+                            <div class="form-group">
+                                <label> Saldo Qurban </label>
+                                <input type="text" name="saldo_qurban" class="form-control form-control-lg saldo_qurban"
+                                    placeholder="Inputkan Saldo Qurban" />
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan
+                                    Nominal Saldo Qurban</span>
+                            </div>
+                        </div>
+						<div class="col-lg-4">
+                            <div class="form-group">
+                                <label> Saldo Wisata </label>
+                                <input type="text" name="saldo_wisata" class="form-control form-control-lg saldo_wisata"
+                                    placeholder="Inputkan Saldo Wisata" />
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> Isikan
+                                    Nominal Saldo Wisata</span>
                             </div>
                         </div>
                     </div>
@@ -378,7 +424,7 @@ if (!empty($schoolyear)) {
 </div>
 <!-- End of Modal Debet  -->
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/blur.pin.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-import-personal-saving.js">
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-import-employee-saving.js">
 </script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-import-personal.js">
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-import-employee.js">
 </script>
