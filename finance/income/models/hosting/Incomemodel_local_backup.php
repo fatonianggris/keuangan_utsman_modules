@@ -859,6 +859,17 @@ class IncomeModel extends CI_Model
     public function accept_import_data_siswa_du($id = '')
     {
         $this->db2->trans_begin();
+        // Ambil data yang sudah ada sebelumnya berdasarkan `nis`
+        $query_existing = $this->db2->query("SELECT nis
+												FROM siswa
+												WHERE nis IN (
+													SELECT nomor_siswa
+													FROM panel_utsman.transisi_tagihan_pembayaran
+													WHERE id_tagihan_pembayaran IN ($id)
+												)");
+
+        $existing_data = $query_existing->result_array();
+        $existing_nis = array_column($existing_data, 'nis');
 
         $this->db2->query("INSERT INTO siswa(
 											nis,
@@ -896,18 +907,60 @@ class IncomeModel extends CI_Model
 											email = VALUES(email),
 											th_ajaran = VALUES(th_ajaran)");
 
+        // Ambil data setelah operasi INSERT untuk mendapatkan semua `nis` yang ada
+        $query_all = $this->db2->query("SELECT nis, nama_lengkap
+		 FROM siswa
+		 WHERE nis IN (
+			 SELECT nomor_siswa
+			 FROM panel_utsman.transisi_tagihan_pembayaran
+			 WHERE id_tagihan_pembayaran IN ($id)
+		 )");
+
+        $all_data = $query_all->result_array();
+		// Cari `nis` yang baru ditambahkan
+        $added_data = [];
+        foreach ($all_data as $row) {
+            if (!in_array($row['nis'], $existing_nis)) {
+                $added_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+		// Cari `nis` yang diperbarui (sudah ada sebelumnya)
+        $updated_data = [];
+        foreach ($all_data as $row) {
+            if (in_array($row['nis'], $existing_nis)) {
+                $updated_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array(
+                'status' => true,
+                'added' => $added_data,
+                'count_added' => count($added_data),
+                'updated' => $updated_data,
+                'count_updated' => count($updated_data),
+            );
         }
     }
 
     public function accept_import_data_siswa_dpb($id = '')
     {
         $this->db2->trans_begin();
+        // Ambil data yang sudah ada sebelumnya berdasarkan `nis`
+        $query_existing = $this->db2->query("SELECT nis
+												FROM siswa
+												WHERE nis IN (
+													SELECT nomor_siswa
+													FROM panel_utsman.transisi_tagihan_pembayaran
+													WHERE id_tagihan_pembayaran IN ($id)
+												)");
+
+        $existing_data = $query_existing->result_array();
+        $existing_nis = array_column($existing_data, 'nis');
 
         $this->db2->query("INSERT INTO siswa(
 											nis,
@@ -945,12 +998,43 @@ class IncomeModel extends CI_Model
 											email = VALUES(email),
 											th_ajaran = VALUES(th_ajaran)");
 
+        // Ambil data setelah operasi INSERT untuk mendapatkan semua `nis` yang ada
+        $query_all = $this->db2->query("SELECT nis, nama_lengkap
+										FROM siswa
+										WHERE nis IN (
+											SELECT nomor_siswa
+											FROM panel_utsman.transisi_tagihan_pembayaran
+											WHERE id_tagihan_pembayaran IN ($id)
+										)");
+
+        $all_data = $query_all->result_array();
+        // Cari `nis` yang baru ditambahkan
+        $added_data = [];
+        foreach ($all_data as $row) {
+            if (!in_array($row['nis'], $existing_nis)) {
+                $added_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+        // Cari `nis` yang diperbarui (sudah ada sebelumnya)
+        $updated_data = [];
+        foreach ($all_data as $row) {
+            if (in_array($row['nis'], $existing_nis)) {
+                $updated_data[] = ['NIS' => $row['nis'], 'NAMA' => $row['nama_lengkap']];
+            }
+        }
+
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
-            return false;
+            return array('status' => false);
         } else {
             $this->db2->trans_commit();
-            return true;
+            return array(
+                'status' => true,
+                'added' => $added_data,
+                'count_added' => count($added_data),
+                'updated' => $updated_data,
+                'count_updated' => count($updated_data),
+            );
         }
     }
 

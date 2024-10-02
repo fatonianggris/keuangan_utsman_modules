@@ -146,14 +146,14 @@ class SavingsModel extends CI_Model
     public function check_duplicate_import_data_personal_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-									panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+									u8514965_panel_utsman.inp.nis, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
 									FROM
-										panel_utsman.import_nasabah_personal inp
+										u8514965_panel_utsman.import_nasabah_personal inp
 									WHERE
-										panel_utsman.inp.id_nasabah IN ($id)
+										u8514965_panel_utsman.inp.id_nasabah IN ($id)
 									AND(
-										(panel_utsman.inp.status_nasabah = 3) +
-										(panel_utsman.inp.status_nama_nasabah = 3) >= 1
+										(u8514965_panel_utsman.inp.status_nasabah = 3) +
+										(u8514965_panel_utsman.inp.status_nama_nasabah = 3) >= 1
 									)");
 
         return $sql->num_rows();
@@ -162,14 +162,14 @@ class SavingsModel extends CI_Model
     public function check_used_number_import_data_personal_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								u8514965_panel_utsman.inp.nis, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_personal inp
+								u8514965_panel_utsman.import_nasabah_personal inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
+								u8514965_panel_utsman.inp.id_nasabah IN ($id)
 							AND(
-								(panel_utsman.inp.status_nasabah = 1) +
-								(panel_utsman.inp.status_nama_nasabah = 4) >= 1
+								(u8514965_panel_utsman.inp.status_nasabah = 1) +
+								(u8514965_panel_utsman.inp.status_nama_nasabah = 4) >= 1
 							)");
 
         return $sql->num_rows();
@@ -178,12 +178,12 @@ class SavingsModel extends CI_Model
     public function check_similiar_import_data_personal_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								u8514965_panel_utsman.inp.nis, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_personal inp
+								u8514965_panel_utsman.import_nasabah_personal inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
-							AND panel_utsman.inp.status_nama_nasabah = 1");
+								u8514965_panel_utsman.inp.id_nasabah IN ($id)
+							AND u8514965_panel_utsman.inp.status_nama_nasabah = 1");
 
         return $sql->num_rows();
     }
@@ -191,14 +191,14 @@ class SavingsModel extends CI_Model
     public function check_duplicate_import_data_employee_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-									panel_utsman.inp.nip, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+									u8514965_panel_utsman.inp.nip, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
 									FROM
-										panel_utsman.import_nasabah_pegawai inp
+										u8514965_panel_utsman.import_nasabah_pegawai inp
 									WHERE
-										panel_utsman.inp.id_nasabah IN ($id)
+										u8514965_panel_utsman.inp.id_nasabah IN ($id)
 									AND(
-										(panel_utsman.inp.status_nasabah = 3) +
-										(panel_utsman.inp.status_nama_nasabah = 3) >= 1
+										(u8514965_panel_utsman.inp.status_nasabah = 3) +
+										(u8514965_panel_utsman.inp.status_nama_nasabah = 3) >= 1
 									)");
 
         return $sql->num_rows();
@@ -207,14 +207,14 @@ class SavingsModel extends CI_Model
     public function check_used_number_import_data_employee_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nip, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								u8514965_panel_utsman.inp.nip, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_pegawai inp
+								u8514965_panel_utsman.import_nasabah_pegawai inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
+								u8514965_panel_utsman.inp.id_nasabah IN ($id)
 							AND(
-								(panel_utsman.inp.status_nasabah = 1) +
-								(panel_utsman.inp.status_nama_nasabah = 4) >= 1
+								(u8514965_panel_utsman.inp.status_nasabah = 1) +
+								(u8514965_panel_utsman.inp.status_nama_nasabah = 4) >= 1
 							)");
 
         return $sql->num_rows();
@@ -223,12 +223,12 @@ class SavingsModel extends CI_Model
     public function check_similiar_import_data_employee_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nip, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								u8514965_panel_utsman.inp.nip, u8514965_panel_utsman.inp.status_nasabah, u8514965_panel_utsman.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_pegawai inp
+								u8514965_panel_utsman.import_nasabah_pegawai inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
-							AND panel_utsman.inp.status_nama_nasabah = 1");
+								u8514965_panel_utsman.inp.id_nasabah IN ($id)
+							AND u8514965_panel_utsman.inp.status_nama_nasabah = 1");
 
         return $sql->num_rows();
     }
@@ -236,12 +236,12 @@ class SavingsModel extends CI_Model
     public function check_duplicate_import_data_joint_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_nasabah_bersama
+								u8514965_panel_utsman.inb.nomor_rekening_bersama, u8514965_panel_utsman.inb.nama_tabungan_bersama, u8514965_panel_utsman.inb.status_nasabah_bersama
 							FROM
-								panel_utsman.import_nasabah_bersama inb
+								u8514965_panel_utsman.import_nasabah_bersama inb
 							WHERE
-								panel_utsman.inb.id_nasabah_bersama IN ($id)
-							AND panel_utsman.inb.status_nasabah_bersama = 3");
+								u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND u8514965_panel_utsman.inb.status_nasabah_bersama = 3");
 
         return $sql->num_rows();
     }
@@ -249,12 +249,12 @@ class SavingsModel extends CI_Model
     public function check_used_number_import_data_joint_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_nasabah_bersama
+								u8514965_panel_utsman.inb.nomor_rekening_bersama, u8514965_panel_utsman.inb.nama_tabungan_bersama, u8514965_panel_utsman.inb.status_nasabah_bersama
 							FROM
-								panel_utsman.import_nasabah_bersama inb
+								u8514965_panel_utsman.import_nasabah_bersama inb
 							WHERE
-								panel_utsman.inb.id_nasabah_bersama IN ($id)
-							AND panel_utsman.inb.status_nasabah_bersama = 1");
+								u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND u8514965_panel_utsman.inb.status_nasabah_bersama = 1");
 
         return $sql->num_rows();
     }
@@ -262,12 +262,12 @@ class SavingsModel extends CI_Model
     public function check_responsible_person_import_data_joint_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_penanggung_jawab
+								u8514965_panel_utsman.inb.nomor_rekening_bersama, u8514965_panel_utsman.inb.nama_tabungan_bersama, u8514965_panel_utsman.inb.status_penanggung_jawab
 							FROM
-								panel_utsman.import_nasabah_bersama inb
+								u8514965_panel_utsman.import_nasabah_bersama inb
 							WHERE
-								panel_utsman.inb.id_nasabah_bersama IN ($id)
-							AND panel_utsman.inb.status_penanggung_jawab = 2");
+								u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)
+							AND u8514965_panel_utsman.inb.status_penanggung_jawab = 2");
 
         return $sql->num_rows();
     }
@@ -308,46 +308,46 @@ class SavingsModel extends CI_Model
     public function get_new_transaction()
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.tt.id_transaksi_umum,
-										panel_utsman.tt.nis_siswa,
-										panel_utsman.s.nama_lengkap,
-										panel_utsman.s.jenis_kelamin,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										u8514965_panel_utsman.tt.id_transaksi_umum,
+										u8514965_panel_utsman.tt.nis_siswa,
+										u8514965_panel_utsman.s.nama_lengkap,
+										u8514965_panel_utsman.s.jenis_kelamin,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
+										u8514965_panel_utsman.tt.saldo,
+										u8514965_panel_utsman.tt.catatan,
+										u8514965_panel_utsman.tt.nominal,
+										u8514965_panel_utsman.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
-										DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+										u8514965_panel_utsman.tt.th_ajaran,
+										u8514965_panel_utsman.tt.tanggal_transaksi,
+										DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											u8514965_panel_utsman.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_general vmax
+											u8514965_panel_utsman.view_max_id_transaction_general vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_umum = panel_utsman.vmax.id_max
+											u8514965_panel_utsman.tt.id_transaksi_umum = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_umum tt
-									LEFT JOIN panel_utsman.siswa s
+										u8514965_panel_utsman.transaksi_tabungan_umum tt
+									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									ORDER BY
-										panel_utsman.tt.id_transaksi_umum
+										u8514965_panel_utsman.tt.id_transaksi_umum
 									DESC LIMIT 5");
         return $sql->result();
     }
@@ -358,85 +358,85 @@ class SavingsModel extends CI_Model
 										th.*,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal),0)
+											COALESCE(SUM(u8514965_panel_utsman.tt.nominal),0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												u8514965_panel_utsman.tb.id_transaksi_umum,
+												u8514965_panel_utsman.tb.nominal,
+												u8514965_panel_utsman.tb.nis_siswa,
+												u8514965_panel_utsman.tb.th_ajaran,
+												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
+											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 1 AND panel_utsman.tdpb.informasi LIKE('%TK%') OR panel_utsman.tdpb.informasi LIKE('%KB%')
+												u8514965_panel_utsman.tb.status_kredit_debet = 1 AND u8514965_panel_utsman.tdpb.informasi LIKE('%TK%') OR u8514965_panel_utsman.tdpb.informasi LIKE('%KB%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 									) AS total_kredit_kbtk,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM(u8514965_panel_utsman.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												u8514965_panel_utsman.tb.id_transaksi_umum,
+												u8514965_panel_utsman.tb.nominal,
+												u8514965_panel_utsman.tb.nis_siswa,
+												u8514965_panel_utsman.tb.th_ajaran,
+												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
+											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 1 AND panel_utsman.tdpb.informasi LIKE('%SD%')
+												u8514965_panel_utsman.tb.status_kredit_debet = 1 AND u8514965_panel_utsman.tdpb.informasi LIKE('%SD%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 									) AS total_kredit_sd,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM(u8514965_panel_utsman.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												u8514965_panel_utsman.tb.id_transaksi_umum,
+												u8514965_panel_utsman.tb.nominal,
+												u8514965_panel_utsman.tb.nis_siswa,
+												u8514965_panel_utsman.tb.th_ajaran,
+												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
+											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 1 AND panel_utsman.tdpb.informasi LIKE('%SMP%')
+												u8514965_panel_utsman.tb.status_kredit_debet = 1 AND u8514965_panel_utsman.tdpb.informasi LIKE('%SMP%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 									) AS total_kredit_smp,
 									CONCAT(
 										'TA. ',
-										panel_utsman.th.tahun_awal,
+										u8514965_panel_utsman.th.tahun_awal,
 										'/',
-										panel_utsman.th.tahun_akhir
+										u8514965_panel_utsman.th.tahun_akhir
 									) AS tahun
 									FROM
-										panel_utsman.tahun_ajaran th
+										u8514965_panel_utsman.tahun_ajaran th
 									WHERE
-										(panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND panel_utsman.th.semester = 'ganjil'
+										(u8514965_panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND u8514965_panel_utsman.th.semester = 'ganjil'
 									ORDER BY
-										panel_utsman.th.tahun_awal ASC");
+										u8514965_panel_utsman.th.tahun_awal ASC");
         return $sql->result();
     }
 
@@ -450,81 +450,81 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												u8514965_panel_utsman.tb.id_transaksi_umum,
+												u8514965_panel_utsman.tb.nominal,
+												u8514965_panel_utsman.tb.nis_siswa,
+												u8514965_panel_utsman.tb.th_ajaran,
+												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
+											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 2 AND panel_utsman.tdpb.informasi LIKE('%TK%') OR panel_utsman.tdpb.informasi LIKE('%KB%')
+												u8514965_panel_utsman.tb.status_kredit_debet = 2 AND u8514965_panel_utsman.tdpb.informasi LIKE('%TK%') OR u8514965_panel_utsman.tdpb.informasi LIKE('%KB%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 									) AS total_debet_kbtk,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM(u8514965_panel_utsman.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												u8514965_panel_utsman.tb.id_transaksi_umum,
+												u8514965_panel_utsman.tb.nominal,
+												u8514965_panel_utsman.tb.nis_siswa,
+												u8514965_panel_utsman.tb.th_ajaran,
+												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
+											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 2 AND panel_utsman.tdpb.informasi LIKE('%SD%')
+												u8514965_panel_utsman.tb.status_kredit_debet = 2 AND u8514965_panel_utsman.tdpb.informasi LIKE('%SD%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 									) AS total_debet_sd,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM(u8514965_panel_utsman.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												u8514965_panel_utsman.tb.id_transaksi_umum,
+												u8514965_panel_utsman.tb.nominal,
+												u8514965_panel_utsman.tb.nis_siswa,
+												u8514965_panel_utsman.tb.th_ajaran,
+												u8514965_panel_utsman.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												u8514965_panel_utsman.transaksi_tabungan_umum tb
+											LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+												u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 2 AND panel_utsman.tdpb.informasi LIKE('%SMP%')
+												u8514965_panel_utsman.tb.status_kredit_debet = 2 AND u8514965_panel_utsman.tdpb.informasi LIKE('%SMP%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												u8514965_panel_utsman.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 									) AS total_debet_smp,
 									CONCAT(
 										'TA. ',
-										panel_utsman.th.tahun_awal,
+										u8514965_panel_utsman.th.tahun_awal,
 										'/',
-										panel_utsman.th.tahun_akhir
+										u8514965_panel_utsman.th.tahun_akhir
 									) AS tahun
 									FROM
-										panel_utsman.tahun_ajaran th
+										u8514965_panel_utsman.tahun_ajaran th
 									WHERE
-										(panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND panel_utsman.th.semester = 'ganjil'
+										(u8514965_panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND u8514965_panel_utsman.th.semester = 'ganjil'
 									ORDER BY
-										panel_utsman.th.tahun_awal ASC");
+										u8514965_panel_utsman.th.tahun_awal ASC");
         return $sql->result();
     }
 
@@ -534,26 +534,26 @@ class SavingsModel extends CI_Model
 									th.*,
 									(
 									SELECT
-										COALESCE(SUM(panel_utsman.tt.nominal),0)
+										COALESCE(SUM(u8514965_panel_utsman.tt.nominal),0)
 									FROM
 										(
 										SELECT
-											panel_utsman.tb.id_transaksi_umum,
-											panel_utsman.tb.nominal,
-											panel_utsman.tb.nis_siswa,
-											panel_utsman.tb.th_ajaran,
-											panel_utsman.tdpb.informasi
+											u8514965_panel_utsman.tb.id_transaksi_umum,
+											u8514965_panel_utsman.tb.nominal,
+											u8514965_panel_utsman.tb.nis_siswa,
+											u8514965_panel_utsman.tb.th_ajaran,
+											u8514965_panel_utsman.tdpb.informasi
 										FROM
-											panel_utsman.transaksi_tabungan_umum tb
-										LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-											panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+											u8514965_panel_utsman.transaksi_tabungan_umum tb
+										LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+											u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 										WHERE
-											panel_utsman.tb.status_kredit_debet = 1
+											u8514965_panel_utsman.tb.status_kredit_debet = 1
 										GROUP BY
-											panel_utsman.tb.id_transaksi_umum
+											u8514965_panel_utsman.tb.id_transaksi_umum
 									) tt
 								WHERE
-									panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+									u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 								) AS total_kredit,
 								(
 									SELECT
@@ -561,35 +561,35 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											panel_utsman.tb.id_transaksi_umum,
-											panel_utsman.tb.nominal,
-											panel_utsman.tb.nis_siswa,
-											panel_utsman.tb.th_ajaran,
-											panel_utsman.tdpb.informasi
+											u8514965_panel_utsman.tb.id_transaksi_umum,
+											u8514965_panel_utsman.tb.nominal,
+											u8514965_panel_utsman.tb.nis_siswa,
+											u8514965_panel_utsman.tb.th_ajaran,
+											u8514965_panel_utsman.tdpb.informasi
 										FROM
-											panel_utsman.transaksi_tabungan_umum tb
-										LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-											panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+											u8514965_panel_utsman.transaksi_tabungan_umum tb
+										LEFT JOIN u8514965_panel_utsman.tagihan_pembayaran_dpb tdpb ON
+											u8514965_panel_utsman.tb.nis_siswa = u8514965_panel_utsman.tdpb.nomor_siswa
 										WHERE
-											panel_utsman.tb.status_kredit_debet = 2
+											u8514965_panel_utsman.tb.status_kredit_debet = 2
 										GROUP BY
-											panel_utsman.tb.id_transaksi_umum
+											u8514965_panel_utsman.tb.id_transaksi_umum
 									) tt
 								WHERE
-									panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+									u8514965_panel_utsman.tt.th_ajaran = u8514965_panel_utsman.th.id_tahun_ajaran
 								) AS total_debet,
 								CONCAT(
 									'TA. ',
-									panel_utsman.th.tahun_awal,
+									u8514965_panel_utsman.th.tahun_awal,
 									'/',
-									panel_utsman.th.tahun_akhir
+									u8514965_panel_utsman.th.tahun_akhir
 								) AS tahun
 								FROM
-									panel_utsman.tahun_ajaran th
+									u8514965_panel_utsman.tahun_ajaran th
 								WHERE
-									(panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND panel_utsman.th.semester = 'ganjil'
+									(u8514965_panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND u8514965_panel_utsman.th.semester = 'ganjil'
 								ORDER BY
-									panel_utsman.th.tahun_awal ASC");
+									u8514965_panel_utsman.th.tahun_awal ASC");
         return $sql->result();
     }
 
@@ -778,11 +778,11 @@ class SavingsModel extends CI_Model
     public function get_joint_saving_by_acc_number($acc_number = '')
     {
         $this->db2->select("tb.nomor_rekening_bersama, tb.nama_tabungan_bersama, tb.saldo_tabungan_bersama, tb.id_tingkat, tb.jenis_tabungan,
-								COALESCE(NULLIF(panel_utsman.s.nis, ''), panel_utsman.p.nip) AS number,
-								COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-								COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-								COALESCE(NULLIF(panel_utsman.s.nomor_handphone, ''), panel_utsman.p.nomor_hp) AS nomor_handphone,
-								COALESCE(NULLIF(panel_utsman.s.email, ''), panel_utsman.p.email) AS email");
+								COALESCE(NULLIF(u8514965_panel_utsman.s.nis, ''), u8514965_panel_utsman.p.nip) AS number,
+								COALESCE(NULLIF(u8514965_panel_utsman.s.nama_wali, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_wali,
+								COALESCE(NULLIF(u8514965_panel_utsman.s.nama_lengkap, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_lengkap,
+								COALESCE(NULLIF(u8514965_panel_utsman.s.nomor_handphone, ''), u8514965_panel_utsman.p.nomor_hp) AS nomor_handphone,
+								COALESCE(NULLIF(u8514965_panel_utsman.s.email, ''), u8514965_panel_utsman.p.email) AS email");
         $this->db2->from('tabungan_bersama tb');
         $this->db2->join('siswa s', 'tb.id_penanggung_jawab = s.nis', 'left');
         $this->db2->join('pegawai p', 'tb.id_penanggung_jawab = p.nip', 'left');
@@ -943,157 +943,157 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											panel_utsman.tt.id_transaksi_umum AS id_transaksi,
-											panel_utsman.tt.nomor_transaksi_umum AS nomor_transaksi,
-											panel_utsman.tt.nis_siswa,
-											panel_utsman.tt.id_tingkat,
-											panel_utsman.s.nama_lengkap,
-											keuangan_utsman.ak.nama_akun,
-											keuangan_utsman.ak.email_akun,
-											panel_utsman.tt.saldo,
-											panel_utsman.tt.jenis_tabungan,
-											panel_utsman.tt.catatan,
-											panel_utsman.tt.nominal,
-											panel_utsman.tt.status_kredit_debet,
+											u8514965_panel_utsman.tt.id_transaksi_umum AS id_transaksi,
+											u8514965_panel_utsman.tt.nomor_transaksi_umum AS nomor_transaksi,
+											u8514965_panel_utsman.tt.nis_siswa,
+											u8514965_panel_utsman.tt.id_tingkat,
+											u8514965_panel_utsman.s.nama_lengkap,
+											u8514965_keuangan_utsman.ak.nama_akun,
+											u8514965_keuangan_utsman.ak.email_akun,
+											u8514965_panel_utsman.tt.saldo,
+											u8514965_panel_utsman.tt.jenis_tabungan,
+											u8514965_panel_utsman.tt.catatan,
+											u8514965_panel_utsman.tt.nominal,
+											u8514965_panel_utsman.tt.status_kredit_debet,
 											CONCAT(
-												panel_utsman.ta.tahun_awal,
+												u8514965_panel_utsman.ta.tahun_awal,
 												'/',
-												panel_utsman.ta.tahun_akhir
+												u8514965_panel_utsman.ta.tahun_akhir
 											) AS tahun_ajaran,
-											panel_utsman.tt.th_ajaran,
-											panel_utsman.tt.tanggal_transaksi,
+											u8514965_panel_utsman.tt.th_ajaran,
+											u8514965_panel_utsman.tt.tanggal_transaksi,
 											DATE_FORMAT(
-												panel_utsman.tt.waktu_transaksi,
+												u8514965_panel_utsman.tt.waktu_transaksi,
 												'%d/%m/%Y %H:%i:%s'
 											) AS waktu_transaksi,
 											CASE WHEN EXISTS(
 											SELECT
-												panel_utsman.vmax.id_max
+												u8514965_panel_utsman.vmax.id_max
 											FROM
-												panel_utsman.view_max_id_transaction_general vmax
+												u8514965_panel_utsman.view_max_id_transaction_general vmax
 											WHERE
-												panel_utsman.tt.id_transaksi_umum = panel_utsman.vmax.id_max
+												u8514965_panel_utsman.tt.id_transaksi_umum = u8514965_panel_utsman.vmax.id_max
 										) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_umum tt
-									LEFT JOIN panel_utsman.siswa s
+										u8514965_panel_utsman.transaksi_tabungan_umum tt
+									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nis_siswa = $nis AND
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+										WHERE u8514965_panel_utsman.tt.nis_siswa = $nis AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_qurban AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_qurban AS nomor_transaksi,
-										panel_utsman.tt.nis_siswa,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.s.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										u8514965_panel_utsman.tt.id_transaksi_qurban AS id_transaksi,
+										u8514965_panel_utsman.tt.nomor_transaksi_qurban AS nomor_transaksi,
+										u8514965_panel_utsman.tt.nis_siswa,
+										u8514965_panel_utsman.tt.id_tingkat,
+										u8514965_panel_utsman.s.nama_lengkap,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
+										u8514965_panel_utsman.tt.saldo,
+										u8514965_panel_utsman.tt.jenis_tabungan,
+										u8514965_panel_utsman.tt.catatan,
+										u8514965_panel_utsman.tt.nominal,
+										u8514965_panel_utsman.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										u8514965_panel_utsman.tt.th_ajaran,
+										u8514965_panel_utsman.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											u8514965_panel_utsman.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_qurban vmax
+											u8514965_panel_utsman.view_max_id_transaction_qurban vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_qurban = panel_utsman.vmax.id_max
+											u8514965_panel_utsman.tt.id_transaksi_qurban = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_qurban tt
-									LEFT JOIN panel_utsman.siswa s
+										u8514965_panel_utsman.transaksi_tabungan_qurban tt
+									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nis_siswa = $nis AND
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+										WHERE u8514965_panel_utsman.tt.nis_siswa = $nis AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_wisata AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_wisata AS nomor_transaksi,
-										panel_utsman.tt.nis_siswa,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.s.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										u8514965_panel_utsman.tt.id_transaksi_wisata AS id_transaksi,
+										u8514965_panel_utsman.tt.nomor_transaksi_wisata AS nomor_transaksi,
+										u8514965_panel_utsman.tt.nis_siswa,
+										u8514965_panel_utsman.tt.id_tingkat,
+										u8514965_panel_utsman.s.nama_lengkap,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
+										u8514965_panel_utsman.tt.saldo,
+										u8514965_panel_utsman.tt.jenis_tabungan,
+										u8514965_panel_utsman.tt.catatan,
+										u8514965_panel_utsman.tt.nominal,
+										u8514965_panel_utsman.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										u8514965_panel_utsman.tt.th_ajaran,
+										u8514965_panel_utsman.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											u8514965_panel_utsman.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_tour vmax
+											u8514965_panel_utsman.view_max_id_transaction_tour vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_wisata = panel_utsman.vmax.id_max
+											u8514965_panel_utsman.tt.id_transaksi_wisata = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_wisata tt
-									LEFT JOIN panel_utsman.siswa s
+										u8514965_panel_utsman.transaksi_tabungan_wisata tt
+									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nis_siswa = $nis AND
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+										WHERE u8514965_panel_utsman.tt.nis_siswa = $nis AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
@@ -1128,157 +1128,157 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											panel_utsman.tt.id_transaksi_umum_pegawai AS id_transaksi,
-											panel_utsman.tt.nomor_transaksi_umum AS nomor_transaksi,
-											panel_utsman.tt.nip_pegawai,
-											panel_utsman.tt.id_tingkat,
-											panel_utsman.p.nama_lengkap,
-											keuangan_utsman.ak.nama_akun,
-											keuangan_utsman.ak.email_akun,
-											panel_utsman.tt.saldo,
-											panel_utsman.tt.jenis_tabungan,
-											panel_utsman.tt.catatan,
-											panel_utsman.tt.nominal,
-											panel_utsman.tt.status_kredit_debet,
+											u8514965_panel_utsman.tt.id_transaksi_umum_pegawai AS id_transaksi,
+											u8514965_panel_utsman.tt.nomor_transaksi_umum AS nomor_transaksi,
+											u8514965_panel_utsman.tt.nip_pegawai,
+											u8514965_panel_utsman.tt.id_tingkat,
+											u8514965_panel_utsman.p.nama_lengkap,
+											u8514965_keuangan_utsman.ak.nama_akun,
+											u8514965_keuangan_utsman.ak.email_akun,
+											u8514965_panel_utsman.tt.saldo,
+											u8514965_panel_utsman.tt.jenis_tabungan,
+											u8514965_panel_utsman.tt.catatan,
+											u8514965_panel_utsman.tt.nominal,
+											u8514965_panel_utsman.tt.status_kredit_debet,
 											CONCAT(
-												panel_utsman.ta.tahun_awal,
+												u8514965_panel_utsman.ta.tahun_awal,
 												'/',
-												panel_utsman.ta.tahun_akhir
+												u8514965_panel_utsman.ta.tahun_akhir
 											) AS tahun_ajaran,
-											panel_utsman.tt.th_ajaran,
-											panel_utsman.tt.tanggal_transaksi,
+											u8514965_panel_utsman.tt.th_ajaran,
+											u8514965_panel_utsman.tt.tanggal_transaksi,
 											DATE_FORMAT(
-												panel_utsman.tt.waktu_transaksi,
+												u8514965_panel_utsman.tt.waktu_transaksi,
 												'%d/%m/%Y %H:%i:%s'
 											) AS waktu_transaksi,
 											CASE WHEN EXISTS(
 											SELECT
-												panel_utsman.vmax.id_max
+												u8514965_panel_utsman.vmax.id_max
 											FROM
-												panel_utsman.view_max_id_transaction_general_employee vmax
+												u8514965_panel_utsman.view_max_id_transaction_general_employee vmax
 											WHERE
-												panel_utsman.tt.id_transaksi_umum_pegawai = panel_utsman.vmax.id_max
+												u8514965_panel_utsman.tt.id_transaksi_umum_pegawai = u8514965_panel_utsman.vmax.id_max
 										) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_umum_pegawai tt
-									LEFT JOIN panel_utsman.pegawai p
+										u8514965_panel_utsman.transaksi_tabungan_umum_pegawai tt
+									LEFT JOIN u8514965_panel_utsman.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tt.nip_pegawai
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nip_pegawai = $nip AND
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+										WHERE u8514965_panel_utsman.tt.nip_pegawai = $nip AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_qurban_pegawai AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_qurban AS nomor_transaksi,
-										panel_utsman.tt.nip_pegawai,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.p.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										u8514965_panel_utsman.tt.id_transaksi_qurban_pegawai AS id_transaksi,
+										u8514965_panel_utsman.tt.nomor_transaksi_qurban AS nomor_transaksi,
+										u8514965_panel_utsman.tt.nip_pegawai,
+										u8514965_panel_utsman.tt.id_tingkat,
+										u8514965_panel_utsman.p.nama_lengkap,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
+										u8514965_panel_utsman.tt.saldo,
+										u8514965_panel_utsman.tt.jenis_tabungan,
+										u8514965_panel_utsman.tt.catatan,
+										u8514965_panel_utsman.tt.nominal,
+										u8514965_panel_utsman.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										u8514965_panel_utsman.tt.th_ajaran,
+										u8514965_panel_utsman.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											u8514965_panel_utsman.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_qurban_employee vmax
+											u8514965_panel_utsman.view_max_id_transaction_qurban_employee vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_qurban_pegawai = panel_utsman.vmax.id_max
+											u8514965_panel_utsman.tt.id_transaksi_qurban_pegawai = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_qurban_pegawai tt
-									LEFT JOIN panel_utsman.pegawai p
+										u8514965_panel_utsman.transaksi_tabungan_qurban_pegawai tt
+									LEFT JOIN u8514965_panel_utsman.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tt.nip_pegawai
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nip_pegawai = $nip AND
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+										WHERE u8514965_panel_utsman.tt.nip_pegawai = $nip AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_wisata_pegawai AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_wisata AS nomor_transaksi,
-										panel_utsman.tt.nip_pegawai,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.p.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										u8514965_panel_utsman.tt.id_transaksi_wisata_pegawai AS id_transaksi,
+										u8514965_panel_utsman.tt.nomor_transaksi_wisata AS nomor_transaksi,
+										u8514965_panel_utsman.tt.nip_pegawai,
+										u8514965_panel_utsman.tt.id_tingkat,
+										u8514965_panel_utsman.p.nama_lengkap,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
+										u8514965_panel_utsman.tt.saldo,
+										u8514965_panel_utsman.tt.jenis_tabungan,
+										u8514965_panel_utsman.tt.catatan,
+										u8514965_panel_utsman.tt.nominal,
+										u8514965_panel_utsman.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										u8514965_panel_utsman.tt.th_ajaran,
+										u8514965_panel_utsman.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											u8514965_panel_utsman.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_tour_employee vmax
+											u8514965_panel_utsman.view_max_id_transaction_tour_employee vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_wisata_pegawai = panel_utsman.vmax.id_max
+											u8514965_panel_utsman.tt.id_transaksi_wisata_pegawai = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_wisata_pegawai tt
-									LEFT JOIN panel_utsman.pegawai p
+										u8514965_panel_utsman.transaksi_tabungan_wisata_pegawai tt
+									LEFT JOIN u8514965_panel_utsman.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tt.nip_pegawai
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nip_pegawai = $nip AND
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
+										WHERE u8514965_panel_utsman.tt.nip_pegawai = $nip AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
@@ -1293,70 +1293,70 @@ class SavingsModel extends CI_Model
     public function get_joint_transaction_recap_by_acc_number($norek = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.ttb.id_transaksi_bersama,
-										panel_utsman.ttb.id_tingkat,
-										panel_utsman.ttb.nomor_rekening_bersama,
-										panel_utsman.ttb.nomor_transaksi_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.jenis_tabungan,
-										COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-										COALESCE(NULLIF(panel_utsman.s.nomor_handphone, ''), panel_utsman.p.nomor_hp) AS nomor_handphone,
-										COALESCE(NULLIF(panel_utsman.s.email, ''), panel_utsman.p.email) AS email,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.ttb.saldo,
-										panel_utsman.ttb.catatan,
-										panel_utsman.ttb.nominal,
-										panel_utsman.ttb.status_kredit_debet,
+										u8514965_panel_utsman.ttb.id_transaksi_bersama,
+										u8514965_panel_utsman.ttb.id_tingkat,
+										u8514965_panel_utsman.ttb.nomor_rekening_bersama,
+										u8514965_panel_utsman.ttb.nomor_transaksi_bersama,
+										u8514965_panel_utsman.tb.nama_tabungan_bersama,
+										u8514965_panel_utsman.tb.jenis_tabungan,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nama_wali, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_wali,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nama_lengkap, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_lengkap,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nomor_handphone, ''), u8514965_panel_utsman.p.nomor_hp) AS nomor_handphone,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.email, ''), u8514965_panel_utsman.p.email) AS email,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
+										u8514965_panel_utsman.ttb.saldo,
+										u8514965_panel_utsman.ttb.catatan,
+										u8514965_panel_utsman.ttb.nominal,
+										u8514965_panel_utsman.ttb.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.ttb.th_ajaran,
-										panel_utsman.ttb.tanggal_transaksi,
+										u8514965_panel_utsman.ttb.th_ajaran,
+										u8514965_panel_utsman.ttb.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											u8514965_panel_utsman.ttb.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											u8514965_panel_utsman.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_joint vmax
+											u8514965_panel_utsman.view_max_id_transaction_joint vmax
 										WHERE
-											panel_utsman.ttb.id_transaksi_bersama = panel_utsman.vmax.id_max
+											u8514965_panel_utsman.ttb.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_bersama ttb
-									LEFT JOIN panel_utsman.tabungan_bersama tb
+										u8514965_panel_utsman.transaksi_tabungan_bersama ttb
+									LEFT JOIN u8514965_panel_utsman.tabungan_bersama tb
 									ON
-										panel_utsman.tb.nomor_rekening_bersama = panel_utsman.ttb.nomor_rekening_bersama
-									LEFT JOIN panel_utsman.siswa s
+										u8514965_panel_utsman.tb.nomor_rekening_bersama = u8514965_panel_utsman.ttb.nomor_rekening_bersama
+									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.pegawai p
+										u8514965_panel_utsman.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tb.id_penanggung_jawab
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.ttb.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.ttb.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.ttb.id_pegawai
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.ttb.id_pegawai
 									WHERE
-									panel_utsman.tb.nomor_rekening_bersama = $norek AND
+									u8514965_panel_utsman.tb.nomor_rekening_bersama = $norek AND
 										(
 											DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											u8514965_panel_utsman.ttb.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									ORDER BY
-										panel_utsman.ttb.id_transaksi_bersama
+										u8514965_panel_utsman.ttb.id_transaksi_bersama
 									DESC
 										");
         return $sql->result();
@@ -1365,32 +1365,32 @@ class SavingsModel extends CI_Model
     public function get_all_import_personal_customer()
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.n.id_nasabah,
-										panel_utsman.n.nis,
-										panel_utsman.n.nama_nasabah,
-										panel_utsman.n.tanggal_transaksi,
-										panel_utsman.n.tingkat,
-										panel_utsman.n.nama_wali,
-										panel_utsman.n.nomor_hp_wali,
-										panel_utsman.n.email_nasabah,
-										panel_utsman.n.saldo_umum,
-										panel_utsman.n.saldo_qurban,
-										panel_utsman.n.saldo_wisata,
-										panel_utsman.n.status_nasabah,
-										panel_utsman.n.status_nama_nasabah,
-										panel_utsman.n.tahun_ajaran,
+										u8514965_panel_utsman.n.id_nasabah,
+										u8514965_panel_utsman.n.nis,
+										u8514965_panel_utsman.n.nama_nasabah,
+										u8514965_panel_utsman.n.tanggal_transaksi,
+										u8514965_panel_utsman.n.tingkat,
+										u8514965_panel_utsman.n.nama_wali,
+										u8514965_panel_utsman.n.nomor_hp_wali,
+										u8514965_panel_utsman.n.email_nasabah,
+										u8514965_panel_utsman.n.saldo_umum,
+										u8514965_panel_utsman.n.saldo_qurban,
+										u8514965_panel_utsman.n.saldo_wisata,
+										u8514965_panel_utsman.n.status_nasabah,
+										u8514965_panel_utsman.n.status_nama_nasabah,
+										u8514965_panel_utsman.n.tahun_ajaran,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     	) AS nama_tahun_ajaran
 									FROM
-										panel_utsman.import_nasabah_personal n
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.import_nasabah_personal n
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.n.tahun_ajaran
+                                    	u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.n.tahun_ajaran
 									ORDER BY
-										panel_utsman.n.id_nasabah
+										u8514965_panel_utsman.n.id_nasabah
 									ASC");
         return $sql->result();
     }
@@ -1398,33 +1398,33 @@ class SavingsModel extends CI_Model
     public function get_all_import_employee_customer()
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.n.id_nasabah,
-										panel_utsman.n.nip,
-										panel_utsman.n.nama_nasabah,
-										panel_utsman.n.tanggal_transaksi,
-										panel_utsman.n.tingkat,
-										panel_utsman.n.jenis_kelamin,
-										panel_utsman.n.nomor_hp_pegawai,
-										panel_utsman.n.email_nasabah,
-										panel_utsman.n.saldo_umum,
-										panel_utsman.n.saldo_qurban,
-										panel_utsman.n.saldo_wisata,
-										panel_utsman.n.status_pegawai,
-										panel_utsman.n.status_nasabah,
-										panel_utsman.n.status_nama_nasabah,
-										panel_utsman.n.tahun_ajaran,
+										u8514965_panel_utsman.n.id_nasabah,
+										u8514965_panel_utsman.n.nip,
+										u8514965_panel_utsman.n.nama_nasabah,
+										u8514965_panel_utsman.n.tanggal_transaksi,
+										u8514965_panel_utsman.n.tingkat,
+										u8514965_panel_utsman.n.jenis_kelamin,
+										u8514965_panel_utsman.n.nomor_hp_pegawai,
+										u8514965_panel_utsman.n.email_nasabah,
+										u8514965_panel_utsman.n.saldo_umum,
+										u8514965_panel_utsman.n.saldo_qurban,
+										u8514965_panel_utsman.n.saldo_wisata,
+										u8514965_panel_utsman.n.status_pegawai,
+										u8514965_panel_utsman.n.status_nasabah,
+										u8514965_panel_utsman.n.status_nama_nasabah,
+										u8514965_panel_utsman.n.tahun_ajaran,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     	) AS nama_tahun_ajaran
 									FROM
-										panel_utsman.import_nasabah_pegawai n
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.import_nasabah_pegawai n
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.n.tahun_ajaran
+                                    	u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.n.tahun_ajaran
 									ORDER BY
-										panel_utsman.n.id_nasabah
+										u8514965_panel_utsman.n.id_nasabah
 									ASC");
         return $sql->result();
     }
@@ -1432,159 +1432,159 @@ class SavingsModel extends CI_Model
     public function get_all_personal_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.s.id_siswa,
-										panel_utsman.s.nis,
-										panel_utsman.s.level_tingkat,
-										panel_utsman.s.nama_lengkap,
-										panel_utsman.s.jenis_kelamin,
-										panel_utsman.s.nomor_handphone,
-										panel_utsman.s.email,
-										panel_utsman.s.jalur,
-										panel_utsman.s.th_ajaran,
+										u8514965_panel_utsman.s.id_siswa,
+										u8514965_panel_utsman.s.nis,
+										u8514965_panel_utsman.s.level_tingkat,
+										u8514965_panel_utsman.s.nama_lengkap,
+										u8514965_panel_utsman.s.jenis_kelamin,
+										u8514965_panel_utsman.s.nomor_handphone,
+										u8514965_panel_utsman.s.email,
+										u8514965_panel_utsman.s.jalur,
+										u8514965_panel_utsman.s.th_ajaran,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttu.nominal),
+											COALESCE(SUM(u8514965_panel_utsman.ttu.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_umum ttu
+											u8514965_panel_utsman.transaksi_tabungan_umum ttu
 										WHERE
-											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 1 AND(
+											u8514965_panel_utsman.ttu.nis_siswa = u8514965_panel_utsman.s.nis AND u8514965_panel_utsman.ttu.status_kredit_debet = 1 AND(
 											DATE_FORMAT(
-											panel_utsman.ttu.waktu_transaksi,
+											u8514965_panel_utsman.ttu.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
                                             )
 										) AS kredit_umum,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttu.nominal),
+												COALESCE(SUM(u8514965_panel_utsman.ttu.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_umum ttu
+												u8514965_panel_utsman.transaksi_tabungan_umum ttu
 											WHERE
-												panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 2 AND(
+												u8514965_panel_utsman.ttu.nis_siswa = u8514965_panel_utsman.s.nis AND u8514965_panel_utsman.ttu.status_kredit_debet = 2 AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    u8514965_panel_utsman.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_umum,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttu.saldo, 0)
-											FROM panel_utsman.transaksi_tabungan_umum ttu
+												COALESCE(u8514965_panel_utsman.ttu.saldo, 0)
+											FROM u8514965_panel_utsman.transaksi_tabungan_umum ttu
 											WHERE
-												panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
+												u8514965_panel_utsman.ttu.nis_siswa = u8514965_panel_utsman.s.nis AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    u8514965_panel_utsman.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttu.id_transaksi_umum
+												u8514965_panel_utsman.ttu.id_transaksi_umum
 											DESC LIMIT 1
 										) AS saldo_umum,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttq.nominal),
+											COALESCE(SUM(u8514965_panel_utsman.ttq.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_qurban ttq
+											u8514965_panel_utsman.transaksi_tabungan_qurban ttq
 										WHERE
-											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND ttq.status_kredit_debet = 1 AND(
+											u8514965_panel_utsman.ttq.nis_siswa = u8514965_panel_utsman.s.nis AND ttq.status_kredit_debet = 1 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttq.waktu_transaksi,
+                                                u8514965_panel_utsman.ttq.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS kredit_qurban,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttq.nominal),
+												COALESCE(SUM(u8514965_panel_utsman.ttq.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_qurban ttq
+												u8514965_panel_utsman.transaksi_tabungan_qurban ttq
 											WHERE
-												panel_utsman.ttq.nis_siswa = s.nis AND panel_utsman.ttq.status_kredit_debet = 2 AND(
+												u8514965_panel_utsman.ttq.nis_siswa = s.nis AND u8514965_panel_utsman.ttq.status_kredit_debet = 2 AND(
 												DATE_FORMAT(
-											    panel_utsman.ttq.waktu_transaksi,
+											    u8514965_panel_utsman.ttq.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS debet_qurban,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttq.saldo, 0)
+												COALESCE(u8514965_panel_utsman.ttq.saldo, 0)
 											FROM
-												panel_utsman.transaksi_tabungan_qurban ttq
+												u8514965_panel_utsman.transaksi_tabungan_qurban ttq
 											WHERE
-												panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND(
+												u8514965_panel_utsman.ttq.nis_siswa = u8514965_panel_utsman.s.nis AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttq.waktu_transaksi,
+                                                    u8514965_panel_utsman.ttq.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttq.id_transaksi_qurban
+												u8514965_panel_utsman.ttq.id_transaksi_qurban
 											DESC LIMIT 1
 										) AS saldo_qurban,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttw.nominal),
+											COALESCE(SUM(u8514965_panel_utsman.ttw.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_wisata ttw
+											u8514965_panel_utsman.transaksi_tabungan_wisata ttw
 										WHERE
-											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 1 AND(
+											u8514965_panel_utsman.ttw.nis_siswa = u8514965_panel_utsman.s.nis AND u8514965_panel_utsman.ttw.status_kredit_debet = 1 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttw.waktu_transaksi,
+                                                u8514965_panel_utsman.ttw.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS kredit_wisata,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttw.nominal),
+												COALESCE(SUM(u8514965_panel_utsman.ttw.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_wisata ttw
+												u8514965_panel_utsman.transaksi_tabungan_wisata ttw
 											WHERE
 												ttw.nis_siswa = s.nis AND ttw.status_kredit_debet = 2 AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttw.waktu_transaksi,
+                                                    u8514965_panel_utsman.ttw.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_wisata,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttw.saldo, 0)
+												COALESCE(u8514965_panel_utsman.ttw.saldo, 0)
 											FROM
-												panel_utsman.transaksi_tabungan_wisata ttw
+												u8514965_panel_utsman.transaksi_tabungan_wisata ttw
 											WHERE
-												panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND(
+												u8514965_panel_utsman.ttw.nis_siswa = u8514965_panel_utsman.s.nis AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttw.waktu_transaksi,
+                                                    u8514965_panel_utsman.ttw.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttw.id_transaksi_wisata
+												u8514965_panel_utsman.ttw.id_transaksi_wisata
 											DESC LIMIT 1
 										) AS saldo_wisata,
-										panel_utsman.s.nama_wali,
+										u8514965_panel_utsman.s.nama_wali,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     	) AS tahun_ajaran
 									FROM
 										siswa s
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.s.th_ajaran
+                                    	u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.s.th_ajaran
 									ORDER BY
-										panel_utsman.s.id_siswa
+										u8514965_panel_utsman.s.id_siswa
 									DESC");
         return $sql->result();
     }
@@ -1592,77 +1592,77 @@ class SavingsModel extends CI_Model
     public function get_all_employee_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.p.id_pegawai,
-										panel_utsman.p.id_jabatan,
-										panel_utsman.p.nip,
-										panel_utsman.p.level_tingkat,
-										panel_utsman.p.nama_lengkap,
-										panel_utsman.p.jenis_kelamin,
-										panel_utsman.p.nomor_hp,
-										panel_utsman.p.email,
-										panel_utsman.p.jenis_pegawai,
-										panel_utsman.p.th_ajaran,
-										panel_utsman.jb.id_jabatan,
-										panel_utsman.jb.hasil_nama_jabatan,
+										u8514965_panel_utsman.p.id_pegawai,
+										u8514965_panel_utsman.p.id_jabatan,
+										u8514965_panel_utsman.p.nip,
+										u8514965_panel_utsman.p.level_tingkat,
+										u8514965_panel_utsman.p.nama_lengkap,
+										u8514965_panel_utsman.p.jenis_kelamin,
+										u8514965_panel_utsman.p.nomor_hp,
+										u8514965_panel_utsman.p.email,
+										u8514965_panel_utsman.p.jenis_pegawai,
+										u8514965_panel_utsman.p.th_ajaran,
+										u8514965_panel_utsman.jb.id_jabatan,
+										u8514965_panel_utsman.jb.hasil_nama_jabatan,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttu.nominal),
+											COALESCE(SUM(u8514965_panel_utsman.ttu.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_umum_pegawai ttu
+											u8514965_panel_utsman.transaksi_tabungan_umum_pegawai ttu
 										WHERE
-											panel_utsman.ttu.nip_pegawai = panel_utsman.p.nip AND panel_utsman.ttu.status_kredit_debet = 1 AND(
+											u8514965_panel_utsman.ttu.nip_pegawai = u8514965_panel_utsman.p.nip AND u8514965_panel_utsman.ttu.status_kredit_debet = 1 AND(
 											DATE_FORMAT(
-											panel_utsman.ttu.waktu_transaksi,
+											u8514965_panel_utsman.ttu.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
                                             )
 										) AS kredit_umum,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttu.nominal),
+												COALESCE(SUM(u8514965_panel_utsman.ttu.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_umum_pegawai ttu
+												u8514965_panel_utsman.transaksi_tabungan_umum_pegawai ttu
 											WHERE
-												panel_utsman.ttu.nip_pegawai = panel_utsman.p.nip AND panel_utsman.ttu.status_kredit_debet = 2 AND(
+												u8514965_panel_utsman.ttu.nip_pegawai = u8514965_panel_utsman.p.nip AND u8514965_panel_utsman.ttu.status_kredit_debet = 2 AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    u8514965_panel_utsman.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_umum,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttu.saldo, 0)
-											FROM panel_utsman.transaksi_tabungan_umum_pegawai ttu
+												COALESCE(u8514965_panel_utsman.ttu.saldo, 0)
+											FROM u8514965_panel_utsman.transaksi_tabungan_umum_pegawai ttu
 											WHERE
-												panel_utsman.ttu.nip_pegawai = panel_utsman.p.nip AND(
+												u8514965_panel_utsman.ttu.nip_pegawai = u8514965_panel_utsman.p.nip AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    u8514965_panel_utsman.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttu.id_transaksi_umum_pegawai
+												u8514965_panel_utsman.ttu.id_transaksi_umum_pegawai
 											DESC LIMIT 1
 										) AS saldo_umum,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     	) AS tahun_ajaran
 									FROM
 										pegawai p
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.p.th_ajaran
-									LEFT JOIN panel_utsman.jabatan jb
+                                    	u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.p.th_ajaran
+									LEFT JOIN u8514965_panel_utsman.jabatan jb
                                 	ON
-                                    	panel_utsman.jb.id_jabatan = panel_utsman.p.id_jabatan
+                                    	u8514965_panel_utsman.jb.id_jabatan = u8514965_panel_utsman.p.id_jabatan
 									WHERE p.level_tingkat != '0'
 									ORDER BY
-										panel_utsman.p.id_pegawai
+										u8514965_panel_utsman.p.id_pegawai
 									DESC");
         return $sql->result();
     }
@@ -1670,78 +1670,78 @@ class SavingsModel extends CI_Model
     public function get_all_import_joint_customer()
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.tb.id_nasabah_bersama,
-										panel_utsman.tb.id_penanggung_jawab,
-										panel_utsman.tb.nomor_rekening_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.tingkat,
-										panel_utsman.tb.tahun_ajaran,
-										panel_utsman.tb.nama_wali,
-										panel_utsman.tb.jenis_tabungan,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.saldo_bersama,
-										panel_utsman.tb.nomor_hp_wali,
-										panel_utsman.tb.tanggal_transaksi,
-										panel_utsman.tb.status_nasabah_bersama,
-										panel_utsman.tb.status_penanggung_jawab,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,  -- Use COALESCE and NULLIF to get the right name
+										u8514965_panel_utsman.tb.id_nasabah_bersama,
+										u8514965_panel_utsman.tb.id_penanggung_jawab,
+										u8514965_panel_utsman.tb.nomor_rekening_bersama,
+										u8514965_panel_utsman.tb.nama_tabungan_bersama,
+										u8514965_panel_utsman.tb.tingkat,
+										u8514965_panel_utsman.tb.tahun_ajaran,
+										u8514965_panel_utsman.tb.nama_wali,
+										u8514965_panel_utsman.tb.jenis_tabungan,
+										u8514965_panel_utsman.tb.nama_tabungan_bersama,
+										u8514965_panel_utsman.tb.saldo_bersama,
+										u8514965_panel_utsman.tb.nomor_hp_wali,
+										u8514965_panel_utsman.tb.tanggal_transaksi,
+										u8514965_panel_utsman.tb.status_nasabah_bersama,
+										u8514965_panel_utsman.tb.status_penanggung_jawab,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nama_lengkap, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_lengkap,  -- Use COALESCE and NULLIF to get the right name
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS nama_tahun_ajaran
 									FROM
-										panel_utsman.import_nasabah_bersama tb
+										u8514965_panel_utsman.import_nasabah_bersama tb
 									LEFT JOIN
-										panel_utsman.siswa s ON panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										u8514965_panel_utsman.siswa s ON u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.tahun_ajaran ta ON panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.tahun_ajaran
+										u8514965_panel_utsman.tahun_ajaran ta ON u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tb.tahun_ajaran
 									LEFT JOIN
-										panel_utsman.pegawai p ON panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab  -- Joining pegawai to get employee name
+										u8514965_panel_utsman.pegawai p ON u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tb.id_penanggung_jawab  -- Joining pegawai to get employee name
 									ORDER BY
-										panel_utsman.tb.id_nasabah_bersama ASC");
+										u8514965_panel_utsman.tb.id_nasabah_bersama ASC");
         return $sql->result();
     }
 
     public function get_all_joint_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.tb.id_tabungan_bersama,
-										panel_utsman.tb.id_penanggung_jawab,
-										panel_utsman.tb.nomor_rekening_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.keterangan_tabungan_bersama,
-										panel_utsman.tb.id_tingkat,
-										panel_utsman.tb.jenis_tabungan,
-										panel_utsman.tb.id_th_ajaran,
-										COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-										COALESCE(NULLIF(panel_utsman.s.nomor_handphone, ''), panel_utsman.p.nomor_hp) AS nomor_handphone,
-										COALESCE(NULLIF(panel_utsman.s.email, ''), panel_utsman.p.email) AS email,
+										u8514965_panel_utsman.tb.id_tabungan_bersama,
+										u8514965_panel_utsman.tb.id_penanggung_jawab,
+										u8514965_panel_utsman.tb.nomor_rekening_bersama,
+										u8514965_panel_utsman.tb.nama_tabungan_bersama,
+										u8514965_panel_utsman.tb.keterangan_tabungan_bersama,
+										u8514965_panel_utsman.tb.id_tingkat,
+										u8514965_panel_utsman.tb.jenis_tabungan,
+										u8514965_panel_utsman.tb.id_th_ajaran,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nama_wali, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_wali,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nama_lengkap, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_lengkap,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nomor_handphone, ''), u8514965_panel_utsman.p.nomor_hp) AS nomor_handphone,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.email, ''), u8514965_panel_utsman.p.email) AS email,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttb.nominal),
+											COALESCE(SUM(u8514965_panel_utsman.ttb.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_bersama ttb
+											u8514965_panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 1 AND(
+											u8514965_panel_utsman.ttb.nomor_rekening_bersama = u8514965_panel_utsman.tb.nomor_rekening_bersama AND u8514965_panel_utsman.ttb.status_kredit_debet = 1 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttb.waktu_transaksi,
+                                                u8514965_panel_utsman.ttb.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS kredit_bersama,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttb.nominal),
+											COALESCE(SUM(u8514965_panel_utsman.ttb.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_bersama ttb
+											u8514965_panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 2 AND(
+											u8514965_panel_utsman.ttb.nomor_rekening_bersama = u8514965_panel_utsman.tb.nomor_rekening_bersama AND u8514965_panel_utsman.ttb.status_kredit_debet = 2 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttb.waktu_transaksi,
+                                                u8514965_panel_utsman.ttb.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
@@ -1750,38 +1750,38 @@ class SavingsModel extends CI_Model
 										SELECT
 											COALESCE(ttb.nominal, 0)
 										FROM
-											panel_utsman.transaksi_tabungan_bersama ttb
+											u8514965_panel_utsman.transaksi_tabungan_bersama ttb
 										WHERE
-											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
+											u8514965_panel_utsman.ttb.nomor_rekening_bersama = u8514965_panel_utsman.tb.nomor_rekening_bersama AND(
 												DATE_FORMAT(
-													panel_utsman.ttb.waktu_transaksi,
+													u8514965_panel_utsman.ttb.waktu_transaksi,
 													'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											panel_utsman.ttb.id_transaksi_bersama
+											u8514965_panel_utsman.ttb.id_transaksi_bersama
 										DESC
 									LIMIT 1
 									) AS saldo_bersama,
 									CONCAT(
-										panel_utsman.ta.tahun_awal,
+										u8514965_panel_utsman.ta.tahun_awal,
 										'/',
-										panel_utsman.ta.tahun_akhir
+										u8514965_panel_utsman.ta.tahun_akhir
 									) AS tahun_ajaran
 									FROM
 										tabungan_bersama tb
-									LEFT JOIN panel_utsman.siswa s
+									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.pegawai p
+										u8514965_panel_utsman.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tb.id_penanggung_jawab
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.id_th_ajaran
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tb.id_th_ajaran
 									ORDER BY
-										panel_utsman.tb.id_tabungan_bersama
+										u8514965_panel_utsman.tb.id_tabungan_bersama
 									DESC");
         return $sql->result();
     }
@@ -1789,55 +1789,55 @@ class SavingsModel extends CI_Model
     public function get_all_general_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_umum,
-									panel_utsman.tt.nomor_transaksi_umum,
-                                    panel_utsman.tt.nis_siswa,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    u8514965_panel_utsman.tt.id_transaksi_umum,
+									u8514965_panel_utsman.tt.nomor_transaksi_umum,
+                                    u8514965_panel_utsman.tt.nis_siswa,
+									u8514965_panel_utsman.tt.id_tingkat,
+                                    u8514965_panel_utsman.s.nama_lengkap,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+									u8514965_panel_utsman.tt.jenis_tabungan,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_general vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_general vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_umum = panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_umum = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_umum tt
-                                LEFT JOIN panel_utsman.siswa s
+                                    u8514965_panel_utsman.transaksi_tabungan_umum tt
+                                LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
-                                    panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_umum
+                                    u8514965_panel_utsman.tt.id_transaksi_umum
                                 DESC");
         return $sql->result();
     }
@@ -1845,55 +1845,55 @@ class SavingsModel extends CI_Model
     public function get_all_general_transaction_savings_employee($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_umum_pegawai,
-									panel_utsman.tt.nomor_transaksi_umum,
-                                    panel_utsman.tt.nip_pegawai,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.p.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    u8514965_panel_utsman.tt.id_transaksi_umum_pegawai,
+									u8514965_panel_utsman.tt.nomor_transaksi_umum,
+                                    u8514965_panel_utsman.tt.nip_pegawai,
+									u8514965_panel_utsman.tt.id_tingkat,
+                                    u8514965_panel_utsman.p.nama_lengkap,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+									u8514965_panel_utsman.tt.jenis_tabungan,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_general_employee vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_general_employee vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_umum_pegawai = panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_umum_pegawai = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_umum_pegawai tt
-                                LEFT JOIN panel_utsman.pegawai p
+                                    u8514965_panel_utsman.transaksi_tabungan_umum_pegawai tt
+                                LEFT JOIN u8514965_panel_utsman.pegawai p
                                 ON
-                                    panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tt.nip_pegawai
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_umum_pegawai
+                                    u8514965_panel_utsman.tt.id_transaksi_umum_pegawai
                                 DESC");
         return $sql->result();
     }
@@ -1901,55 +1901,55 @@ class SavingsModel extends CI_Model
     public function get_all_qurban_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_qurban,
-									panel_utsman.tt.nomor_transaksi_qurban,
-                                    panel_utsman.tt.nis_siswa,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    u8514965_panel_utsman.tt.id_transaksi_qurban,
+									u8514965_panel_utsman.tt.nomor_transaksi_qurban,
+                                    u8514965_panel_utsman.tt.nis_siswa,
+									u8514965_panel_utsman.tt.id_tingkat,
+                                    u8514965_panel_utsman.s.nama_lengkap,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+									u8514965_panel_utsman.tt.jenis_tabungan,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_qurban vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_qurban vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_qurban = panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_qurban = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_qurban tt
-                                LEFT JOIN panel_utsman.siswa s
+                                    u8514965_panel_utsman.transaksi_tabungan_qurban tt
+                                LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
-                                    panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_qurban
+                                    u8514965_panel_utsman.tt.id_transaksi_qurban
                                 DESC");
         return $sql->result();
     }
@@ -1957,55 +1957,55 @@ class SavingsModel extends CI_Model
     public function get_all_qurban_transaction_savings_employee($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_qurban_pegawai,
-									panel_utsman.tt.nomor_transaksi_qurban,
-                                    panel_utsman.tt.nip_pegawai,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.p.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    u8514965_panel_utsman.tt.id_transaksi_qurban_pegawai,
+									u8514965_panel_utsman.tt.nomor_transaksi_qurban,
+                                    u8514965_panel_utsman.tt.nip_pegawai,
+									u8514965_panel_utsman.tt.id_tingkat,
+                                    u8514965_panel_utsman.p.nama_lengkap,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+									u8514965_panel_utsman.tt.jenis_tabungan,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_qurban_employee vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_qurban_employee vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_qurban_pegawai = panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_qurban_pegawai = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_qurban_pegawai tt
-                                LEFT JOIN panel_utsman.pegawai p
+                                    u8514965_panel_utsman.transaksi_tabungan_qurban_pegawai tt
+                                LEFT JOIN u8514965_panel_utsman.pegawai p
                                 ON
-                                    panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tt.nip_pegawai
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_qurban_pegawai
+                                    u8514965_panel_utsman.tt.id_transaksi_qurban_pegawai
                                 DESC");
         return $sql->result();
     }
@@ -2013,55 +2013,55 @@ class SavingsModel extends CI_Model
     public function get_all_tour_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_wisata,
-									panel_utsman.tt.nomor_transaksi_wisata,
-                                    panel_utsman.tt.nis_siswa,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    u8514965_panel_utsman.tt.id_transaksi_wisata,
+									u8514965_panel_utsman.tt.nomor_transaksi_wisata,
+                                    u8514965_panel_utsman.tt.nis_siswa,
+									u8514965_panel_utsman.tt.id_tingkat,
+                                    u8514965_panel_utsman.s.nama_lengkap,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+									u8514965_panel_utsman.tt.jenis_tabungan,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_tour vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_tour vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_wisata = panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_wisata = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_wisata tt
-                                LEFT JOIN panel_utsman.siswa s
+                                    u8514965_panel_utsman.transaksi_tabungan_wisata tt
+                                LEFT JOIN u8514965_panel_utsman.siswa s
                                 ON
-                                    panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tt.nis_siswa
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_wisata
+                                    u8514965_panel_utsman.tt.id_transaksi_wisata
                                 DESC");
         return $sql->result();
     }
@@ -2069,122 +2069,122 @@ class SavingsModel extends CI_Model
     public function get_all_tour_transaction_savings_employee($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_wisata_pegawai,
-									panel_utsman.tt.nomor_transaksi_wisata,
-                                    panel_utsman.tt.nip_pegawai,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.p.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    u8514965_panel_utsman.tt.id_transaksi_wisata_pegawai,
+									u8514965_panel_utsman.tt.nomor_transaksi_wisata,
+                                    u8514965_panel_utsman.tt.nip_pegawai,
+									u8514965_panel_utsman.tt.id_tingkat,
+                                    u8514965_panel_utsman.p.nama_lengkap,
+                                    u8514965_keuangan_utsman.ak.nama_akun,
+                                    u8514965_keuangan_utsman.ak.email_akun,
+                                    u8514965_panel_utsman.tt.saldo,
+									u8514965_panel_utsman.tt.jenis_tabungan,
+                                    u8514965_panel_utsman.tt.catatan,
+                                    u8514965_panel_utsman.tt.nominal,
+                                    u8514965_panel_utsman.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        u8514965_panel_utsman.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        u8514965_panel_utsman.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									u8514965_panel_utsman.tt.th_ajaran,
+                                    u8514965_panel_utsman.tt.tanggal_transaksi,
+                                    DATE_FORMAT(u8514965_panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_tour_employee vmax
+                                        u8514965_panel_utsman.view_max_id_transaction_tour_employee vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_wisata_pegawai = panel_utsman.vmax.id_max
+                                        u8514965_panel_utsman.tt.id_transaksi_wisata_pegawai = u8514965_panel_utsman.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_wisata_pegawai tt
-                                LEFT JOIN panel_utsman.pegawai p
+                                    u8514965_panel_utsman.transaksi_tabungan_wisata_pegawai tt
+                                LEFT JOIN u8514965_panel_utsman.pegawai p
                                 ON
-                                    panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tt.nip_pegawai
+                                LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.tt.th_ajaran
+                                LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											u8514965_panel_utsman.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_wisata_pegawai
+                                    u8514965_panel_utsman.tt.id_transaksi_wisata_pegawai
                                 DESC");
         return $sql->result();
     }
     public function get_all_joint_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.ttb.id_transaksi_bersama,
-										panel_utsman.ttb.id_tingkat,
-										panel_utsman.ttb.nomor_rekening_bersama,
-										panel_utsman.ttb.nomor_transaksi_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.jenis_tabungan,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-										COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.ttb.saldo,
-										panel_utsman.ttb.catatan,
-										panel_utsman.ttb.nominal,
-										panel_utsman.ttb.status_kredit_debet,
+										u8514965_panel_utsman.ttb.id_transaksi_bersama,
+										u8514965_panel_utsman.ttb.id_tingkat,
+										u8514965_panel_utsman.ttb.nomor_rekening_bersama,
+										u8514965_panel_utsman.ttb.nomor_transaksi_bersama,
+										u8514965_panel_utsman.tb.nama_tabungan_bersama,
+										u8514965_panel_utsman.tb.jenis_tabungan,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nama_lengkap, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_lengkap,
+										COALESCE(NULLIF(u8514965_panel_utsman.s.nama_wali, ''), u8514965_panel_utsman.p.nama_lengkap) AS nama_wali,
+										u8514965_keuangan_utsman.ak.nama_akun,
+										u8514965_keuangan_utsman.ak.email_akun,
+										u8514965_panel_utsman.ttb.saldo,
+										u8514965_panel_utsman.ttb.catatan,
+										u8514965_panel_utsman.ttb.nominal,
+										u8514965_panel_utsman.ttb.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											u8514965_panel_utsman.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											u8514965_panel_utsman.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.ttb.th_ajaran,
-										panel_utsman.ttb.tanggal_transaksi,
+										u8514965_panel_utsman.ttb.th_ajaran,
+										u8514965_panel_utsman.ttb.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											u8514965_panel_utsman.ttb.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											u8514965_panel_utsman.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_joint vmax
+											u8514965_panel_utsman.view_max_id_transaction_joint vmax
 										WHERE
-											panel_utsman.ttb.id_transaksi_bersama = panel_utsman.vmax.id_max
+											u8514965_panel_utsman.ttb.id_transaksi_bersama = u8514965_panel_utsman.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_bersama ttb
-									LEFT JOIN panel_utsman.tabungan_bersama tb
+										u8514965_panel_utsman.transaksi_tabungan_bersama ttb
+									LEFT JOIN u8514965_panel_utsman.tabungan_bersama tb
 									ON
-										panel_utsman.tb.nomor_rekening_bersama = panel_utsman.ttb.nomor_rekening_bersama
-									LEFT JOIN panel_utsman.siswa s
+										u8514965_panel_utsman.tb.nomor_rekening_bersama = u8514965_panel_utsman.ttb.nomor_rekening_bersama
+									LEFT JOIN u8514965_panel_utsman.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										u8514965_panel_utsman.s.nis = u8514965_panel_utsman.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.pegawai p
+										u8514965_panel_utsman.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										u8514965_panel_utsman.p.nip = u8514965_panel_utsman.tb.id_penanggung_jawab
+									LEFT JOIN u8514965_panel_utsman.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.ttb.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										u8514965_panel_utsman.ta.id_tahun_ajaran = u8514965_panel_utsman.ttb.th_ajaran
+									LEFT JOIN u8514965_keuangan_utsman.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.ttb.id_pegawai
+										u8514965_keuangan_utsman.ak.id_akun_keuangan = u8514965_panel_utsman.ttb.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											u8514965_panel_utsman.ttb.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
 									ORDER BY
-										panel_utsman.ttb.id_transaksi_bersama
+										u8514965_panel_utsman.ttb.id_transaksi_bersama
 									DESC
 										");
         return $sql->result();
@@ -3231,26 +3231,26 @@ class SavingsModel extends CI_Model
 											saldo_tabungan_wisata
 										)
 										SELECT
-											panel_utsman.inp.nis,
-											panel_utsman.inp.nis AS nomor_dpb,
+											u8514965_panel_utsman.inp.nis,
+											u8514965_panel_utsman.inp.nis AS nomor_dpb,
 											CONCAT(
 												'8',
-												SUBSTRING(panel_utsman.inp.nis, 2)
+												SUBSTRING(u8514965_panel_utsman.inp.nis, 2)
 											) AS nomor_du,
-											panel_utsman.inp.password,
-											panel_utsman.inp.tingkat,
-											panel_utsman.inp.nama_nasabah,
-											panel_utsman.inp.nomor_hp_wali,
-											panel_utsman.inp.email_nasabah,
-											panel_utsman.inp.nama_wali,
-											panel_utsman.inp.tahun_ajaran,
-											panel_utsman.inp.saldo_umum,
-											panel_utsman.inp.saldo_qurban,
-											panel_utsman.inp.saldo_wisata
+											u8514965_panel_utsman.inp.password,
+											u8514965_panel_utsman.inp.tingkat,
+											u8514965_panel_utsman.inp.nama_nasabah,
+											u8514965_panel_utsman.inp.nomor_hp_wali,
+											u8514965_panel_utsman.inp.email_nasabah,
+											u8514965_panel_utsman.inp.nama_wali,
+											u8514965_panel_utsman.inp.tahun_ajaran,
+											u8514965_panel_utsman.inp.saldo_umum,
+											u8514965_panel_utsman.inp.saldo_qurban,
+											u8514965_panel_utsman.inp.saldo_wisata
 										FROM
-											panel_utsman.import_nasabah_personal inp
+											u8514965_panel_utsman.import_nasabah_personal inp
 										WHERE
-											panel_utsman.inp.id_nasabah IN ($id)
+											u8514965_panel_utsman.inp.id_nasabah IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -3291,22 +3291,22 @@ class SavingsModel extends CI_Model
 											saldo_tabungan_wisata
 										)
 										SELECT
-											panel_utsman.inp.nip,
-											panel_utsman.inp.password,
-											panel_utsman.inp.tingkat,
-											panel_utsman.inp.nama_nasabah,
-											panel_utsman.inp.jenis_kelamin,
-											panel_utsman.inp.nomor_hp_pegawai,
-											panel_utsman.inp.email_nasabah,
-											panel_utsman.inp.status_pegawai,
-											panel_utsman.inp.tahun_ajaran,
-											panel_utsman.inp.saldo_umum,
-											panel_utsman.inp.saldo_qurban,
-											panel_utsman.inp.saldo_wisata
+											u8514965_panel_utsman.inp.nip,
+											u8514965_panel_utsman.inp.password,
+											u8514965_panel_utsman.inp.tingkat,
+											u8514965_panel_utsman.inp.nama_nasabah,
+											u8514965_panel_utsman.inp.jenis_kelamin,
+											u8514965_panel_utsman.inp.nomor_hp_pegawai,
+											u8514965_panel_utsman.inp.email_nasabah,
+											u8514965_panel_utsman.inp.status_pegawai,
+											u8514965_panel_utsman.inp.tahun_ajaran,
+											u8514965_panel_utsman.inp.saldo_umum,
+											u8514965_panel_utsman.inp.saldo_qurban,
+											u8514965_panel_utsman.inp.saldo_wisata
 										FROM
-											panel_utsman.import_nasabah_pegawai inp
+											u8514965_panel_utsman.import_nasabah_pegawai inp
 										WHERE
-											panel_utsman.inp.id_nasabah IN ($id)
+											u8514965_panel_utsman.inp.id_nasabah IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -3345,19 +3345,19 @@ class SavingsModel extends CI_Model
 											jenis_tabungan
 										)
 										SELECT
-											panel_utsman.inb.id_penanggung_jawab,
-											panel_utsman.inb.id_pegawai,
-											panel_utsman.inb.tingkat,
-											panel_utsman.inb.tahun_ajaran,
-											panel_utsman.inb.nomor_rekening_bersama,
-											panel_utsman.inb.nama_tabungan_bersama,
-											panel_utsman.inb.saldo_bersama AS saldo_tabungan_bersama,
-											panel_utsman.inb.keterangan_bersama AS keterangan_tabungan_bersama,
-											panel_utsman.inb.jenis_tabungan
+											u8514965_panel_utsman.inb.id_penanggung_jawab,
+											u8514965_panel_utsman.inb.id_pegawai,
+											u8514965_panel_utsman.inb.tingkat,
+											u8514965_panel_utsman.inb.tahun_ajaran,
+											u8514965_panel_utsman.inb.nomor_rekening_bersama,
+											u8514965_panel_utsman.inb.nama_tabungan_bersama,
+											u8514965_panel_utsman.inb.saldo_bersama AS saldo_tabungan_bersama,
+											u8514965_panel_utsman.inb.keterangan_bersama AS keterangan_tabungan_bersama,
+											u8514965_panel_utsman.inb.jenis_tabungan
 										FROM
-											panel_utsman.import_nasabah_bersama inb
+											u8514965_panel_utsman.import_nasabah_bersama inb
 										WHERE
-											panel_utsman.inb.id_nasabah_bersama IN ($id)
+											u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)
 										ON DUPLICATE KEY UPDATE
 											id_penanggung_jawab = VALUES(id_penanggung_jawab),
 											id_pegawai = VALUES(id_pegawai),
@@ -3370,15 +3370,15 @@ class SavingsModel extends CI_Model
 											jenis_tabungan = VALUES(jenis_tabungan)");
 
         $this->db2->query("UPDATE
-								panel_utsman.siswa AS s,
-								panel_utsman.import_nasabah_bersama AS inb
+								u8514965_panel_utsman.siswa AS s,
+								u8514965_panel_utsman.import_nasabah_bersama AS inb
 							SET
-								panel_utsman.s.nama_wali = panel_utsman.inb.nama_wali,
-								panel_utsman.s.nomor_handphone = panel_utsman.inb.nomor_hp_wali
+								u8514965_panel_utsman.s.nama_wali = u8514965_panel_utsman.inb.nama_wali,
+								u8514965_panel_utsman.s.nomor_handphone = u8514965_panel_utsman.inb.nomor_hp_wali
 							WHERE
-								panel_utsman.s.nis = panel_utsman.inb.id_penanggung_jawab
+								u8514965_panel_utsman.s.nis = u8514965_panel_utsman.inb.id_penanggung_jawab
 								AND
-								panel_utsman.inb.id_nasabah_bersama IN ($id)");
+								u8514965_panel_utsman.inb.id_nasabah_bersama IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
