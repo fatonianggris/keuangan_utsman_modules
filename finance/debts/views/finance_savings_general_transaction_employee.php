@@ -1,5 +1,5 @@
 <!--begin::Content-->
-<?php $user = $this->session->userdata('sias-finance'); ?>
+<?php $user = $this->session->userdata('sias-finance');?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -23,7 +23,6 @@
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
-
             <!--begin::Toolbar-->
             <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="top">
                 <a onclick="window.history.back();" class="btn btn-light-danger btn-sm font-weight-bold"
@@ -49,7 +48,7 @@
                             role="alert">
                             <div class="alert-text font-weight-bolder text-center text-dark">
                                 <h1 class="font-weight-boldest text-danger">
-                                    <li class="fas fa-exclamation-triangle"></li> TABUNGAN UMUM SISWA <li
+                                    <li class="fas fa-exclamation-triangle"></li> TABUNGAN UMUM PEGAWAI <li
                                         class="fas fa-exclamation-triangle">
                                 </h1>
                                 MOHON UNTUK DIPERHATIKAN!!.<br> Silahkan
@@ -66,12 +65,7 @@
                                 </span>
                                 <h3 class="card-label">Transaksi Tabungan Umum</h3>
                             </div>
-
                             <div class="card-toolbar">
-                                <div class=" text-right mt-5 mr-5 font-weight-bolder">
-                                    Status Printer: <p class="text-right" id="error_print_connection">
-                                    </p>
-                                </div>
                                 <div class="buttons">
                                     <button class="btn btn-success mr-2" data-toggle="modal" data-target="#modalKredit"
                                         id="btnKredit">
@@ -89,7 +83,6 @@
                             </div>
                         </div>
                         <div class="card-body" id="paper">
-
                             <div class="card-body">
                                 <!--begin: Search Form-->
                                 <div class="row mb-6">
@@ -99,31 +92,31 @@
                                             placeholder="Inputkan Nomor Transaksi" data-col-index="1" />
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>NIS Siswa:</label>
+                                        <label>NIP Pegawai:</label>
                                         <input type="text" class="form-control datatable-input"
-                                            placeholder="Inputkan NIS Siswa" data-col-index="2" />
+                                            placeholder="Inputkan NIP Pegawai" data-col-index="2" />
                                     </div>
                                     <div class="col-lg-4 mb-lg-0 mb-6">
-                                        <label>Nama Siswa:</label>
+                                        <label>Nama Pegawai:</label>
                                         <input type="text" class="form-control datatable-input"
-                                            placeholder="Inputkan Nama Siswa" data-col-index="3" />
+                                            placeholder="Inputkan Nama Pegawai" data-col-index="3" />
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
                                         <label>Tahun Ajaran:</label>
                                         <select class="form-control datatable-input" data-col-index="5">
                                             <option value="">Pilih Tahun Ajaran</option>
                                             <?php
-                                                if (! empty($schoolyear)) {
-                                                    foreach ($schoolyear as $key => $value) {
-                                                    ?>
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value) {
+        ?>
                                             <option
                                                 value="<?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>">
                                                 <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                             </option>
                                             <?php
-                                                } //ngatur nomor urut
-                                                }
-                                            ?>
+} //ngatur nomor urut
+}
+?>
                                             <option value="">SEMUA</option>
                                         </select>
                                     </div>
@@ -132,11 +125,10 @@
                                         <select name="input_tingkat" class="form-control datatable-input"
                                             data-col-index="6">
                                             <option value="">Pilih Tingkat</option>
-                                            <option value="DC">DC</option>
-                                            <option value="KB">KB</option>
-                                            <option value="TK">TK</option>
+                                            <option value="DC/KB/TK">DC/KB/TK</option>
                                             <option value="SD">SD</option>
                                             <option value="SMP">SMP</option>
+                                            <option value="UMUM">UMUM</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
@@ -223,8 +215,8 @@
                                         <tr>
                                             <th class="text-center"></th>
                                             <th>No. Transaksi</th>
-                                            <th>NIS</th>
-                                            <th>Nama Siswa</th>
+                                            <th>NIP</th>
+                                            <th>Nama Pegawai</th>
                                             <th>Waktu Transaksi</th>
                                             <th>TA</th>
                                             <th>Tingkat</th>
@@ -285,12 +277,12 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label> Input NIS Siswa</label>
-                                <select class="form-control select2 findNasabahKredit" name="inputCariSiswaKredit"
+                                <label> Input NIP Pegawai</label>
+                                <select class="form-control select2 findNasabahKredit" name="inputCariPegawaiKredit"
                                     id="findNasabahKredit" required>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> inputkan
-                                    NIS siswa</span>
+                                    NIP Pegawai</span>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -317,24 +309,24 @@
                                     id="inputTahunAjaranKredit">
                                     <option value="">Pilih TA</option>
                                     <?php
-                                        if (! empty($schoolyear)) {
-                                            foreach ($schoolyear as $key => $value_sch) {
-                                                if ($value_sch->tahun_awal == (date("Y"))) {
-                                                ?>
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value_sch) {
+        if ($value_sch->tahun_awal == (date("Y"))) {
+            ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>" selected>
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-                                        } else {
-                                                ?>
+} else {
+            ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-                                        }
-                                            }
-                                        }
-                                    ?>
+}
+    }
+}
+?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -366,11 +358,10 @@
                                 <select name="inputTingkatKredit" class="form-control form-control-lg"
                                     id="inputTingkatKredit">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -422,43 +413,62 @@
                             <div class="col-12 mt-5">
                                 <div class="row">
                                     <div class="form-group col-6">
-                                        <label> Nama Lengkap Nasabah Siswa</label>
+                                        <label> Nama Lengkap Nasabah Pegawai</label>
                                         <input type="text" name="nama_nasabah" id="nama_nasabah"
                                             class="form-control form-control-lg"
-                                            placeholder="Inputkan Nama Nasabah/Siswa" />
+                                            placeholder="Inputkan Nama Nasabah/Pegawai" />
                                         <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b>
                                             Masukan
                                             nama
-                                            lengkap Nasabah/Siswa
-                                        </span>
-
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <label> Nama Orang Tua/Wali </label>
-                                        <input type="text" class="form-control form-control-lg" name="nama_orangtua"
-                                            id="nama_orangtua" placeholder="Input Nama Orang Tua Wali" />
-                                        <span class="form-text text-dark"><b class="">*TIDAK WAJIB DIISI,</b> Nama
-                                            Orang
-                                            Tua/Wali
+                                            lengkap Nasabah/Pegawai
                                         </span>
                                     </div>
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-3">
+                                        <label> Status Pegawai </label>
+                                        <select name="status_pegawai" id="status_pegawai"
+                                            class="form-control form-control-lg">
+                                            <option value="">Pilih Status</option>
+                                            <option value="1">Tetap</option>
+                                            <option value="2">Tidak Tetap</option>
+                                            <option value="3">Honorer</option>
+                                        </select>
+                                        <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                DIPILIH, </b>pilih Status Pegawai</span>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label> Jenis Kelamin </label>
+                                        <select name="jenis_kelamin" id="jenis_kelamin"
+                                            class="form-control form-control-lg">
+                                            <option value="">Pilih JK</option>
+                                            <option value="1">Laki-laki</option>
+                                            <option value="2">Perempuan</option>
+                                        </select>
+                                        <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                DIPILIH, </b>pilih Status Pegawai</span>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label> Jabatan Pegawai </label>
+                                        <select name="jabatan" id="jabatan"
+                                            class="form-control form-control-lg jabatan">
+                                            <option value="">Pilih Jabatan Pegawai</option>
+                                        </select>
+                                        <span class="form-text text-dark"><b class="text-danger">*WAJIB
+                                                DIPILIH, </b>pilih Jabatan Pegawai</span>
+                                    </div>
+                                    <div class="form-group col-4">
                                         <label> Nomor HP Aktif </label>
-
                                         <input type="number" class="form-control form-control-lg" name="nomor_hp_aktif"
                                             id="nomor_hp_aktif" placeholder="Input Nomor HP Aktif" />
                                         <span class="form-text text-dark"><b class="">*TIDAK WAJIB DIISI,</b>
                                             isikan
                                             Nomor Handphone</span>
                                     </div>
-                                    <div class="form-group col-6">
-                                        <label> Email Orang Tua/Wali </label>
-
-                                        <input type="text" class="form-control form-control-lg" name="email_orangtua"
-                                            name="email_orangtua" placeholder="Input Email Orang Tua Wali" />
+                                    <div class="form-group col-4">
+                                        <label> Email Pegawai </label>
+                                        <input type="text" class="form-control form-control-lg" id="email_pegawai"
+                                            name="email_pegawai" placeholder="Input Email Pegawai" />
                                         <span class="form-text text-dark"><b class="">*TIDAK WAJIB DIISI,</b> Email
-                                            Orang
-                                            Tua/Wali
+                                            Pegawai
                                         </span>
                                     </div>
                                 </div>
@@ -473,7 +483,7 @@
                                     </div>
                                 </div>
                                 <div class=" col-md-6">
-                                    NIS : <label class="font-weight-bold" id="userNisKredit">-</label><br>
+                                    NIP : <label class="font-weight-bold" id="userNipKredit">-</label><br>
                                     Nama : <label class="font-weight-bold" id="userNamaKredit">-</label><br>
                                     Tingkat : <label class="font-weight-bold" id="userTingkatKredit">-</label><br>
                                 </div>
@@ -517,8 +527,8 @@
                     <input type="hidden" class="hidden" name="id_transaksi_kredit">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label> Nama & NIS Siswa</label>
-                            <select class="form-control select2 findNasabahKreditEdit" name="nis_kredit" disabled>
+                            <label> Nama & NIP Pegawai</label>
+                            <select class="form-control select2 findNasabahKreditEdit" name="nip_kredit" disabled>
                             </select>
                         </div>
                         <div class="form-group col-6">
@@ -540,16 +550,16 @@
                                 <label>Tahun Ajaran</label>
                                 <select name="th_ajaran_kredit" class="form-control form-control-lg">
                                     <?php
-                                        if (! empty($schoolyear)) {
-                                            foreach ($schoolyear as $key => $value_sch) {
-                                            ?>
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value_sch) {
+        ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-                                        }
-                                        }
-                                    ?>
+}
+}
+?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -579,11 +589,10 @@
                                 <label> Tingkat </label>
                                 <select name="tingkat_kredit" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -631,7 +640,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            NIS : <label class="font-weight-bold" id="userNisKreditEdit">-</label><br>
+                            NIP : <label class="font-weight-bold" id="userNipKreditEdit">-</label><br>
                             Nama : <label class="font-weight-bold" id="userNamaKreditEdit">-</label><br>
                             Tingkat : <label class="font-weight-bold" id="userTingkatKreditEdit">-</label><br>
                         </div>
@@ -669,12 +678,12 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label> Input NIS Siswa</label>
-                            <select class="form-control select2 findNasabahDebet" name="inputCariSiswaDebet"
+                            <label> Input NIP Pegawai</label>
+                            <select class="form-control select2 findNasabahDebet" name="inputCariPegawaiDebet"
                                 id="findNasabahDebet">
                             </select>
                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> inputkan
-                                NIS siswa</span>
+                                NIP Pegawai</span>
                         </div>
                         <div class="form-group col-6">
                             <label> Nominal </label>
@@ -697,24 +706,24 @@
                                     class="form-control form-control-lg">
                                     <option value="">Pilih TA</option>
                                     <?php
-                                        if (! empty($schoolyear)) {
-                                            foreach ($schoolyear as $key => $value_sch) {
-                                                if ($value_sch->tahun_awal == (date("Y"))) {
-                                                ?>
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value_sch) {
+        if ($value_sch->tahun_awal == (date("Y"))) {
+            ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>" selected>
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-                                        } else {
-                                                ?>
+} else {
+            ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-                                        }
-                                            }
-                                        }
-                                    ?>
+}
+    }
+}
+?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -746,11 +755,10 @@
                                 <select name="inputTingkatDebet" class="form-control form-control-lg"
                                     id="inputTingkatDebet">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -798,7 +806,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            NIS : <label class="font-weight-bold" id="userNisDebet">-</label><br>
+                            NIP : <label class="font-weight-bold" id="userNipDebet">-</label><br>
                             Nama : <label class="font-weight-bold" id="userNamaDebet">-</label><br>
                             Tingkat : <label class="font-weight-bold" id="userTingkatDebet">-</label><br>
                         </div>
@@ -839,8 +847,8 @@
                     <input type="hidden" class="hidden" name="id_transaksi_debet">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label> Nama & NIS Siswa</label>
-                            <select class="form-control select2 findNasabahDebetEdit" name="nis_debet" disabled>
+                            <label> Nama & NIP Pegawai</label>
+                            <select class="form-control select2 findNasabahDebetEdit" name="nip_debet" disabled>
                             </select>
                         </div>
                         <div class="form-group col-6">
@@ -862,17 +870,17 @@
                                 <label>Tahun Ajaran</label>
                                 <select name="th_ajaran_debet" class="form-control form-control-lg">
                                     <?php
-                                        if (! empty($schoolyear)) {
-                                            foreach ($schoolyear as $key => $value_sch) {
+if (!empty($schoolyear)) {
+    foreach ($schoolyear as $key => $value_sch) {
 
-                                            ?>
+        ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-                                        }
-                                        }
-                                    ?>
+}
+}
+?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -902,11 +910,10 @@
                                 <label> Tingkat </label>
                                 <select name="tingkat_debet" class="form-control form-control-lg">
                                     <option value="">Pilih Tingkat</option>
-                                    <option value="6">DC</option>
-                                    <option value="1">KB</option>
-                                    <option value="2">TK</option>
+                                    <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMP</option>
+                                    <option value="6">UMUM</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Tingkat</span>
@@ -954,7 +961,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            NIS : <label class="font-weight-bold" id="userNisDebetEdit">-</label><br>
+                            NIP : <label class="font-weight-bold" id="userNipDebetEdit">-</label><br>
                             Nama : <label class="font-weight-bold" id="userNamaDebetEdit">-</label><br>
                             Tingkat : <label class="font-weight-bold" id="userTingkatDebetEdit">-</label><br>
                         </div>
@@ -989,21 +996,21 @@
                 </button>
             </div>
             <form class="form" novalidate="novalidate"
-                action="<?php echo site_url('finance/savings/get_student_transaction_recap'); ?>"
+                action="<?php echo site_url('finance/savings/get_employee_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
-				<input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
-				value="<?php echo $this->security->get_csrf_hash(); ?>">
+                <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+                    value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">
-                            <label> Input NIS Siswa</label>
-                            <select name="nis_siswa" class="form-control select2 findRekapNasabah"
+                            <label> Input NIP Pegawai</label>
+                            <select name="nip_pegawai" class="form-control select2 findRekapNasabah"
                                 id="findRekapNasabah">
                             </select>
                             <span class="form-text text-dark"><b class="text-danger">*WAJIB DIISI,</b> inputkan
-                                NIS siswa</span>
+                                NIP Pegawai</span>
                         </div>
-                        <input type="hidden" name="inputNISRekap" id="inputNISRekap" class="form-control">
+                        <input type="hidden" name="inputNIPRekap" id="inputNIPRekap" class="form-control">
                         <div class="col-4">
                             <div class="alert alert-secondary text-center" role="alert">
                                 <b>INFO TABUNGAN UMUM</b>
@@ -1055,7 +1062,8 @@
 
 <script>
 var stat_close = true;
-<?php if ($user[0]->id_role_struktur == 5 || $user[0]->id_role_struktur == 10) {?>
+
+<?php if ($user[0]->id_role_struktur == 5) {?>
 var id_role = 5;
 <?php } else {?>
 var id_role = 7;
@@ -1063,6 +1071,18 @@ var id_role = 7;
 </script>
 
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/config.pin.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction-employee.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction-employee.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction-employee.js"></script>
+<script>
+    $(document).ready(function () {
+        var id_pos;
+        $("#inputTingkatKredit").change(function () {
+            id_pos = $(this).val();
+            var url = "<?php echo site_url('finance/savings/add_ajax_position'); ?>/" + id_pos;
+            $('#jabatan').load(url);
+            return false;
+        });
+    });
+</script>
+

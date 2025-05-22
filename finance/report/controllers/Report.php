@@ -7,6 +7,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class Report extends MX_Controller
 {
 
+    protected $allowed_roles = [5, 7, 10];
+	
     public function __construct()
     {
         parent::__construct();
@@ -29,7 +31,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -38,16 +40,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -59,7 +61,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Per Siswa Utsman');
@@ -83,19 +85,19 @@ class Report extends MX_Controller
             $sheet->setCellValue('L2', 'Saldo Wisata');
 
             $rowCount = 3;
-            $tingkat = "";
+            $tingkat  = "";
 
-            $total_debit_um = 0;
+            $total_debit_um  = 0;
             $total_kredit_um = 0;
-            $total_saldo_um = 0;
+            $total_saldo_um  = 0;
 
-            $total_debit_qr = 0;
+            $total_debit_qr  = 0;
             $total_kredit_qr = 0;
-            $total_saldo_qr = 0;
+            $total_saldo_qr  = 0;
 
-            $total_debit_ws = 0;
+            $total_debit_ws  = 0;
             $total_kredit_ws = 0;
-            $total_saldo_ws = 0;
+            $total_saldo_ws  = 0;
 
             foreach ($empInfo as $element) {
 
@@ -124,16 +126,16 @@ class Report extends MX_Controller
                 }
 
                 $total_kredit_um = $total_kredit_um + $element['kredit_umum'];
-                $total_debit_um = $total_debit_um + $element['debet_umum'];
-                $total_saldo_um = $total_saldo_um + $element['saldo_umum'];
+                $total_debit_um  = $total_debit_um + $element['debet_umum'];
+                $total_saldo_um  = $total_saldo_um + $element['saldo_umum'];
 
                 $total_kredit_qr = $total_kredit_qr + $element['kredit_qurban'];
-                $total_debit_qr = $total_debit_qr + $element['debet_qurban'];
-                $total_saldo_qr = $total_saldo_qr + $element['saldo_qurban'];
+                $total_debit_qr  = $total_debit_qr + $element['debet_qurban'];
+                $total_saldo_qr  = $total_saldo_qr + $element['saldo_qurban'];
 
                 $total_kredit_ws = $total_kredit_ws + $element['kredit_wisata'];
-                $total_debit_ws = $total_debit_ws + $element['debet_wisata'];
-                $total_saldo_ws = $total_saldo_ws + $element['saldo_wisata'];
+                $total_debit_ws  = $total_debit_ws + $element['debet_wisata'];
+                $total_saldo_ws  = $total_saldo_ws + $element['saldo_wisata'];
 
                 $sheet->setCellValue('A' . $rowCount, $element['nis']);
                 $sheet->setCellValue('B' . $rowCount, strtoupper($element['nama_lengkap']));
@@ -166,25 +168,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -194,7 +196,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -203,16 +205,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -224,7 +226,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Per Pegawai Utsman');
@@ -246,14 +248,14 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debet Umum');
             $sheet->setCellValue('K2', 'Saldo Umum');
 
-            $rowCount = 3;
-            $tingkat = "";
-            $jk = "";
+            $rowCount       = 3;
+            $tingkat        = "";
+            $jk             = "";
             $status_pegawai = "";
 
-            $total_debit_um = 0;
+            $total_debit_um  = 0;
             $total_kredit_um = 0;
-            $total_saldo_um = 0;
+            $total_saldo_um  = 0;
 
             foreach ($empInfo as $element) {
 
@@ -286,8 +288,8 @@ class Report extends MX_Controller
                 }
 
                 $total_kredit_um = $total_kredit_um + $element['kredit_umum'];
-                $total_debit_um = $total_debit_um + $element['debet_umum'];
-                $total_saldo_um = $total_saldo_um + $element['saldo_umum'];
+                $total_debit_um  = $total_debit_um + $element['debet_umum'];
+                $total_saldo_um  = $total_saldo_um + $element['saldo_umum'];
 
                 $sheet->setCellValue('A' . $rowCount, $element['nip']);
                 $sheet->setCellValue('B' . $rowCount, strtoupper($element['nama_lengkap']));
@@ -313,25 +315,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -341,7 +343,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -350,16 +352,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -371,7 +373,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Per Tabungan Bersama Utsman');
@@ -392,12 +394,12 @@ class Report extends MX_Controller
             $sheet->setCellValue('I2', 'Saldo');
             $sheet->setCellValue('J2', 'Jenis Tabungan');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
-            $tingkat = '';
+            $tingkat        = '';
             $jenis_tabungan = '';
 
             foreach ($empInfo as $element) {
@@ -425,8 +427,8 @@ class Report extends MX_Controller
                 }
 
                 $total_kredit = $total_kredit + $element['kredit_bersama'];
-                $total_debit = $total_debit + $element['debet_bersama'];
-                $total_saldo = $total_saldo + $element['saldo_bersama'];
+                $total_debit  = $total_debit + $element['debet_bersama'];
+                $total_saldo  = $total_saldo + $element['saldo_bersama'];
 
                 $sheet->setCellValue('A' . $rowCount, $element['nomor_rekening_bersama']);
                 $sheet->setCellValue('B' . $rowCount, strtoupper($element['nama_tabungan_bersama']));
@@ -451,63 +453,63 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
     public function print_data_personal_saving_pdf_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Per_Siswa_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_personal_saving_pdf_all($data['data_check'], $data['start_date'], $data['end_date']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_personal_saving_pdf_all($data['data_check'], $data['start_date'], $data['end_date']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/personal_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -515,10 +517,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -528,48 +530,48 @@ class Report extends MX_Controller
     public function print_data_employee_saving_pdf_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Per_Pegawai_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_employee_saving_pdf_all($data['data_check'], $data['start_date'], $data['end_date']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_employee_saving_pdf_all($data['data_check'], $data['start_date'], $data['end_date']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/employee_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -578,38 +580,38 @@ class Report extends MX_Controller
     public function print_data_joint_saving_pdf_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Per_Tabungan_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_joint_saving_pdf_all($data['data_check'], $data['start_date'], $data['end_date']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_joint_saving_pdf_all($data['data_check'], $data['start_date'], $data['end_date']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/joint_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -617,10 +619,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -632,7 +634,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -641,16 +643,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -662,7 +664,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Bersama Utsman');
@@ -684,29 +686,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit');
             $sheet->setCellValue('K2', 'Saldo');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -746,25 +748,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -773,7 +775,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -782,16 +784,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -803,7 +805,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Umum Siswa Utsman');
@@ -825,29 +827,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -887,25 +889,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -915,7 +917,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -924,16 +926,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -945,7 +947,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Umum Pegawai Utsman');
@@ -967,29 +969,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -1027,25 +1029,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -1054,7 +1056,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -1063,16 +1065,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -1084,7 +1086,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Qurban Siswa Utsman');
@@ -1106,29 +1108,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -1168,25 +1170,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -1196,7 +1198,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -1205,16 +1207,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -1226,7 +1228,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Qurban Pegawai Utsman');
@@ -1248,29 +1250,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -1308,25 +1310,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -1336,7 +1338,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -1345,16 +1347,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -1366,7 +1368,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Wisata Siswa Utsman');
@@ -1388,29 +1390,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -1450,53 +1452,53 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
 
-    public function export_data_csv_transaction_tour_all_employee()
+    public function export_data_csv_transaction_tht_all_employee()
     {
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
-        $fileName = 'Laporan_Tabungan_Wisata_Pegawai_' . $data['date_range'];
+        $fileName = 'Laporan_Tabungan_THT_Pegawai_' . $data['date_range'];
 
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -1504,14 +1506,14 @@ class Report extends MX_Controller
                 $extension = 'xls';
             }
 
-            $empInfo = $this->ReportModel->get_data_saving_excel_transaction_tour_all_employee($data['data_check']);
+            $empInfo = $this->ReportModel->get_data_saving_excel_transaction_tht_all_employee($data['data_check']);
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
-            $sheet->setCellValue('B1', 'Rekap Tabungan Wisata Pegawai Utsman');
+            $sheet->setCellValue('B1', 'Rekap Tabungan THT Pegawai Utsman');
             $sheet->setCellValue('D1', 'Periode Tanggal: ');
             $sheet->setCellValue('E1', $data['date_range']);
 
@@ -1530,29 +1532,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -1567,7 +1569,7 @@ class Report extends MX_Controller
 
                 $total_saldo = $total_saldo + $element['saldo'];
 
-                $sheet->setCellValue('A' . $rowCount, $element['nomor_transaksi_wisata']);
+                $sheet->setCellValue('A' . $rowCount, $element['nomor_transaksi_tht']);
                 $sheet->setCellValue('B' . $rowCount, $element['nip_pegawai']);
                 $sheet->setCellValue('C' . $rowCount, strtoupper($element['nama_lengkap']));
                 $sheet->setCellValue('D' . $rowCount, $jenis_transaksi);
@@ -1590,25 +1592,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -1618,7 +1620,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -1627,16 +1629,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -1648,7 +1650,7 @@ class Report extends MX_Controller
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Bersama ' . trim(strtoupper($data['nama_tabungan_bersama'])));
@@ -1670,29 +1672,29 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit');
             $sheet->setCellValue('K2', 'Saldo');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -1732,25 +1734,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => trim($fileName),
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => trim($fileName),
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -1760,7 +1762,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -1769,16 +1771,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -1786,13 +1788,13 @@ class Report extends MX_Controller
                 $extension = 'xls';
             }
 
-            $split = explode(",", $data['data_check']);
+            $split      = explode(",", $data['data_check']);
             $data_check = "'" . implode("', '", $split) . "'";
-            $empInfo = $this->ReportModel->get_data_saving_excel_transaction_recap_all($data_check);
+            $empInfo    = $this->ReportModel->get_data_saving_excel_transaction_recap_all($data_check);
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Siswa ' . trim(strtoupper($data['nama_siswa'])));
@@ -1814,30 +1816,30 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $nama_tabungan = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $nama_tabungan   = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['jenis_tabungan'] == 1) {
@@ -1885,25 +1887,25 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
@@ -1913,7 +1915,7 @@ class Report extends MX_Controller
         $this->load->helper('download');
 
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $extension = 'csv';
 
@@ -1922,16 +1924,16 @@ class Report extends MX_Controller
         $token = $this->security->get_csrf_hash();
         //var_dump($data['data_check']);exit;
 
-        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+        if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-            $output_ajax = array("status" => false,
-                "token" => $token,
-                "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => false,
+                "token"                       => $token,
+                "messages"                    => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+            ];
 
         } else {
 
-            if (!empty($extension)) {
+            if (! empty($extension)) {
                 $extension = $extension;
             } elseif ($extension == 'xlsx') {
                 $extension = 'xlsx';
@@ -1939,13 +1941,13 @@ class Report extends MX_Controller
                 $extension = 'xls';
             }
 
-            $split = explode(",", $data['data_check']);
+            $split      = explode(",", $data['data_check']);
             $data_check = "'" . implode("', '", $split) . "'";
-            $empInfo = $this->ReportModel->get_data_saving_excel_transaction_employee_recap_all($data_check);
+            $empInfo    = $this->ReportModel->get_data_saving_excel_transaction_employee_recap_all($data_check);
             //            var_dump($empInfo);
             //            exit;
             $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            $sheet       = $spreadsheet->getActiveSheet();
 
             $sheet->setCellValue('A1', 'Judul: ');
             $sheet->setCellValue('B1', 'Rekap Tabungan Pegawai ' . trim(strtoupper($data['nama_pegawai'])));
@@ -1967,30 +1969,30 @@ class Report extends MX_Controller
             $sheet->setCellValue('J2', 'Debit (Rp)');
             $sheet->setCellValue('K2', 'Saldo (Rp)');
 
-            $rowCount = 3;
-            $total_debit = 0;
+            $rowCount     = 3;
+            $total_debit  = 0;
             $total_kredit = 0;
-            $total_saldo = 0;
+            $total_saldo  = 0;
 
             $jenis_transaksi = '';
-            $nama_tingkat = '';
-            $nama_tabungan = '';
-            $debit = 0;
-            $kredit = 0;
+            $nama_tingkat    = '';
+            $nama_tabungan   = '';
+            $debit           = 0;
+            $kredit          = 0;
 
             foreach ($empInfo as $element) {
 
                 if ($element['status_kredit_debet'] == 1) {
                     $jenis_transaksi = 'KREDIT';
-                    $debit = 0;
-                    $kredit = $element['nominal'];
-                    $total_kredit = $total_kredit + $element['nominal'];
+                    $debit           = 0;
+                    $kredit          = $element['nominal'];
+                    $total_kredit    = $total_kredit + $element['nominal'];
 
                 } else if ($element['status_kredit_debet'] == 2) {
                     $jenis_transaksi = 'DEBIT';
-                    $debit = $element['nominal'];
-                    $kredit = 0;
-                    $total_debit = $total_debit + $element['nominal'];
+                    $debit           = $element['nominal'];
+                    $kredit          = 0;
+                    $total_debit     = $total_debit + $element['nominal'];
                 }
 
                 if ($element['jenis_tabungan'] == 1) {
@@ -1998,7 +2000,7 @@ class Report extends MX_Controller
                 } else if ($element['jenis_tabungan'] == 2) {
                     $nama_tabungan = 'QURBAN';
                 } else if ($element['jenis_tabungan'] == 3) {
-                    $nama_tabungan = 'WISATA';
+                    $nama_tabungan = 'THT';
                 }
 
                 if ($element['id_tingkat'] == 1) {
@@ -2036,64 +2038,64 @@ class Report extends MX_Controller
 
             ob_start();
             if ($extension == 'csv') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
                 $fileName = $fileName . '.csv';
             } elseif ($extension == 'xlsx') {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
                 $fileName = $fileName . '.xlsx';
             } else {
-                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                $writer   = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
                 $fileName = $fileName . '.xls';
             }
             $writer->save('php://output');
             $xlsData = ob_get_contents();
             ob_end_clean();
 
-            $output_ajax = array("status" => true,
-                "token" => $token,
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
-                'filename' => $fileName,
-                "messages" => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
-            );
+            $output_ajax = ["status" => true,
+                "token"                       => $token,
+                'file'                        => "data:application/vnd.ms-excel;base64," . base64_encode($xlsData),
+                'filename'                    => $fileName,
+                "messages"                    => "Berhasil!, Ekspor Laporan Excel berhasil dicetak. Silahkan cek ulang.",
+            ];
         }
         die(json_encode($output_ajax));
     }
     public function print_data_pdf_transaction_joint_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Bersama_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_joint_all($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_joint_all($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['nama_tabungan'] = "";
+                $get['nama_tabungan']   = "";
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_joint_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2101,10 +2103,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2114,39 +2116,39 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_general_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Umum_Siswa_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_general_all($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_general_all($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Umum";
+                $get['jenis_tabungan']  = "Umum";
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2154,10 +2156,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2167,39 +2169,39 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_general_all_employee()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Umum_Pegawai_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_general_all_employee($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_general_all_employee($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Umum";
+                $get['jenis_tabungan']  = "Umum";
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_employee_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2207,10 +2209,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2220,39 +2222,39 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_qurban_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Qurban_Siswa_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_qurban_all($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_qurban_all($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Qurban";
+                $get['jenis_tabungan']  = "Qurban";
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2260,10 +2262,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2273,39 +2275,39 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_qurban_all_employee()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Qurban_Pegawai_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_qurban_all_employee($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_qurban_all_employee($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Qurban";
+                $get['jenis_tabungan']  = "Qurban";
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_employee_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2313,10 +2315,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2326,39 +2328,39 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_tour_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Wisata_Siswa_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_tour_all($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_tour_all($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Wisata";
+                $get['jenis_tabungan']  = "Wisata";
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2366,52 +2368,52 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
         echo json_encode($output);
     }
 
-    public function print_data_pdf_transaction_tour_all_employee()
+    public function print_data_pdf_transaction_tht_all_employee()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
-            $fileName = 'Laporan_Tabungan_Wisata_Pegawai_' . $data['date_range'];
+            $fileName = 'Laporan_Tabungan_THT_Pegawai_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_tour_all_employee($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_tht_all_employee($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Wisata";
+                $get['jenis_tabungan']  = "THT";
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_employee_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2419,10 +2421,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2432,43 +2434,43 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_recap_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Siswa_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $split = explode(",", $data['data_check']);
+                $split      = explode(",", $data['data_check']);
                 $data_check = "'" . implode("', '", $split) . "'";
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_recap_all($data_check);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_recap_all($data_check);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Keseluruhan";
-                $get['nama_siswa'] = $data['nama_siswa'];
+                $get['jenis_tabungan']  = "Keseluruhan";
+                $get['nama_siswa']      = $data['nama_siswa'];
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_saving_recap', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2476,10 +2478,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2489,39 +2491,39 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_joint_recap_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Bersama_' . trim(strtoupper($data['nama_tabungan_bersama'])) . '_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_joint_recap_all($data['data_check']);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_joint_recap_all($data['data_check']);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['nama_tabungan'] = trim(strtoupper($data['nama_tabungan_bersama']));
+                $get['nama_tabungan']   = trim(strtoupper($data['nama_tabungan_bersama']));
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_joint_saving', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2529,10 +2531,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 
@@ -2542,43 +2544,43 @@ class Report extends MX_Controller
     public function print_data_pdf_transaction_employee_recap_all()
     {
         $param = $this->input->post();
-        $data = $this->security->xss_clean($param);
+        $data  = $this->security->xss_clean($param);
 
         $token = $this->security->get_csrf_hash();
 
-        if ($this->user_finance[0]->id_role_struktur == 7 || $this->user_finance[0]->id_role_struktur == 5) {
+        if (! empty($this->user_finance) && in_array($this->user_finance[0]->id_role_struktur, $this->allowed_roles)) {
 
             $fileName = 'Laporan_Tabungan_Pegawai_' . $data['date_range'];
 
-            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || !$data['data_check'])) {
+            if ($data['data_check'] == '' or $data['data_check'] == null || empty($data['data_check'] || ! $data['data_check'])) {
 
-                $output = array("status" => false,
-                    "token" => $token,
-                    "messages" => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
-                );
+                $output = ["status" => false,
+                    "token"                  => $token,
+                    "messages"               => "Mohon Maaf, Pilih/Centang data terlebih dahulu. Silahkan cek ulang.",
+                ];
             } else {
 
-                $output = array("status" => true,
-                    "token" => $token,
-                    "messages" => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
-                );
+                $output = ["status" => true,
+                    "token"                  => $token,
+                    "messages"               => "Berhasil!, Laporan berhasil dicetak, Silahkan cek ulang.",
+                ];
 
-                $split = explode(",", $data['data_check']);
+                $split      = explode(",", $data['data_check']);
                 $data_check = "'" . implode("', '", $split) . "'";
 
-                $get['saving'] = $this->ReportModel->get_data_saving_pdf_employee_recap_all($data_check);
-                $get['page'] = $this->ReportModel->get_page();
-                $get['contact'] = $this->ReportModel->get_contact();
+                $get['saving']          = $this->ReportModel->get_data_saving_pdf_employee_recap_all($data_check);
+                $get['page']            = $this->ReportModel->get_page();
+                $get['contact']         = $this->ReportModel->get_contact();
                 $get['rentang_tanggal'] = $data['date_range'];
-                $get['jenis_tabungan'] = "Keseluruhan";
-                $get['nama_pegawai'] = $data['nama_pegawai'];
+                $get['jenis_tabungan']  = "Keseluruhan";
+                $get['nama_pegawai']    = $data['nama_pegawai'];
 
                 if ($get['saving'] == null or $get['saving'] == false) {
                     //add new data
-                    $output = array("status" => false,
-                        "token" => $token,
-                        "messages" => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
-                    );
+                    $output = ["status" => false,
+                        "token"                  => $token,
+                        "messages"               => "Mohon Maaf, Data Anda tidak ditemukan. Silahkan cek ulang.",
+                    ];
                 } else {
                     $html = $this->load->view('pdf_template/transaction_employee_saving_recap', $get, true);
                     $this->pdfgenerator->generate($html, $fileName, 0, './uploads/pendaftaran/files/', true, 'A4');
@@ -2586,10 +2588,10 @@ class Report extends MX_Controller
                 }
             }
         } else {
-            $output = array("status" => false,
-                "token" => $token,
-                "messages" => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
-            );
+            $output = ["status" => false,
+                "token"                  => $token,
+                "messages"               => "Opps!, ID User Tidak Terdaftar, Silahkan coba lagi.",
+            ];
 
         }
 

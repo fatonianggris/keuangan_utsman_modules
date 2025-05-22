@@ -15,7 +15,7 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item text-muted">
-                            <a href="" class="text-muted">Daftar Transaksi Tabungan Wisata</a>
+                            <a href="" class="text-muted">Daftar Transaksi Tabungan THT</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -48,7 +48,7 @@
                             role="alert">
                             <div class="alert-text font-weight-bolder text-center text-dark">
                                 <h1 class="font-weight-boldest text-danger">
-                                    <li class="fas fa-exclamation-triangle"></li> TABUNGAN WISATA PEGAWAI <li
+                                    <li class="fas fa-exclamation-triangle"></li> TABUNGAN THT PEGAWAI <li
                                         class="fas fa-exclamation-triangle">
                                 </h1>
                                 MOHON UNTUK DIPERHATIKAN!!.<br> Silahkan
@@ -63,7 +63,7 @@
                                 <span class="card-icon">
                                     <i class="flaticon2-layers-1 text-primary"></i>
                                 </span>
-                                <h3 class="card-label">Transaksi Tabungan Wisata</h3>
+                                <h3 class="card-label">Transaksi Tabungan THT</h3>
                             </div>
                             <div class="card-toolbar">
                                 <div class=" text-right mt-5 mr-5 font-weight-bolder">
@@ -269,7 +269,7 @@ if (!empty($schoolyear)) {
     <div class="modal-dialog modal-lg" role="document" id="kt_form_credit">
         <div class="modal-content">
             <div class="modal-header bg-success">
-                <h5 class="modal-title font-weight-bolder"> Setor Tabungan Wisata</h5>
+                <h5 class="modal-title font-weight-bolder"> Setor Tabungan THT</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -349,7 +349,7 @@ if (!empty($schoolyear)) {
                                 <label>Jenis Tabungan </label>
                                 <select name="inputJenisTabungan" class="form-control form-control-lg"
                                     id="inputJenisTabungan" disabled>
-                                    <option value="3" selected>WISATA</option>
+                                    <option value="3" selected>THT</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Jenis Tabungan</span>
@@ -435,6 +435,7 @@ if (!empty($schoolyear)) {
                                                 <option value="1">Tetap</option>
                                                 <option value="2">Tidak Tetap</option>
                                                 <option value="3">Honorer</option>
+												<option value="4">Keluar</option>
                                             </select>
                                             <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                                     DIPILIH, </b>pilih Status Pegawai</span>
@@ -519,7 +520,7 @@ if (!empty($schoolyear)) {
     <div class="modal-dialog modal-lg" role="document" id="kt_form_credit_edit">
         <div class="modal-content">
             <div class="modal-header bg-success">
-                <h5 class="modal-title font-weight-bolder">Edit Setor Tabungan Wisata <b
+                <h5 class="modal-title font-weight-bolder">Edit Setor Tabungan THT <b
                         id="nomorTransaksiKreditEdit"></b></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -582,7 +583,7 @@ if (!empty($schoolyear)) {
                             <div class="form-group">
                                 <label>Jenis Tabungan </label>
                                 <select name="jenis_tabungan_kredit" class="form-control form-control-lg" disabled>
-                                    <option value="3" selected>WISATA</option>
+                                    <option value="3" selected>THT</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Jenis Tabungan</span>
@@ -672,7 +673,7 @@ if (!empty($schoolyear)) {
     <div class="modal-dialog modal-lg" role="document" id="kt_form_debet">
         <div class="modal-content">
             <div class="modal-header bg-danger">
-                <h5 class="modal-title font-weight-bolder"> Penarikan Tabungan Wisata</h5>
+                <h5 class="modal-title font-weight-bolder"> Penarikan Tabungan THT</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -746,7 +747,7 @@ if (!empty($schoolyear)) {
                                 <label>Jenis Tabungan </label>
                                 <select name="inputJenisTabungan" class="form-control form-control-lg"
                                     id="inputJenisTabungan" disabled>
-                                    <option value="3" selected>WISATA</option>
+                                    <option value="3" selected>THT</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Jenis Tabungan</span>
@@ -839,7 +840,7 @@ if (!empty($schoolyear)) {
     <div class="modal-dialog modal-lg" role="document" id="kt_form_debet_edit">
         <div class="modal-content">
             <div class="modal-header bg-danger">
-                <h5 class="modal-title font-weight-bolder">Edit Penarikan Tabungan Wisata <b
+                <h5 class="modal-title font-weight-bolder">Edit Penarikan Tabungan THT <b
                         id="nomorTransaksiDebetEdit"></b></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -902,7 +903,7 @@ if (!empty($schoolyear)) {
                             <div class="form-group">
                                 <label>Jenis Tabungan </label>
                                 <select name="jenis_tabungan_debet" class="form-control form-control-lg" disabled>
-                                    <option value="3" selected>WISATA</option>
+                                    <option value="3" selected>THT</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH,</b> Pilih Jenis Tabungan</span>
@@ -1026,7 +1027,7 @@ if (!empty($schoolyear)) {
                         </div>
                         <div class="col-4">
                             <div class="alert alert-secondary text-center" role="alert">
-                                <b>INFO TABUNGAN WISATA</b>
+                                <b>INFO TABUNGAN THT</b>
                             </div>
                         </div>
                         <div class="col-md-4 ">
@@ -1044,10 +1045,10 @@ if (!empty($schoolyear)) {
                         </div>
 
                         <div class="col-md-4 ">
-                            Catatan: <label class="font-weight-bold" id="userCatatanRekapWisata">-</label><br>
+                            Catatan: <label class="font-weight-bold" id="userCatatanRekapTHT">-</label><br>
                             Terakhir Terakhir: <label class="font-weight-bold timeago"
-                                id="infoTerakhirTransaksiRekapWisata">-</label><br>
-                            Saldo: <label class="font-weight-bold" id="userJumlahSaldoRekapWisata">-</label>
+                                id="infoTerakhirTransaksiRekapTHT">-</label><br>
+                            Saldo: <label class="font-weight-bold" id="userJumlahSaldoRekapTHT">-</label>
                         </div>
                     </div>
 
@@ -1066,7 +1067,7 @@ if (!empty($schoolyear)) {
 <script>
 var stat_close = true;
 
-<?php if ($user[0]->id_role_struktur == 5) {?>
+<?php if ($user[0]->id_role_struktur == 5 || $user[0]->id_role_struktur == 10) {?>
 var id_role = 5;
 <?php } else {?>
 var id_role = 7;
@@ -1074,7 +1075,7 @@ var id_role = 7;
 </script>
 
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/config.pin.js"></script>
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction-tour-employee.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/transaction-tht-employee.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/add-transaction-employee.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-transaction-employee.js"></script>
 <script>

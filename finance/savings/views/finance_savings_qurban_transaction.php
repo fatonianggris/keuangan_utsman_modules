@@ -1052,7 +1052,7 @@ if (!empty($schoolyear)) {
 <script>
 var stat_close = true;
 
-<?php if ($user[0]->id_role_struktur == 5) {?>
+<?php if ($user[0]->id_role_struktur == 5 || $user[0]->id_role_struktur == 10) {?>
 var id_role = 5;
 <?php } else {?>
 var id_role = 7;

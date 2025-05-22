@@ -161,7 +161,6 @@ if (!empty($schoolyear)) {
                                                 <option value="1">Tetap</option>
                                                 <option value="2">Tidak Tetap</option>
                                                 <option value="3">Honorer</option>
-												<option value="4">Keluar</option>
                                             </select>
                                             <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                                     DIPILIH, </b>pilih Status Pegawai</span>

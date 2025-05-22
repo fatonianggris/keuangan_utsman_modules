@@ -431,6 +431,7 @@ if (!empty($schoolyear)) {
                                             <option value="1">Tetap</option>
                                             <option value="2">Tidak Tetap</option>
                                             <option value="3">Honorer</option>
+											<option value="4">Keluar</option>
                                         </select>
                                         <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                                 DIPILIH, </b>pilih Status Pegawai</span>
@@ -1063,7 +1064,7 @@ if (!empty($schoolyear)) {
 <script>
 var stat_close = true;
 
-<?php if ($user[0]->id_role_struktur == 5) {?>
+<?php if ($user[0]->id_role_struktur == 5 || $user[0]->id_role_struktur == 10) {?>
 var id_role = 5;
 <?php } else {?>
 var id_role = 7;

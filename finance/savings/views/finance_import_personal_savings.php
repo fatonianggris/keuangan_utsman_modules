@@ -118,7 +118,17 @@ if (!empty($schoolyear)) {
                                         <!-- <option value="5">SMA</option> -->
                                     </select>
                                 </div>
-                                <div class="col-lg-2 mb-lg-0 mb-6">
+								<div class="col-lg-2 mb-lg-0 mb-6">
+                                    <label>Status Siswa</label>
+                                    <select class="form-control datatable-input" data-col-index="7">
+                                        <option value="">Pilih Status</option>
+                                        <option value="AKTIF">AKTIF</option>
+                                        <option value="TIDAK AKTIF">TIDAK AKTIF</option>
+                                        <option value="">SEMUA</option>
+                                        <!-- <option value="5">SMA</option> -->
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 mb-lg-0 mb-6 mt-5">
                                     <label>Status Rekening</label>
                                     <select class="form-control datatable-input" data-col-index="12">
                                         <option value="">Pilih Status</option>
@@ -178,11 +188,11 @@ if (!empty($schoolyear)) {
                                             <th class="text-center"></th>
                                             <th>NIS</th>
                                             <th>Nama Nasabah/Siswa</th>
-                                            <th>Tanggal Transaksi</th>
                                             <th>Tahun Ajaran</th>
                                             <th>Tingkat</th>
                                             <th>Nama Wali</th>
                                             <th>Nomor HP Wali</th>
+											<th>Status Siswa</th>
                                             <th>Email</th>
                                             <th>Saldo Umum</th>
                                             <th>Saldo Qurban</th>
@@ -203,7 +213,7 @@ if (!empty($schoolyear)) {
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            <th></th>
+											<th></th>
                                             <th class="font-weight-bolder">TOTAL PER SALDO</th>
                                             <th class="font-weight-bolder text-dark">-</th>
                                             <th class="font-weight-bolder text-dark">-</th>
@@ -290,7 +300,7 @@ if (!empty($schoolyear)) {
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
                                 <select name="level_tingkat" class="form-control form-control-lg level_tingkat">
@@ -312,7 +322,7 @@ if (!empty($schoolyear)) {
                                     placeholder="Inputkan Tanggal Transaksi"/>
                             </div>
                         </div>
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label> Nama Wali </label>
                                 <input type="text" name="nama_wali" class="form-control form-control-lg nama_wali"
@@ -322,7 +332,7 @@ if (!empty($schoolyear)) {
                                     Wali</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label> Nomor Handphone Wali </label>
                                 <input type="text" name="nomor_handphone_wali"
@@ -333,7 +343,18 @@ if (!empty($schoolyear)) {
                                     Wali/Nasabah</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+						<div class="col-lg-4">
+                            <div class="form-group">
+                                <label> Status Siswa </label>
+                                <select name="status_siswa" class="form-control form-control-lg status_siswa">
+                                    <option value="">Pilih Status</option>
+                                    <option value="1">AKTIF</option>
+                                    <option value="0">TIDAK AKTIF</option>
+                                </select>
+                                <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label> Email Nasabah/Wali </label>
                                 <input type="text" name="email_wali" class="form-control form-control-lg email_wali"

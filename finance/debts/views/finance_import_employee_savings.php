@@ -135,7 +135,6 @@ if (!empty($schoolyear)) {
                                             <option value="TETAP">TETAP</option>
                                             <option value="TIDAK TETAP">TIDAK TETAP</option>
                                             <option value="HONORER">HONORER</option>
-											<option value="KELUAR">KELUAR</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
@@ -356,7 +355,6 @@ if (!empty($schoolyear)) {
                                     <option value="1">Tetap</option>
                                     <option value="2">Tidak Tetap</option>
                                     <option value="3">Honorer</option>
-									<option value="4">Keluar</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB
                                         DIPILIH</b></span>

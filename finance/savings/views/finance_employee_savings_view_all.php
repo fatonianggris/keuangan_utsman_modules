@@ -1,5 +1,5 @@
 <!--begin::Content-->
-<?php $user = $this->session->userdata('sias-finance');?>
+<?php $user = $this->session->userdata('sias-finance'); ?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -119,50 +119,22 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-2 mb-lg-0 mb-6">
-                                        <label>Tahun Ajaran:</label>
-                                        <select class="form-control datatable-input" data-col-index="6">
-                                            <option value="">Pilih Tahun Ajaran</option>
-                                            <?php
-if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value) {
-        ?>
-                                            <option
-                                                value="<?php echo $value->tahun_awal . "/" . $value->tahun_akhir; ?>">
-                                                <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
-                                            </option>
-                                            <?php
-} //ngatur nomor urut
-}
-?>
-                                            <option value="">Semua</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-2 mb-lg-0 mb-6 mt-6">
                                         <label>Status Pegawai</label>
-                                        <select type="text" class="form-control datatable-input" data-col-index="8">
+                                        <select type="text" class="form-control datatable-input" data-col-index="7">
                                             <option value="">Pilih Status</option>
                                             <option value="TETAP">TETAP</option>
                                             <option value="TIDAK TETAP">TIDAK TETAP</option>
                                             <option value="HONORER">HONORER</option>
+                                            <option value="KELUAR">KELUAR</option>
                                             <option value="">SEMUA</option>
                                             <!-- <option value="5">SMA</option> -->
                                         </select>
                                     </div>
-                                    <div class="col-lg-3 mb-lg-0 mb-6 mt-6">
-                                        <label class="font-weight-bolder">Tampilkan Perhitungan Dari Tanggal:</label>
-                                        <div class="input-group" id="kt_daterangepicker_6">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text"><i
-                                                        class="la la-calendar-check-o"></i></span>
-                                            </div>
-                                            <input type="text" class="form-control font-weight-bolder" readonly=""
-                                                placeholder="Select date range">
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="row mt-8">
                                     <div class="row col-lg-7">
-                                        <div class="col-lg-12 mb-lg-0 mb-6">
+                                        <div class="col-lg-12 mb-lg-0 mb-4">
                                             <button class="btn btn-primary btn-primary--icon" id="kt_search">
                                                 <span>
                                                     <i class="la la-search"></i>
@@ -178,13 +150,21 @@ if (!empty($schoolyear)) {
                                         </div>
                                     </div>
                                     <div class="row col-lg-5">
-                                        <div class="col-lg-4 mb-lg-0 mb-6 text-right">
-
+                                        <div class="col-lg-4 mb-lg-0 mb-4 text-right">
+                                            <label class="font-weight-bolder">Tampilkan Perhitungan Dari Waktu
+                                                Transaksi:</label>
                                         </div>
-                                        <div class="col-lg-6 mb-lg-0 mb-6">
-
+                                        <div class="col-lg-6 mb-lg-0 mb-4">
+                                            <div class="input-group" id="kt_daterangepicker_6">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i
+                                                            class="la la-calendar-check-o"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control font-weight-bolder" readonly=""
+                                                    placeholder="Select date range">
+                                            </div>
                                         </div>
-                                        <div class="col-lg-2 mb-lg-0 mb-6">
+                                        <div class="col-lg-2 mb-lg-0 mb-4">
                                             <div class="btn-group">
                                                 <button class="btn btn-warning font-weight-bold dropdown-toggle"
                                                     type="button" data-toggle="dropdown" aria-haspopup="true"
@@ -205,7 +185,6 @@ if (!empty($schoolyear)) {
                                         </div>
                                     </div>
                                 </div>
-
                                 <!--begin: Datatable-->
                             </div>
                             <div class="table-responsive">
@@ -219,12 +198,14 @@ if (!empty($schoolyear)) {
                                             <th>Jabatan</th>
                                             <th>JK</th>
                                             <th>Tingkat</th>
-                                            <th>TA</th>
                                             <th>Nomor HP</th>
                                             <th>Status Pegawai</th>
-                                            <th>Kredit</th>
-                                            <th>Debet</th>
-                                            <th>Saldo</th>
+                                            <th>Kredit Umum</th>
+                                            <th>Debet Umum</th>
+                                            <th>Saldo Umum</th>
+                                            <th>Kredit THT</th>
+                                            <th>Debet THT</th>
+                                            <th>Saldo THT</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -232,6 +213,8 @@ if (!empty($schoolyear)) {
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -306,7 +289,8 @@ if (!empty($schoolyear)) {
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label> Tingkat </label>
-                                <select name="level_tingkat" id="tingkat" class="form-control form-control-lg level_tingkat">
+                                <select name="level_tingkat" id="tingkat"
+                                    class="form-control form-control-lg level_tingkat">
                                     <option value="">Pilih Tingkat</option>
                                     <option value="1">DC/KB/TK</option>
                                     <option value="3">SD</option>
@@ -357,6 +341,7 @@ if (!empty($schoolyear)) {
                                     <option value="1">Tetap</option>
                                     <option value="2">Tidak Tetap</option>
                                     <option value="3">Honorer</option>
+                                    <option value="4">Keluar</option>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH,</b> pilih
                                     Status Pegawai</span>
@@ -410,8 +395,8 @@ if (!empty($schoolyear)) {
             <form class="form" novalidate="novalidate"
                 action="<?php echo site_url('finance/savings/get_employee_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
-				<input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
-				value="<?php echo $this->security->get_csrf_hash(); ?>">
+                <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+                    value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">
@@ -429,8 +414,7 @@ if (!empty($schoolyear)) {
                         </div>
                         <div class="col-md-6">
                             Nama Pegawai: <label class="font-weight-bold" id="infoNamaPegawaiRekap">-</label><br>
-                            Jabatan Pegawai: <label class="font-weight-bold timeago"
-                                id="userJabatanRekap">-</label><br>
+                            Jabatan Pegawai: <label class="font-weight-bold timeago" id="userJabatanRekap">-</label><br>
                             Status Pegawai: <label class="font-weight-bold" id="userStatusPegawaiRekap">-</label>
                         </div>
                         <div class="col-md-6">
@@ -472,8 +456,9 @@ if (!empty($schoolyear)) {
                             <h5 class="modal-title text-center font-weight-bolder">SEBELUM MENGUPLOAD DIHARAPKAN
                                 MENGEDIT FILE SESUAI CONTOH
                                 FORMAT HEADER & ISI FILE DIBAWAH INI!</h5>
-                            <img class="mb-2 mt-5" src="<?php echo base_url() . "/uploads/data/format_excel_emp.png"; ?>"
-                                alt="format" height="" width="100%">
+                            <img class="mb-2 mt-5"
+                                src="<?php echo base_url() . "/uploads/data/format_excel_emp.png"; ?>" alt="format"
+                                height="" width="100%">
                             <span class="form-text text-dark mb-5 text-center"><b class="text-danger"><a
                                         href="<?php echo base_url() . "uploads/data/contoh_format_excel_emp.xlsx"; ?>">*KLIK
                                         DISINI</a>, </b>untuk mendownload
@@ -492,8 +477,8 @@ if (!empty($schoolyear)) {
                         </div>
                         <div class="col-xl-4">
                             <div class="col-lg-12">
-							<div class="form-group">
-								<label>Tanggal Transaksi</label>
+                                <div class="form-group">
+                                    <label>Tanggal Transaksi</label>
                                     <input type="text" name="input_tanggal_transaksi"
                                         value="<?php echo date('d/m/Y'); ?>"
                                         class="form-control form-control-lg kt_datepicker_kredit"
@@ -576,14 +561,15 @@ if (!empty($schoolyear)) {
 </div>
 <!-- End of Modal Rekap -->
 <script>
-<?php if ($user[0]->id_role_struktur == 5) {?>
+<?php if ($user[0]->id_role_struktur == 5 || $user[0]->id_role_struktur == 10) {?>
 var id_role = 5;
 <?php } else {?>
 var id_role = 7;
 <?php }?>
 </script>
 
-<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-employee-saving.js"></script>
+<script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/list-employee-saving.js">
+</script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/edit-employee.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/blur.pin.js"></script>
 <script src="<?php echo base_url(); ?>assets/finance/dist/assets/js/pages/custom/login/import-employee.js"></script>

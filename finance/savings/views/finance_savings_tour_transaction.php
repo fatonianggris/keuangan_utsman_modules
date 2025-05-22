@@ -1,5 +1,5 @@
 <!--begin::Content-->
-<?php $user = $this->session->userdata('sias-finance');?>
+<?php $user = $this->session->userdata('sias-finance'); ?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -110,17 +110,17 @@
                                         <select class="form-control datatable-input" data-col-index="5">
                                             <option value="">Pilih Tahun Ajaran</option>
                                             <?php
-if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value) {
-        ?>
+                                                if (! empty($schoolyear)) {
+                                                    foreach ($schoolyear as $key => $value) {
+                                                    ?>
                                             <option
                                                 value="<?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>">
                                                 <?php echo $value->tahun_awal; ?>/<?php echo $value->tahun_akhir; ?>
                                             </option>
                                             <?php
-} //ngatur nomor urut
-}
-?>
+                                                } //ngatur nomor urut
+                                                }
+                                            ?>
                                             <option value="">SEMUA</option>
                                         </select>
                                     </div>
@@ -312,24 +312,24 @@ if (!empty($schoolyear)) {
                                     id="inputTahunAjaranKredit">
                                     <option value="">Pilih TA</option>
                                     <?php
-if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value_sch) {
-        if ($value_sch->tahun_awal == (date("Y"))) {
-            ?>
+                                        if (! empty($schoolyear)) {
+                                            foreach ($schoolyear as $key => $value_sch) {
+                                                if ($value_sch->tahun_awal == (date("Y"))) {
+                                                ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>" selected>
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-} else {
-            ?>
+                                        } else {
+                                                ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-}
-    }
-}
-?>
+                                        }
+                                            }
+                                        }
+                                    ?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -535,16 +535,16 @@ if (!empty($schoolyear)) {
                                 <label>Tahun Ajaran</label>
                                 <select name="th_ajaran_kredit" class="form-control form-control-lg">
                                     <?php
-if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value_sch) {
-        ?>
+                                        if (! empty($schoolyear)) {
+                                            foreach ($schoolyear as $key => $value_sch) {
+                                            ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-}
-}
-?>
+                                        }
+                                        }
+                                    ?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -691,24 +691,24 @@ if (!empty($schoolyear)) {
                                     class="form-control form-control-lg">
                                     <option value="">Pilih TA</option>
                                     <?php
-if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value_sch) {
-        if ($value_sch->tahun_awal == (date("Y"))) {
-            ?>
+                                        if (! empty($schoolyear)) {
+                                            foreach ($schoolyear as $key => $value_sch) {
+                                                if ($value_sch->tahun_awal == (date("Y"))) {
+                                                ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>" selected>
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-} else {
-            ?>
+                                        } else {
+                                                ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-}
-    }
-}
-?>
+                                        }
+                                            }
+                                        }
+                                    ?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -856,17 +856,17 @@ if (!empty($schoolyear)) {
                                 <label>Tahun Ajaran</label>
                                 <select name="th_ajaran_debet" class="form-control form-control-lg">
                                     <?php
-if (!empty($schoolyear)) {
-    foreach ($schoolyear as $key => $value_sch) {
+                                        if (! empty($schoolyear)) {
+                                            foreach ($schoolyear as $key => $value_sch) {
 
-        ?>
+                                            ?>
                                     <option value="<?php echo $value_sch->id_tahun_ajaran; ?>">
                                         <?php echo $value_sch->tahun_awal; ?>/<?php echo $value_sch->tahun_akhir; ?>
                                     </option>
                                     <?php
-}
-}
-?>
+                                        }
+                                        }
+                                    ?>
                                 </select>
                                 <span class="form-text text-dark"><b class="text-danger">*WAJIB DIPILIH</b></span>
                             </div>
@@ -985,8 +985,8 @@ if (!empty($schoolyear)) {
             <form class="form" novalidate="novalidate"
                 action="<?php echo site_url('finance/savings/get_student_transaction_recap'); ?>"
                 enctype="multipart/form-data" method="post" id="kt_add_transaction_recap">
-				<input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
-				value="<?php echo $this->security->get_csrf_hash(); ?>">
+                <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>"
+                    value="<?php echo $this->security->get_csrf_hash(); ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-12">
@@ -1050,7 +1050,7 @@ if (!empty($schoolyear)) {
 <script>
 var stat_close = true;
 
-<?php if ($user[0]->id_role_struktur == 5) {?>
+<?php if ($user[0]->id_role_struktur == 5 || $user[0]->id_role_struktur == 10) {?>
 var id_role = 5;
 <?php } else {?>
 var id_role = 7;
