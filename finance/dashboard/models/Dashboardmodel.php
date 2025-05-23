@@ -1,14 +1,16 @@
 <?php
 
-class DashboardModel extends CI_Model {
+class DashboardModel extends MY_Model
+{
 
     private $site_log = 'track_visitor';
 
     //
     //------------------------------COUNT--------------------------------//
     //
-    
-    public function get_budget_insight() {
+
+    public function get_budget_insight()
+    {
         $sql = $this->db->query("SELECT
                                 (
                                 SELECT
@@ -37,8 +39,9 @@ class DashboardModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_outcome_persen_insight() {
-        $sql = $this->db->query("SELECT                                   
+    public function get_outcome_persen_insight()
+    {
+        $sql = $this->db->query("SELECT
                                     (
                                     SELECT
                                         COALESCE(SUM(p.nominal_pengeluaran),
@@ -130,7 +133,8 @@ class DashboardModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_budget_terpakai_insight() {
+    public function get_budget_terpakai_insight()
+    {
         $sql = $this->db->query("SELECT
                                         th.*,
                                         (
@@ -229,7 +233,8 @@ class DashboardModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_budget_eksternal_insight() {
+    public function get_budget_eksternal_insight()
+    {
         $sql = $this->db->query("SELECT
                                         th.*,
                                         (
@@ -328,7 +333,8 @@ class DashboardModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_budget_acc_insight() {
+    public function get_budget_acc_insight()
+    {
         $sql = $this->db->query("SELECT
                                         th.*,
                                         (
@@ -427,7 +433,8 @@ class DashboardModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_budget_sisa_insight() {
+    public function get_budget_sisa_insight()
+    {
         $sql = $this->db->query("SELECT
                                         th.*,
                                         (
@@ -526,7 +533,8 @@ class DashboardModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_outcome_insight() {
+    public function get_outcome_insight()
+    {
         $sql = $this->db->query("SELECT
                                     th.*,
                                     (
@@ -628,5 +636,3 @@ class DashboardModel extends CI_Model {
     //-----------------------------------------------------------------------//
 //
 }
-
-?>

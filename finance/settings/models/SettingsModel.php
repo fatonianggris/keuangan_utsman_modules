@@ -1,6 +1,6 @@
 <?php
 
-class SettingsModel extends CI_Model {
+class SettingsModel extends MY_Model {
 
     private $table_mailer = 'mailer_config';
     private $table_general_page = 'general_page';

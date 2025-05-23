@@ -1,6 +1,6 @@
 <?php
 
-class AccountModel extends CI_Model {
+class AccountModel extends MY_Model {
 
     private $table_account = 'akun_keuangan';
     private $table_general_page = 'general_page';

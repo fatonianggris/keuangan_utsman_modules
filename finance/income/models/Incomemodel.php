@@ -1,6 +1,6 @@
 <?php
 
-class IncomeModel extends CI_Model
+class IncomeModel extends MY_Model
 {
 
     public function __construct()
@@ -214,19 +214,19 @@ class IncomeModel extends CI_Model
     public function check_duplicate_import_data_payment($id = '')
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.ttp.id_tagihan_pembayaran,
-										panel_utsman.ttp.nomor_siswa,
-										panel_utsman.ttp.status_nomor_terdaftar,
-										panel_utsman.ttp.status_nama_duplikat,
-										panel_utsman.ttp.status_invoice_duplikat
+										{$this->secondary_db}.ttp.id_tagihan_pembayaran,
+										{$this->secondary_db}.ttp.nomor_siswa,
+										{$this->secondary_db}.ttp.status_nomor_terdaftar,
+										{$this->secondary_db}.ttp.status_nama_duplikat,
+										{$this->secondary_db}.ttp.status_invoice_duplikat
 									FROM
-										panel_utsman.transisi_tagihan_pembayaran ttp
+										{$this->secondary_db}.transisi_tagihan_pembayaran ttp
 									WHERE
-										panel_utsman.ttp.id_tagihan_pembayaran IN($id)
+										{$this->secondary_db}.ttp.id_tagihan_pembayaran IN($id)
 									AND(
-										(panel_utsman.ttp.status_nomor_terdaftar = 3) +
-										(panel_utsman.ttp.status_nama_duplikat = 3) +
-										(panel_utsman.ttp.status_invoice_duplikat = 3) >= 1
+										({$this->secondary_db}.ttp.status_nomor_terdaftar = 3) +
+										({$this->secondary_db}.ttp.status_nama_duplikat = 3) +
+										({$this->secondary_db}.ttp.status_invoice_duplikat = 3) >= 1
 									)");
 
         return $sql->num_rows();
@@ -235,12 +235,12 @@ class IncomeModel extends CI_Model
     public function check_used_number_import_data_payment($id = '')
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.ttp.nomor_siswa, panel_utsman.ttp.status_nomor_terdaftar, panel_utsman.ttp.status_nama_duplikat, panel_utsman.ttp.status_invoice_duplikat
+										{$this->secondary_db}.ttp.nomor_siswa, {$this->secondary_db}.ttp.status_nomor_terdaftar, {$this->secondary_db}.ttp.status_nama_duplikat, {$this->secondary_db}.ttp.status_invoice_duplikat
 									FROM
-										panel_utsman.transisi_tagihan_pembayaran ttp
+										{$this->secondary_db}.transisi_tagihan_pembayaran ttp
 									WHERE
-										panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
-									AND panel_utsman.ttp.status_invoice_duplikat = 2");
+										{$this->secondary_db}.ttp.id_tagihan_pembayaran IN ($id)
+									AND {$this->secondary_db}.ttp.status_invoice_duplikat = 2");
 
         return $sql->num_rows();
     }
@@ -248,19 +248,19 @@ class IncomeModel extends CI_Model
     public function check_similiar_not_registered_import_data_payment($id = '')
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.ttp.id_tagihan_pembayaran,
-										panel_utsman.ttp.nomor_siswa,
-										panel_utsman.ttp.status_nomor_terdaftar,
-										panel_utsman.ttp.status_nama_duplikat,
-										panel_utsman.ttp.status_invoice_duplikat
+										{$this->secondary_db}.ttp.id_tagihan_pembayaran,
+										{$this->secondary_db}.ttp.nomor_siswa,
+										{$this->secondary_db}.ttp.status_nomor_terdaftar,
+										{$this->secondary_db}.ttp.status_nama_duplikat,
+										{$this->secondary_db}.ttp.status_invoice_duplikat
 									FROM
-										panel_utsman.transisi_tagihan_pembayaran ttp
+										{$this->secondary_db}.transisi_tagihan_pembayaran ttp
 									WHERE
-										panel_utsman.ttp.id_tagihan_pembayaran IN($id)
+										{$this->secondary_db}.ttp.id_tagihan_pembayaran IN($id)
 									AND(
-										(panel_utsman.ttp.status_nomor_terdaftar = 2) +
-										(panel_utsman.ttp.status_nama_duplikat = 2) +
-										(panel_utsman.ttp.status_nama_duplikat = 4) >= 1
+										({$this->secondary_db}.ttp.status_nomor_terdaftar = 2) +
+										({$this->secondary_db}.ttp.status_nama_duplikat = 2) +
+										({$this->secondary_db}.ttp.status_nama_duplikat = 4) >= 1
 									)");
 
         return $sql->num_rows();
@@ -864,7 +864,7 @@ class IncomeModel extends CI_Model
 												FROM siswa
 												WHERE nis IN (
 													SELECT nomor_siswa
-													FROM panel_utsman.transisi_tagihan_pembayaran
+													FROM {$this->secondary_db}.transisi_tagihan_pembayaran
 													WHERE id_tagihan_pembayaran IN ($id)
 												)");
 
@@ -883,22 +883,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											panel_utsman.ttp.nomor_siswa,
+											{$this->secondary_db}.ttp.nomor_siswa,
 											CONCAT(
 												'9',
-												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING({$this->secondary_db}.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_dpb,
-											panel_utsman.ttp.nomor_siswa,
-											panel_utsman.ttp.password,
-											panel_utsman.ttp.level_tingkat,
-											panel_utsman.ttp.nama,
-											panel_utsman.ttp.nomor_hp,
-											panel_utsman.ttp.email,
-											panel_utsman.ttp.th_ajaran
+											{$this->secondary_db}.ttp.nomor_siswa,
+											{$this->secondary_db}.ttp.password,
+											{$this->secondary_db}.ttp.level_tingkat,
+											{$this->secondary_db}.ttp.nama,
+											{$this->secondary_db}.ttp.nomor_hp,
+											{$this->secondary_db}.ttp.email,
+											{$this->secondary_db}.ttp.th_ajaran
 										FROM
-											panel_utsman.transisi_tagihan_pembayaran ttp
+											{$this->secondary_db}.transisi_tagihan_pembayaran ttp
 										WHERE
-											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
+											{$this->secondary_db}.ttp.id_tagihan_pembayaran IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -912,7 +912,7 @@ class IncomeModel extends CI_Model
 		 FROM siswa
 		 WHERE nis IN (
 			 SELECT nomor_siswa
-			 FROM panel_utsman.transisi_tagihan_pembayaran
+			 FROM {$this->secondary_db}.transisi_tagihan_pembayaran
 			 WHERE id_tagihan_pembayaran IN ($id)
 		 )");
 
@@ -955,7 +955,7 @@ class IncomeModel extends CI_Model
 												FROM siswa
 												WHERE nis IN (
 													SELECT nomor_siswa
-													FROM panel_utsman.transisi_tagihan_pembayaran
+													FROM {$this->secondary_db}.transisi_tagihan_pembayaran
 													WHERE id_tagihan_pembayaran IN ($id)
 												)");
 
@@ -974,22 +974,22 @@ class IncomeModel extends CI_Model
 											th_ajaran
 										)
 										SELECT
-											panel_utsman.ttp.nomor_siswa,
-											panel_utsman.ttp.nomor_siswa,
+											{$this->secondary_db}.ttp.nomor_siswa,
+											{$this->secondary_db}.ttp.nomor_siswa,
 											CONCAT(
 												'8',
-												SUBSTRING(panel_utsman.ttp.nomor_siswa, 2)
+												SUBSTRING({$this->secondary_db}.ttp.nomor_siswa, 2)
 											) AS nomor_pembayaran_du,
-											panel_utsman.ttp.password,
-											panel_utsman.ttp.level_tingkat,
-											panel_utsman.ttp.nama,
-											panel_utsman.ttp.nomor_hp,
-											panel_utsman.ttp.email,
-											panel_utsman.ttp.th_ajaran
+											{$this->secondary_db}.ttp.password,
+											{$this->secondary_db}.ttp.level_tingkat,
+											{$this->secondary_db}.ttp.nama,
+											{$this->secondary_db}.ttp.nomor_hp,
+											{$this->secondary_db}.ttp.email,
+											{$this->secondary_db}.ttp.th_ajaran
 										FROM
-											panel_utsman.transisi_tagihan_pembayaran ttp
+											{$this->secondary_db}.transisi_tagihan_pembayaran ttp
 										WHERE
-											panel_utsman.ttp.id_tagihan_pembayaran IN ($id)
+											{$this->secondary_db}.ttp.id_tagihan_pembayaran IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -1003,7 +1003,7 @@ class IncomeModel extends CI_Model
 										FROM siswa
 										WHERE nis IN (
 											SELECT nomor_siswa
-											FROM panel_utsman.transisi_tagihan_pembayaran
+											FROM {$this->secondary_db}.transisi_tagihan_pembayaran
 											WHERE id_tagihan_pembayaran IN ($id)
 										)");
 
@@ -1060,25 +1060,25 @@ class IncomeModel extends CI_Model
 															status_pembayaran
 														)
 														SELECT
-															panel_utsman.ttp.id_invoice,
-															panel_utsman.ttp.level_tingkat,
-															panel_utsman.ttp.tipe_tagihan,
-															panel_utsman.ttp.tanggal_invoice,
-															panel_utsman.ttp.nomor_siswa,
-															panel_utsman.ttp.nama,
-															panel_utsman.ttp.nominal_tagihan,
-															panel_utsman.ttp.informasi,
-															panel_utsman.ttp.nama_kelas,
-															panel_utsman.ttp.rincian,
-															panel_utsman.ttp.catatan,
-															panel_utsman.ttp.email,
-															panel_utsman.ttp.nomor_hp,
-															panel_utsman.ttp.th_ajaran,
-															panel_utsman.ttp.status_pembayaran
+															{$this->secondary_db}.ttp.id_invoice,
+															{$this->secondary_db}.ttp.level_tingkat,
+															{$this->secondary_db}.ttp.tipe_tagihan,
+															{$this->secondary_db}.ttp.tanggal_invoice,
+															{$this->secondary_db}.ttp.nomor_siswa,
+															{$this->secondary_db}.ttp.nama,
+															{$this->secondary_db}.ttp.nominal_tagihan,
+															{$this->secondary_db}.ttp.informasi,
+															{$this->secondary_db}.ttp.nama_kelas,
+															{$this->secondary_db}.ttp.rincian,
+															{$this->secondary_db}.ttp.catatan,
+															{$this->secondary_db}.ttp.email,
+															{$this->secondary_db}.ttp.nomor_hp,
+															{$this->secondary_db}.ttp.th_ajaran,
+															{$this->secondary_db}.ttp.status_pembayaran
 														FROM
-															panel_utsman.transisi_tagihan_pembayaran ttp
+															{$this->secondary_db}.transisi_tagihan_pembayaran ttp
 														WHERE
-															panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+															{$this->secondary_db}.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
@@ -1111,25 +1111,25 @@ class IncomeModel extends CI_Model
 															status_pembayaran
 														)
 														SELECT
-															panel_utsman.ttp.id_invoice,
-															panel_utsman.ttp.level_tingkat,
-															panel_utsman.ttp.tipe_tagihan,
-															panel_utsman.ttp.tanggal_invoice,
-															panel_utsman.ttp.nomor_siswa,
-															panel_utsman.ttp.nama,
-															panel_utsman.ttp.nominal_tagihan,
-															panel_utsman.ttp.informasi,
-															panel_utsman.ttp.nama_kelas,
-															panel_utsman.ttp.rincian,
-															panel_utsman.ttp.catatan,
-															panel_utsman.ttp.email,
-															panel_utsman.ttp.nomor_hp,
-															panel_utsman.ttp.th_ajaran,
-															panel_utsman.ttp.status_pembayaran
+															{$this->secondary_db}.ttp.id_invoice,
+															{$this->secondary_db}.ttp.level_tingkat,
+															{$this->secondary_db}.ttp.tipe_tagihan,
+															{$this->secondary_db}.ttp.tanggal_invoice,
+															{$this->secondary_db}.ttp.nomor_siswa,
+															{$this->secondary_db}.ttp.nama,
+															{$this->secondary_db}.ttp.nominal_tagihan,
+															{$this->secondary_db}.ttp.informasi,
+															{$this->secondary_db}.ttp.nama_kelas,
+															{$this->secondary_db}.ttp.rincian,
+															{$this->secondary_db}.ttp.catatan,
+															{$this->secondary_db}.ttp.email,
+															{$this->secondary_db}.ttp.nomor_hp,
+															{$this->secondary_db}.ttp.th_ajaran,
+															{$this->secondary_db}.ttp.status_pembayaran
 														FROM
-															panel_utsman.transisi_tagihan_pembayaran ttp
+															{$this->secondary_db}.transisi_tagihan_pembayaran ttp
 														WHERE
-															panel_utsman.ttp.id_tagihan_pembayaran IN ($id)");
+															{$this->secondary_db}.ttp.id_tagihan_pembayaran IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();

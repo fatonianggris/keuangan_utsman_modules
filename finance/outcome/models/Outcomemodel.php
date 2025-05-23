@@ -1,20 +1,18 @@
 <?php
 
-class OutcomeModel extends CI_Model {
+class OutcomeModel extends MY_Model
+{
 
-    private $table_structure = 'struktur_akun_keuangan';
+    private $table_structure    = 'struktur_akun_keuangan';
     private $table_general_page = 'general_page';
-    private $table_outcome = 'pengeluaran';
+    private $table_outcome      = 'pengeluaran';
 
-    //
-    //------------------------------COUNT--------------------------------//
-    //
-   
     //
     //------------------------------GET VISITOR--------------------------------//
-    //  
+    //
 
-    public function get_page() {
+    public function get_page()
+    {
 
         $this->db->select('*');
         $this->db->where('id_general_page', 1);
@@ -22,31 +20,35 @@ class OutcomeModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_structure_account() {
+    public function get_structure_account()
+    {
 
         $this->db->select('*');
-        $this->db->where_not_in('id_role_struktur', array(1, 2, 3, 7, 8));
+        $this->db->where_not_in('id_role_struktur', [1, 2, 3, 7, 8]);
         $sql = $this->db->get($this->table_structure);
 
         return $sql->result();
     }
 
-    public function get_schoolyear() {
+    public function get_schoolyear()
+    {
 
         $sql = $this->db->query("SELECT * FROM tahun_ajaran WHERE semester='ganjil'");
 
         return $sql->result();
     }
 
-    public function check_name_division($id = '') {
+    public function check_name_division($id = '')
+    {
         $this->db->where('id_struktur', $id);
 
         $sql = $this->db->get($this->table_structure);
         return $sql->result();
     }
 
-    public function get_outcome_id($id = '') {
-        $this->db->select("p.*, 
+    public function get_outcome_id($id = '')
+    {
+        $this->db->select("p.*,
                                 ak.nama_akun,
                                 ak.nomor_handphone_akun,
                                 ak.email_akun,
@@ -74,8 +76,9 @@ class OutcomeModel extends CI_Model {
         return $sql->result();
     }
 
-    public function get_outcome() {
-        $this->db->select("p.*, 
+    public function get_outcome()
+    {
+        $this->db->select("p.*,
                                 ak.nama_akun,
                                 ak.nomor_handphone_akun,
                                 ak.email_akun,
@@ -102,22 +105,23 @@ class OutcomeModel extends CI_Model {
         return $sql->result();
     }
 
-    public function insert_nota_outcome($id = '', $value = '') {
+    public function insert_nota_outcome($id = '', $value = '')
+    {
         $this->db->trans_begin();
 
-        $data = array(
-            'id_akun_keuangan' => $id,
-            'id_tahun_ajaran' => $value['id_tahun_ajaran'],
-            'nama_pengeluaran' => $value['nama_pengeluaran'],
+        $data = [
+            'id_akun_keuangan'    => $id,
+            'id_tahun_ajaran'     => $value['id_tahun_ajaran'],
+            'nama_pengeluaran'    => $value['nama_pengeluaran'],
             'nominal_pengeluaran' => $value['nominal_pengeluaran'],
-            'uraian' => $value['uraian'],
-            'jenis_pengeluaran' => $value['jenis_pengeluaran'],
+            'uraian'              => $value['uraian'],
+            'jenis_pengeluaran'   => $value['jenis_pengeluaran'],
             'jenjang_pengeluaran' => $value['jenjang_pengeluaran'],
-            'status_pembayaran' => $value['status_pembayaran'],
-            'status_pengeluaran' => $value['status_pengeluaran'],
-            'tanggal_acc' => @$value['tanggal_acc'],
-            'file_nota' => @$value['file_nota'],
-        );
+            'status_pembayaran'   => $value['status_pembayaran'],
+            'status_pengeluaran'  => $value['status_pengeluaran'],
+            'tanggal_acc'         => @$value['tanggal_acc'],
+            'file_nota'           => @$value['file_nota'],
+        ];
 
         $this->db->insert($this->table_outcome, $data);
 
@@ -130,21 +134,22 @@ class OutcomeModel extends CI_Model {
         }
     }
 
-    public function update_nota_outcome($id = '', $value = '') {
+    public function update_nota_outcome($id = '', $value = '')
+    {
         $this->db->trans_begin();
 
-        $data = array(
-            'id_tahun_ajaran' => $value['id_tahun_ajaran'],
-            'nama_pengeluaran' => $value['nama_pengeluaran'],
+        $data = [
+            'id_tahun_ajaran'     => $value['id_tahun_ajaran'],
+            'nama_pengeluaran'    => $value['nama_pengeluaran'],
             'nominal_pengeluaran' => $value['nominal_pengeluaran'],
-            'uraian' => $value['uraian'],
-            'jenis_pengeluaran' => $value['jenis_pengeluaran'],
+            'uraian'              => $value['uraian'],
+            'jenis_pengeluaran'   => $value['jenis_pengeluaran'],
             'jenjang_pengeluaran' => $value['jenjang_pengeluaran'],
-            'status_pembayaran' => $value['status_pembayaran'],
-            'status_pengeluaran' => $value['status_pengeluaran'],
-            'file_nota' => @$value['file_nota'],
-            'updated_at' => date("Y-m-d H:i:s"),
-        );
+            'status_pembayaran'   => $value['status_pembayaran'],
+            'status_pengeluaran'  => $value['status_pengeluaran'],
+            'file_nota'           => @$value['file_nota'],
+            'updated_at'          => date("Y-m-d H:i:s"),
+        ];
 
         $this->db->where('id_pengeluaran', $id);
         $this->db->update($this->table_outcome, $data);
@@ -158,15 +163,16 @@ class OutcomeModel extends CI_Model {
         }
     }
 
-    public function update_recipe_outcome($id = '', $value = '') {
+    public function update_recipe_outcome($id = '', $value = '')
+    {
         $this->db->trans_begin();
 
-        $data = array(
+        $data = [
             'status_pengeluaran' => $value['status_pengeluaran'],
-            'file_transfer' => @$value['file_transfer'],
-            'keterangan' => @$value['keterangan'],
-            'tanggal_acc' => date("Y-m-d H:i:s"),
-        );
+            'file_transfer'      => @$value['file_transfer'],
+            'keterangan'         => @$value['keterangan'],
+            'tanggal_acc'        => date("Y-m-d H:i:s"),
+        ];
 
         $this->db->where('id_pengeluaran', $id);
         $this->db->update($this->table_outcome, $data);
@@ -180,7 +186,8 @@ class OutcomeModel extends CI_Model {
         }
     }
 
-    public function delete_outcome($value) {
+    public function delete_outcome($value)
+    {
         $this->db->trans_begin();
 
         $this->db->where('id_pengeluaran', $value);
@@ -198,5 +205,3 @@ class OutcomeModel extends CI_Model {
     //-----------------------------------------------------------------------//
 //
 }
-
-?>

@@ -1,6 +1,6 @@
 <?php
 
-class SavingsModel extends CI_Model
+class SavingsModel extends MY_Model
 {
 
     public function __construct()
@@ -146,14 +146,14 @@ class SavingsModel extends CI_Model
     public function check_duplicate_import_data_personal_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-									panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+									{$this->secondary_db}.inp.nis, {$this->secondary_db}.inp.status_nasabah, {$this->secondary_db}.inp.status_nama_nasabah
 									FROM
-										panel_utsman.import_nasabah_personal inp
+										{$this->secondary_db}.import_nasabah_personal inp
 									WHERE
-										panel_utsman.inp.id_nasabah IN ($id)
+										{$this->secondary_db}.inp.id_nasabah IN ($id)
 									AND(
-										(panel_utsman.inp.status_nasabah = 3) +
-										(panel_utsman.inp.status_nama_nasabah = 3) >= 1
+										({$this->secondary_db}.inp.status_nasabah = 3) +
+										({$this->secondary_db}.inp.status_nama_nasabah = 3) >= 1
 									)");
 
         return $sql->num_rows();
@@ -162,14 +162,14 @@ class SavingsModel extends CI_Model
     public function check_used_number_import_data_personal_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								{$this->secondary_db}.inp.nis, {$this->secondary_db}.inp.status_nasabah, {$this->secondary_db}.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_personal inp
+								{$this->secondary_db}.import_nasabah_personal inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
+								{$this->secondary_db}.inp.id_nasabah IN ($id)
 							AND(
-								(panel_utsman.inp.status_nasabah = 1) +
-								(panel_utsman.inp.status_nama_nasabah = 4) >= 1
+								({$this->secondary_db}.inp.status_nasabah = 1) +
+								({$this->secondary_db}.inp.status_nama_nasabah = 4) >= 1
 							)");
 
         return $sql->num_rows();
@@ -178,12 +178,12 @@ class SavingsModel extends CI_Model
     public function check_similiar_import_data_personal_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nis, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								{$this->secondary_db}.inp.nis, {$this->secondary_db}.inp.status_nasabah, {$this->secondary_db}.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_personal inp
+								{$this->secondary_db}.import_nasabah_personal inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
-							AND panel_utsman.inp.status_nama_nasabah = 1");
+								{$this->secondary_db}.inp.id_nasabah IN ($id)
+							AND {$this->secondary_db}.inp.status_nama_nasabah = 1");
 
         return $sql->num_rows();
     }
@@ -191,14 +191,14 @@ class SavingsModel extends CI_Model
     public function check_duplicate_import_data_employee_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-									panel_utsman.inp.nip, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+									{$this->secondary_db}.inp.nip, {$this->secondary_db}.inp.status_nasabah, {$this->secondary_db}.inp.status_nama_nasabah
 									FROM
-										panel_utsman.import_nasabah_pegawai inp
+										{$this->secondary_db}.import_nasabah_pegawai inp
 									WHERE
-										panel_utsman.inp.id_nasabah IN ($id)
+										{$this->secondary_db}.inp.id_nasabah IN ($id)
 									AND(
-										(panel_utsman.inp.status_nasabah = 3) +
-										(panel_utsman.inp.status_nama_nasabah = 3) >= 1
+										({$this->secondary_db}.inp.status_nasabah = 3) +
+										({$this->secondary_db}.inp.status_nama_nasabah = 3) >= 1
 									)");
 
         return $sql->num_rows();
@@ -207,14 +207,14 @@ class SavingsModel extends CI_Model
     public function check_used_number_import_data_employee_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nip, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								{$this->secondary_db}.inp.nip, {$this->secondary_db}.inp.status_nasabah, {$this->secondary_db}.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_pegawai inp
+								{$this->secondary_db}.import_nasabah_pegawai inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
+								{$this->secondary_db}.inp.id_nasabah IN ($id)
 							AND(
-								(panel_utsman.inp.status_nasabah = 1) +
-								(panel_utsman.inp.status_nama_nasabah = 4) >= 1
+								({$this->secondary_db}.inp.status_nasabah = 1) +
+								({$this->secondary_db}.inp.status_nama_nasabah = 4) >= 1
 							)");
 
         return $sql->num_rows();
@@ -223,12 +223,12 @@ class SavingsModel extends CI_Model
     public function check_similiar_import_data_employee_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inp.nip, panel_utsman.inp.status_nasabah, panel_utsman.inp.status_nama_nasabah
+								{$this->secondary_db}.inp.nip, {$this->secondary_db}.inp.status_nasabah, {$this->secondary_db}.inp.status_nama_nasabah
 							FROM
-								panel_utsman.import_nasabah_pegawai inp
+								{$this->secondary_db}.import_nasabah_pegawai inp
 							WHERE
-								panel_utsman.inp.id_nasabah IN ($id)
-							AND panel_utsman.inp.status_nama_nasabah = 1");
+								{$this->secondary_db}.inp.id_nasabah IN ($id)
+							AND {$this->secondary_db}.inp.status_nama_nasabah = 1");
 
         return $sql->num_rows();
     }
@@ -236,12 +236,12 @@ class SavingsModel extends CI_Model
     public function check_duplicate_import_data_joint_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_nasabah_bersama
+								{$this->secondary_db}.inb.nomor_rekening_bersama, {$this->secondary_db}.inb.nama_tabungan_bersama, {$this->secondary_db}.inb.status_nasabah_bersama
 							FROM
-								panel_utsman.import_nasabah_bersama inb
+								{$this->secondary_db}.import_nasabah_bersama inb
 							WHERE
-								panel_utsman.inb.id_nasabah_bersama IN ($id)
-							AND panel_utsman.inb.status_nasabah_bersama = 3");
+								{$this->secondary_db}.inb.id_nasabah_bersama IN ($id)
+							AND {$this->secondary_db}.inb.status_nasabah_bersama = 3");
 
         return $sql->num_rows();
     }
@@ -249,12 +249,12 @@ class SavingsModel extends CI_Model
     public function check_used_number_import_data_joint_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_nasabah_bersama
+								{$this->secondary_db}.inb.nomor_rekening_bersama, {$this->secondary_db}.inb.nama_tabungan_bersama, {$this->secondary_db}.inb.status_nasabah_bersama
 							FROM
-								panel_utsman.import_nasabah_bersama inb
+								{$this->secondary_db}.import_nasabah_bersama inb
 							WHERE
-								panel_utsman.inb.id_nasabah_bersama IN ($id)
-							AND panel_utsman.inb.status_nasabah_bersama = 1");
+								{$this->secondary_db}.inb.id_nasabah_bersama IN ($id)
+							AND {$this->secondary_db}.inb.status_nasabah_bersama = 1");
 
         return $sql->num_rows();
     }
@@ -262,12 +262,12 @@ class SavingsModel extends CI_Model
     public function check_responsible_person_import_data_joint_saving($id = '')
     {
         $sql = $this->db->query("SELECT
-								panel_utsman.inb.nomor_rekening_bersama, panel_utsman.inb.nama_tabungan_bersama, panel_utsman.inb.status_penanggung_jawab
+								{$this->secondary_db}.inb.nomor_rekening_bersama, {$this->secondary_db}.inb.nama_tabungan_bersama, {$this->secondary_db}.inb.status_penanggung_jawab
 							FROM
-								panel_utsman.import_nasabah_bersama inb
+								{$this->secondary_db}.import_nasabah_bersama inb
 							WHERE
-								panel_utsman.inb.id_nasabah_bersama IN ($id)
-							AND panel_utsman.inb.status_penanggung_jawab = 2");
+								{$this->secondary_db}.inb.id_nasabah_bersama IN ($id)
+							AND {$this->secondary_db}.inb.status_penanggung_jawab = 2");
 
         return $sql->num_rows();
     }
@@ -308,46 +308,46 @@ class SavingsModel extends CI_Model
     public function get_new_transaction()
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.tt.id_transaksi_umum,
-										panel_utsman.tt.nis_siswa,
-										panel_utsman.s.nama_lengkap,
-										panel_utsman.s.jenis_kelamin,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										{$this->secondary_db}.tt.id_transaksi_umum,
+										{$this->secondary_db}.tt.nis_siswa,
+										{$this->secondary_db}.s.nama_lengkap,
+										{$this->secondary_db}.s.jenis_kelamin,
+										{$this->default_db}.ak.nama_akun,
+										{$this->default_db}.ak.email_akun,
+										{$this->secondary_db}.tt.saldo,
+										{$this->secondary_db}.tt.catatan,
+										{$this->secondary_db}.tt.nominal,
+										{$this->secondary_db}.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
-										DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+										{$this->secondary_db}.tt.th_ajaran,
+										{$this->secondary_db}.tt.tanggal_transaksi,
+										DATE_FORMAT({$this->secondary_db}.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											{$this->secondary_db}.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_general vmax
+											{$this->secondary_db}.view_max_id_transaction_general vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_umum = panel_utsman.vmax.id_max
+											{$this->secondary_db}.tt.id_transaksi_umum = {$this->secondary_db}.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_umum tt
-									LEFT JOIN panel_utsman.siswa s
+										{$this->secondary_db}.transaksi_tabungan_umum tt
+									LEFT JOIN {$this->secondary_db}.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.s.nis = {$this->secondary_db}.tt.nis_siswa
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
 									ORDER BY
-										panel_utsman.tt.id_transaksi_umum
+										{$this->secondary_db}.tt.id_transaksi_umum
 									DESC LIMIT 5");
         return $sql->result();
     }
@@ -358,85 +358,85 @@ class SavingsModel extends CI_Model
 										th.*,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal),0)
+											COALESCE(SUM({$this->secondary_db}.tt.nominal),0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												{$this->secondary_db}.tb.id_transaksi_umum,
+												{$this->secondary_db}.tb.nominal,
+												{$this->secondary_db}.tb.nis_siswa,
+												{$this->secondary_db}.tb.th_ajaran,
+												{$this->secondary_db}.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												{$this->secondary_db}.transaksi_tabungan_umum tb
+											LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+												{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 1 AND panel_utsman.tdpb.informasi LIKE('%TK%') OR panel_utsman.tdpb.informasi LIKE('%KB%')
+												{$this->secondary_db}.tb.status_kredit_debet = 1 AND {$this->secondary_db}.tdpb.informasi LIKE('%TK%') OR {$this->secondary_db}.tdpb.informasi LIKE('%KB%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												{$this->secondary_db}.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 									) AS total_kredit_kbtk,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM({$this->secondary_db}.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												{$this->secondary_db}.tb.id_transaksi_umum,
+												{$this->secondary_db}.tb.nominal,
+												{$this->secondary_db}.tb.nis_siswa,
+												{$this->secondary_db}.tb.th_ajaran,
+												{$this->secondary_db}.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												{$this->secondary_db}.transaksi_tabungan_umum tb
+											LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+												{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 1 AND panel_utsman.tdpb.informasi LIKE('%SD%')
+												{$this->secondary_db}.tb.status_kredit_debet = 1 AND {$this->secondary_db}.tdpb.informasi LIKE('%SD%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												{$this->secondary_db}.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 									) AS total_kredit_sd,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM({$this->secondary_db}.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												{$this->secondary_db}.tb.id_transaksi_umum,
+												{$this->secondary_db}.tb.nominal,
+												{$this->secondary_db}.tb.nis_siswa,
+												{$this->secondary_db}.tb.th_ajaran,
+												{$this->secondary_db}.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												{$this->secondary_db}.transaksi_tabungan_umum tb
+											LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+												{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 1 AND panel_utsman.tdpb.informasi LIKE('%SMP%')
+												{$this->secondary_db}.tb.status_kredit_debet = 1 AND {$this->secondary_db}.tdpb.informasi LIKE('%SMP%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												{$this->secondary_db}.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 									) AS total_kredit_smp,
 									CONCAT(
 										'TA. ',
-										panel_utsman.th.tahun_awal,
+										{$this->secondary_db}.th.tahun_awal,
 										'/',
-										panel_utsman.th.tahun_akhir
+										{$this->secondary_db}.th.tahun_akhir
 									) AS tahun
 									FROM
-										panel_utsman.tahun_ajaran th
+										{$this->secondary_db}.tahun_ajaran th
 									WHERE
-										(panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND panel_utsman.th.semester = 'ganjil'
+										({$this->secondary_db}.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND {$this->secondary_db}.th.semester = 'ganjil'
 									ORDER BY
-										panel_utsman.th.tahun_awal ASC");
+										{$this->secondary_db}.th.tahun_awal ASC");
         return $sql->result();
     }
 
@@ -450,81 +450,81 @@ class SavingsModel extends CI_Model
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												{$this->secondary_db}.tb.id_transaksi_umum,
+												{$this->secondary_db}.tb.nominal,
+												{$this->secondary_db}.tb.nis_siswa,
+												{$this->secondary_db}.tb.th_ajaran,
+												{$this->secondary_db}.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												{$this->secondary_db}.transaksi_tabungan_umum tb
+											LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+												{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 2 AND panel_utsman.tdpb.informasi LIKE('%TK%') OR panel_utsman.tdpb.informasi LIKE('%KB%')
+												{$this->secondary_db}.tb.status_kredit_debet = 2 AND {$this->secondary_db}.tdpb.informasi LIKE('%TK%') OR {$this->secondary_db}.tdpb.informasi LIKE('%KB%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												{$this->secondary_db}.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 									) AS total_debet_kbtk,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM({$this->secondary_db}.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												{$this->secondary_db}.tb.id_transaksi_umum,
+												{$this->secondary_db}.tb.nominal,
+												{$this->secondary_db}.tb.nis_siswa,
+												{$this->secondary_db}.tb.th_ajaran,
+												{$this->secondary_db}.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												{$this->secondary_db}.transaksi_tabungan_umum tb
+											LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+												{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 2 AND panel_utsman.tdpb.informasi LIKE('%SD%')
+												{$this->secondary_db}.tb.status_kredit_debet = 2 AND {$this->secondary_db}.tdpb.informasi LIKE('%SD%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												{$this->secondary_db}.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 									) AS total_debet_sd,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.tt.nominal), 0)
+											COALESCE(SUM({$this->secondary_db}.tt.nominal), 0)
 										FROM
 											(
 											SELECT
-												panel_utsman.tb.id_transaksi_umum,
-												panel_utsman.tb.nominal,
-												panel_utsman.tb.nis_siswa,
-												panel_utsman.tb.th_ajaran,
-												panel_utsman.tdpb.informasi
+												{$this->secondary_db}.tb.id_transaksi_umum,
+												{$this->secondary_db}.tb.nominal,
+												{$this->secondary_db}.tb.nis_siswa,
+												{$this->secondary_db}.tb.th_ajaran,
+												{$this->secondary_db}.tdpb.informasi
 											FROM
-												panel_utsman.transaksi_tabungan_umum tb
-											LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-												panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+												{$this->secondary_db}.transaksi_tabungan_umum tb
+											LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+												{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 											WHERE
-												panel_utsman.tb.status_kredit_debet = 2 AND panel_utsman.tdpb.informasi LIKE('%SMP%')
+												{$this->secondary_db}.tb.status_kredit_debet = 2 AND {$this->secondary_db}.tdpb.informasi LIKE('%SMP%')
 											GROUP BY
-												panel_utsman.tb.id_transaksi_umum
+												{$this->secondary_db}.tb.id_transaksi_umum
 										) tt
 									WHERE
-										panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+										{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 									) AS total_debet_smp,
 									CONCAT(
 										'TA. ',
-										panel_utsman.th.tahun_awal,
+										{$this->secondary_db}.th.tahun_awal,
 										'/',
-										panel_utsman.th.tahun_akhir
+										{$this->secondary_db}.th.tahun_akhir
 									) AS tahun
 									FROM
-										panel_utsman.tahun_ajaran th
+										{$this->secondary_db}.tahun_ajaran th
 									WHERE
-										(panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND panel_utsman.th.semester = 'ganjil'
+										({$this->secondary_db}.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND {$this->secondary_db}.th.semester = 'ganjil'
 									ORDER BY
-										panel_utsman.th.tahun_awal ASC");
+										{$this->secondary_db}.th.tahun_awal ASC");
         return $sql->result();
     }
 
@@ -534,26 +534,26 @@ class SavingsModel extends CI_Model
 									th.*,
 									(
 									SELECT
-										COALESCE(SUM(panel_utsman.tt.nominal),0)
+										COALESCE(SUM({$this->secondary_db}.tt.nominal),0)
 									FROM
 										(
 										SELECT
-											panel_utsman.tb.id_transaksi_umum,
-											panel_utsman.tb.nominal,
-											panel_utsman.tb.nis_siswa,
-											panel_utsman.tb.th_ajaran,
-											panel_utsman.tdpb.informasi
+											{$this->secondary_db}.tb.id_transaksi_umum,
+											{$this->secondary_db}.tb.nominal,
+											{$this->secondary_db}.tb.nis_siswa,
+											{$this->secondary_db}.tb.th_ajaran,
+											{$this->secondary_db}.tdpb.informasi
 										FROM
-											panel_utsman.transaksi_tabungan_umum tb
-										LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-											panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+											{$this->secondary_db}.transaksi_tabungan_umum tb
+										LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+											{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 										WHERE
-											panel_utsman.tb.status_kredit_debet = 1
+											{$this->secondary_db}.tb.status_kredit_debet = 1
 										GROUP BY
-											panel_utsman.tb.id_transaksi_umum
+											{$this->secondary_db}.tb.id_transaksi_umum
 									) tt
 								WHERE
-									panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+									{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 								) AS total_kredit,
 								(
 									SELECT
@@ -561,35 +561,35 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											panel_utsman.tb.id_transaksi_umum,
-											panel_utsman.tb.nominal,
-											panel_utsman.tb.nis_siswa,
-											panel_utsman.tb.th_ajaran,
-											panel_utsman.tdpb.informasi
+											{$this->secondary_db}.tb.id_transaksi_umum,
+											{$this->secondary_db}.tb.nominal,
+											{$this->secondary_db}.tb.nis_siswa,
+											{$this->secondary_db}.tb.th_ajaran,
+											{$this->secondary_db}.tdpb.informasi
 										FROM
-											panel_utsman.transaksi_tabungan_umum tb
-										LEFT JOIN panel_utsman.tagihan_pembayaran_dpb tdpb ON
-											panel_utsman.tb.nis_siswa = panel_utsman.tdpb.nomor_siswa
+											{$this->secondary_db}.transaksi_tabungan_umum tb
+										LEFT JOIN {$this->secondary_db}.tagihan_pembayaran_dpb tdpb ON
+											{$this->secondary_db}.tb.nis_siswa = {$this->secondary_db}.tdpb.nomor_siswa
 										WHERE
-											panel_utsman.tb.status_kredit_debet = 2
+											{$this->secondary_db}.tb.status_kredit_debet = 2
 										GROUP BY
-											panel_utsman.tb.id_transaksi_umum
+											{$this->secondary_db}.tb.id_transaksi_umum
 									) tt
 								WHERE
-									panel_utsman.tt.th_ajaran = panel_utsman.th.id_tahun_ajaran
+									{$this->secondary_db}.tt.th_ajaran = {$this->secondary_db}.th.id_tahun_ajaran
 								) AS total_debet,
 								CONCAT(
 									'TA. ',
-									panel_utsman.th.tahun_awal,
+									{$this->secondary_db}.th.tahun_awal,
 									'/',
-									panel_utsman.th.tahun_akhir
+									{$this->secondary_db}.th.tahun_akhir
 								) AS tahun
 								FROM
-									panel_utsman.tahun_ajaran th
+									{$this->secondary_db}.tahun_ajaran th
 								WHERE
-									(panel_utsman.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND panel_utsman.th.semester = 'ganjil'
+									({$this->secondary_db}.th.tahun_awal BETWEEN(YEAR(CURDATE()) -1) AND(YEAR(CURDATE()) +1)) AND {$this->secondary_db}.th.semester = 'ganjil'
 								ORDER BY
-									panel_utsman.th.tahun_awal ASC");
+									{$this->secondary_db}.th.tahun_awal ASC");
         return $sql->result();
     }
 
@@ -787,11 +787,11 @@ class SavingsModel extends CI_Model
     public function get_joint_saving_by_acc_number($acc_number = '')
     {
         $this->db2->select("tb.nomor_rekening_bersama, tb.nama_tabungan_bersama, tb.saldo_tabungan_bersama, tb.id_tingkat, tb.jenis_tabungan,
-								COALESCE(NULLIF(panel_utsman.s.nis, ''), panel_utsman.p.nip) AS number,
-								COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-								COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-								COALESCE(NULLIF(panel_utsman.s.nomor_handphone, ''), panel_utsman.p.nomor_hp) AS nomor_handphone,
-								COALESCE(NULLIF(panel_utsman.s.email, ''), panel_utsman.p.email) AS email");
+								COALESCE(NULLIF({$this->secondary_db}.s.nis, ''), {$this->secondary_db}.p.nip) AS number,
+								COALESCE(NULLIF({$this->secondary_db}.s.nama_wali, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_wali,
+								COALESCE(NULLIF({$this->secondary_db}.s.nama_lengkap, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_lengkap,
+								COALESCE(NULLIF({$this->secondary_db}.s.nomor_handphone, ''), {$this->secondary_db}.p.nomor_hp) AS nomor_handphone,
+								COALESCE(NULLIF({$this->secondary_db}.s.email, ''), {$this->secondary_db}.p.email) AS email");
         $this->db2->from('tabungan_bersama tb');
         $this->db2->join('siswa s', 'tb.id_penanggung_jawab = s.nis', 'left');
         $this->db2->join('pegawai p', 'tb.id_penanggung_jawab = p.nip', 'left');
@@ -997,157 +997,157 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											panel_utsman.tt.id_transaksi_umum AS id_transaksi,
-											panel_utsman.tt.nomor_transaksi_umum AS nomor_transaksi,
-											panel_utsman.tt.nis_siswa,
-											panel_utsman.tt.id_tingkat,
-											panel_utsman.s.nama_lengkap,
-											keuangan_utsman.ak.nama_akun,
-											keuangan_utsman.ak.email_akun,
-											panel_utsman.tt.saldo,
-											panel_utsman.tt.jenis_tabungan,
-											panel_utsman.tt.catatan,
-											panel_utsman.tt.nominal,
-											panel_utsman.tt.status_kredit_debet,
+											{$this->secondary_db}.tt.id_transaksi_umum AS id_transaksi,
+											{$this->secondary_db}.tt.nomor_transaksi_umum AS nomor_transaksi,
+											{$this->secondary_db}.tt.nis_siswa,
+											{$this->secondary_db}.tt.id_tingkat,
+											{$this->secondary_db}.s.nama_lengkap,
+											{$this->default_db}.ak.nama_akun,
+											{$this->default_db}.ak.email_akun,
+											{$this->secondary_db}.tt.saldo,
+											{$this->secondary_db}.tt.jenis_tabungan,
+											{$this->secondary_db}.tt.catatan,
+											{$this->secondary_db}.tt.nominal,
+											{$this->secondary_db}.tt.status_kredit_debet,
 											CONCAT(
-												panel_utsman.ta.tahun_awal,
+												{$this->secondary_db}.ta.tahun_awal,
 												'/',
-												panel_utsman.ta.tahun_akhir
+												{$this->secondary_db}.ta.tahun_akhir
 											) AS tahun_ajaran,
-											panel_utsman.tt.th_ajaran,
-											panel_utsman.tt.tanggal_transaksi,
+											{$this->secondary_db}.tt.th_ajaran,
+											{$this->secondary_db}.tt.tanggal_transaksi,
 											DATE_FORMAT(
-												panel_utsman.tt.waktu_transaksi,
+												{$this->secondary_db}.tt.waktu_transaksi,
 												'%d/%m/%Y %H:%i:%s'
 											) AS waktu_transaksi,
 											CASE WHEN EXISTS(
 											SELECT
-												panel_utsman.vmax.id_max
+												{$this->secondary_db}.vmax.id_max
 											FROM
-												panel_utsman.view_max_id_transaction_general vmax
+												{$this->secondary_db}.view_max_id_transaction_general vmax
 											WHERE
-												panel_utsman.tt.id_transaksi_umum = panel_utsman.vmax.id_max
+												{$this->secondary_db}.tt.id_transaksi_umum = {$this->secondary_db}.vmax.id_max
 										) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_umum tt
-									LEFT JOIN panel_utsman.siswa s
+										{$this->secondary_db}.transaksi_tabungan_umum tt
+									LEFT JOIN {$this->secondary_db}.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.s.nis = {$this->secondary_db}.tt.nis_siswa
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nis_siswa = $nis AND
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
+										WHERE {$this->secondary_db}.tt.nis_siswa = $nis AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_qurban AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_qurban AS nomor_transaksi,
-										panel_utsman.tt.nis_siswa,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.s.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										{$this->secondary_db}.tt.id_transaksi_qurban AS id_transaksi,
+										{$this->secondary_db}.tt.nomor_transaksi_qurban AS nomor_transaksi,
+										{$this->secondary_db}.tt.nis_siswa,
+										{$this->secondary_db}.tt.id_tingkat,
+										{$this->secondary_db}.s.nama_lengkap,
+										{$this->default_db}.ak.nama_akun,
+										{$this->default_db}.ak.email_akun,
+										{$this->secondary_db}.tt.saldo,
+										{$this->secondary_db}.tt.jenis_tabungan,
+										{$this->secondary_db}.tt.catatan,
+										{$this->secondary_db}.tt.nominal,
+										{$this->secondary_db}.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										{$this->secondary_db}.tt.th_ajaran,
+										{$this->secondary_db}.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											{$this->secondary_db}.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_qurban vmax
+											{$this->secondary_db}.view_max_id_transaction_qurban vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_qurban = panel_utsman.vmax.id_max
+											{$this->secondary_db}.tt.id_transaksi_qurban = {$this->secondary_db}.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_qurban tt
-									LEFT JOIN panel_utsman.siswa s
+										{$this->secondary_db}.transaksi_tabungan_qurban tt
+									LEFT JOIN {$this->secondary_db}.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.s.nis = {$this->secondary_db}.tt.nis_siswa
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nis_siswa = $nis AND
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
+										WHERE {$this->secondary_db}.tt.nis_siswa = $nis AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_wisata AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_wisata AS nomor_transaksi,
-										panel_utsman.tt.nis_siswa,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.s.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										{$this->secondary_db}.tt.id_transaksi_wisata AS id_transaksi,
+										{$this->secondary_db}.tt.nomor_transaksi_wisata AS nomor_transaksi,
+										{$this->secondary_db}.tt.nis_siswa,
+										{$this->secondary_db}.tt.id_tingkat,
+										{$this->secondary_db}.s.nama_lengkap,
+										{$this->default_db}.ak.nama_akun,
+										{$this->default_db}.ak.email_akun,
+										{$this->secondary_db}.tt.saldo,
+										{$this->secondary_db}.tt.jenis_tabungan,
+										{$this->secondary_db}.tt.catatan,
+										{$this->secondary_db}.tt.nominal,
+										{$this->secondary_db}.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										{$this->secondary_db}.tt.th_ajaran,
+										{$this->secondary_db}.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											{$this->secondary_db}.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_tour vmax
+											{$this->secondary_db}.view_max_id_transaction_tour vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_wisata = panel_utsman.vmax.id_max
+											{$this->secondary_db}.tt.id_transaksi_wisata = {$this->secondary_db}.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_wisata tt
-									LEFT JOIN panel_utsman.siswa s
+										{$this->secondary_db}.transaksi_tabungan_wisata tt
+									LEFT JOIN {$this->secondary_db}.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.s.nis = {$this->secondary_db}.tt.nis_siswa
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nis_siswa = $nis AND
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
+										WHERE {$this->secondary_db}.tt.nis_siswa = $nis AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
@@ -1182,157 +1182,157 @@ class SavingsModel extends CI_Model
 									FROM
 										(
 										SELECT
-											panel_utsman.tt.id_transaksi_umum_pegawai AS id_transaksi,
-											panel_utsman.tt.nomor_transaksi_umum AS nomor_transaksi,
-											panel_utsman.tt.nip_pegawai,
-											panel_utsman.tt.id_tingkat,
-											panel_utsman.p.nama_lengkap,
-											keuangan_utsman.ak.nama_akun,
-											keuangan_utsman.ak.email_akun,
-											panel_utsman.tt.saldo,
-											panel_utsman.tt.jenis_tabungan,
-											panel_utsman.tt.catatan,
-											panel_utsman.tt.nominal,
-											panel_utsman.tt.status_kredit_debet,
+											{$this->secondary_db}.tt.id_transaksi_umum_pegawai AS id_transaksi,
+											{$this->secondary_db}.tt.nomor_transaksi_umum AS nomor_transaksi,
+											{$this->secondary_db}.tt.nip_pegawai,
+											{$this->secondary_db}.tt.id_tingkat,
+											{$this->secondary_db}.p.nama_lengkap,
+											{$this->default_db}.ak.nama_akun,
+											{$this->default_db}.ak.email_akun,
+											{$this->secondary_db}.tt.saldo,
+											{$this->secondary_db}.tt.jenis_tabungan,
+											{$this->secondary_db}.tt.catatan,
+											{$this->secondary_db}.tt.nominal,
+											{$this->secondary_db}.tt.status_kredit_debet,
 											CONCAT(
-												panel_utsman.ta.tahun_awal,
+												{$this->secondary_db}.ta.tahun_awal,
 												'/',
-												panel_utsman.ta.tahun_akhir
+												{$this->secondary_db}.ta.tahun_akhir
 											) AS tahun_ajaran,
-											panel_utsman.tt.th_ajaran,
-											panel_utsman.tt.tanggal_transaksi,
+											{$this->secondary_db}.tt.th_ajaran,
+											{$this->secondary_db}.tt.tanggal_transaksi,
 											DATE_FORMAT(
-												panel_utsman.tt.waktu_transaksi,
+												{$this->secondary_db}.tt.waktu_transaksi,
 												'%d/%m/%Y %H:%i:%s'
 											) AS waktu_transaksi,
 											CASE WHEN EXISTS(
 											SELECT
-												panel_utsman.vmax.id_max
+												{$this->secondary_db}.vmax.id_max
 											FROM
-												panel_utsman.view_max_id_transaction_general_employee vmax
+												{$this->secondary_db}.view_max_id_transaction_general_employee vmax
 											WHERE
-												panel_utsman.tt.id_transaksi_umum_pegawai = panel_utsman.vmax.id_max
+												{$this->secondary_db}.tt.id_transaksi_umum_pegawai = {$this->secondary_db}.vmax.id_max
 										) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_umum_pegawai tt
-									LEFT JOIN panel_utsman.pegawai p
+										{$this->secondary_db}.transaksi_tabungan_umum_pegawai tt
+									LEFT JOIN {$this->secondary_db}.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.p.nip = {$this->secondary_db}.tt.nip_pegawai
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nip_pegawai = $nip AND
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
+										WHERE {$this->secondary_db}.tt.nip_pegawai = $nip AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_qurban_pegawai AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_qurban AS nomor_transaksi,
-										panel_utsman.tt.nip_pegawai,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.p.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										{$this->secondary_db}.tt.id_transaksi_qurban_pegawai AS id_transaksi,
+										{$this->secondary_db}.tt.nomor_transaksi_qurban AS nomor_transaksi,
+										{$this->secondary_db}.tt.nip_pegawai,
+										{$this->secondary_db}.tt.id_tingkat,
+										{$this->secondary_db}.p.nama_lengkap,
+										{$this->default_db}.ak.nama_akun,
+										{$this->default_db}.ak.email_akun,
+										{$this->secondary_db}.tt.saldo,
+										{$this->secondary_db}.tt.jenis_tabungan,
+										{$this->secondary_db}.tt.catatan,
+										{$this->secondary_db}.tt.nominal,
+										{$this->secondary_db}.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										{$this->secondary_db}.tt.th_ajaran,
+										{$this->secondary_db}.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											{$this->secondary_db}.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_qurban_employee vmax
+											{$this->secondary_db}.view_max_id_transaction_qurban_employee vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_qurban_pegawai = panel_utsman.vmax.id_max
+											{$this->secondary_db}.tt.id_transaksi_qurban_pegawai = {$this->secondary_db}.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_qurban_pegawai tt
-									LEFT JOIN panel_utsman.pegawai p
+										{$this->secondary_db}.transaksi_tabungan_qurban_pegawai tt
+									LEFT JOIN {$this->secondary_db}.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.p.nip = {$this->secondary_db}.tt.nip_pegawai
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nip_pegawai = $nip AND
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
+										WHERE {$this->secondary_db}.tt.nip_pegawai = $nip AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 										)
 									UNION ALL
 									SELECT
-										panel_utsman.tt.id_transaksi_tht_pegawai AS id_transaksi,
-										panel_utsman.tt.nomor_transaksi_tht AS nomor_transaksi,
-										panel_utsman.tt.nip_pegawai,
-										panel_utsman.tt.id_tingkat,
-										panel_utsman.p.nama_lengkap,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.tt.saldo,
-										panel_utsman.tt.jenis_tabungan,
-										panel_utsman.tt.catatan,
-										panel_utsman.tt.nominal,
-										panel_utsman.tt.status_kredit_debet,
+										{$this->secondary_db}.tt.id_transaksi_tht_pegawai AS id_transaksi,
+										{$this->secondary_db}.tt.nomor_transaksi_tht AS nomor_transaksi,
+										{$this->secondary_db}.tt.nip_pegawai,
+										{$this->secondary_db}.tt.id_tingkat,
+										{$this->secondary_db}.p.nama_lengkap,
+										{$this->default_db}.ak.nama_akun,
+										{$this->default_db}.ak.email_akun,
+										{$this->secondary_db}.tt.saldo,
+										{$this->secondary_db}.tt.jenis_tabungan,
+										{$this->secondary_db}.tt.catatan,
+										{$this->secondary_db}.tt.nominal,
+										{$this->secondary_db}.tt.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.tt.th_ajaran,
-										panel_utsman.tt.tanggal_transaksi,
+										{$this->secondary_db}.tt.th_ajaran,
+										{$this->secondary_db}.tt.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											{$this->secondary_db}.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_tht_employee vmax
+											{$this->secondary_db}.view_max_id_transaction_tht_employee vmax
 										WHERE
-											panel_utsman.tt.id_transaksi_tht_pegawai = panel_utsman.vmax.id_max
+											{$this->secondary_db}.tt.id_transaksi_tht_pegawai = {$this->secondary_db}.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_tht_pegawai tt
-									LEFT JOIN panel_utsman.pegawai p
+										{$this->secondary_db}.transaksi_tabungan_tht_pegawai tt
+									LEFT JOIN {$this->secondary_db}.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.p.nip = {$this->secondary_db}.tt.nip_pegawai
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
-										WHERE panel_utsman.tt.nip_pegawai = $nip AND
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
+										WHERE {$this->secondary_db}.tt.nip_pegawai = $nip AND
 										(
 											DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
@@ -1347,70 +1347,70 @@ class SavingsModel extends CI_Model
     public function get_joint_transaction_recap_by_acc_number($norek = '', $start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.ttb.id_transaksi_bersama,
-										panel_utsman.ttb.id_tingkat,
-										panel_utsman.ttb.nomor_rekening_bersama,
-										panel_utsman.ttb.nomor_transaksi_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.jenis_tabungan,
-										COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-										COALESCE(NULLIF(panel_utsman.s.nomor_handphone, ''), panel_utsman.p.nomor_hp) AS nomor_handphone,
-										COALESCE(NULLIF(panel_utsman.s.email, ''), panel_utsman.p.email) AS email,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.ttb.saldo,
-										panel_utsman.ttb.catatan,
-										panel_utsman.ttb.nominal,
-										panel_utsman.ttb.status_kredit_debet,
+										{$this->secondary_db}.ttb.id_transaksi_bersama,
+										{$this->secondary_db}.ttb.id_tingkat,
+										{$this->secondary_db}.ttb.nomor_rekening_bersama,
+										{$this->secondary_db}.ttb.nomor_transaksi_bersama,
+										{$this->secondary_db}.tb.nama_tabungan_bersama,
+										{$this->secondary_db}.tb.jenis_tabungan,
+										COALESCE(NULLIF({$this->secondary_db}.s.nama_wali, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_wali,
+										COALESCE(NULLIF({$this->secondary_db}.s.nama_lengkap, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_lengkap,
+										COALESCE(NULLIF({$this->secondary_db}.s.nomor_handphone, ''), {$this->secondary_db}.p.nomor_hp) AS nomor_handphone,
+										COALESCE(NULLIF({$this->secondary_db}.s.email, ''), {$this->secondary_db}.p.email) AS email,
+										{$this->default_db}.ak.nama_akun,
+										{$this->default_db}.ak.email_akun,
+										{$this->secondary_db}.ttb.saldo,
+										{$this->secondary_db}.ttb.catatan,
+										{$this->secondary_db}.ttb.nominal,
+										{$this->secondary_db}.ttb.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.ttb.th_ajaran,
-										panel_utsman.ttb.tanggal_transaksi,
+										{$this->secondary_db}.ttb.th_ajaran,
+										{$this->secondary_db}.ttb.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											{$this->secondary_db}.ttb.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											{$this->secondary_db}.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_joint vmax
+											{$this->secondary_db}.view_max_id_transaction_joint vmax
 										WHERE
-											panel_utsman.ttb.id_transaksi_bersama = panel_utsman.vmax.id_max
+											{$this->secondary_db}.ttb.id_transaksi_bersama = {$this->secondary_db}.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_bersama ttb
-									LEFT JOIN panel_utsman.tabungan_bersama tb
+										{$this->secondary_db}.transaksi_tabungan_bersama ttb
+									LEFT JOIN {$this->secondary_db}.tabungan_bersama tb
 									ON
-										panel_utsman.tb.nomor_rekening_bersama = panel_utsman.ttb.nomor_rekening_bersama
-									LEFT JOIN panel_utsman.siswa s
+										{$this->secondary_db}.tb.nomor_rekening_bersama = {$this->secondary_db}.ttb.nomor_rekening_bersama
+									LEFT JOIN {$this->secondary_db}.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										{$this->secondary_db}.s.nis = {$this->secondary_db}.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.pegawai p
+										{$this->secondary_db}.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.p.nip = {$this->secondary_db}.tb.id_penanggung_jawab
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.ttb.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.ttb.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.ttb.id_pegawai
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.ttb.id_pegawai
 									WHERE
-									panel_utsman.tb.nomor_rekening_bersama = $norek AND
+									{$this->secondary_db}.tb.nomor_rekening_bersama = $norek AND
 										(
 											DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											{$this->secondary_db}.ttb.waktu_transaksi,
 											'%Y-%m-%d'
 											) BETWEEN '$start_date' AND '$end_date'
 										)
 									ORDER BY
-										panel_utsman.ttb.id_transaksi_bersama
+										{$this->secondary_db}.ttb.id_transaksi_bersama
 									DESC
 										");
         return $sql->result();
@@ -1419,33 +1419,33 @@ class SavingsModel extends CI_Model
     public function get_all_import_personal_customer()
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.n.id_nasabah,
-										panel_utsman.n.nis,
-										panel_utsman.n.nama_nasabah,
-										panel_utsman.n.tanggal_transaksi,
-										panel_utsman.n.tingkat,
-										panel_utsman.n.nama_wali,
-										panel_utsman.n.nomor_hp_wali,
-										panel_utsman.n.email_nasabah,
-										panel_utsman.n.saldo_umum,
-										panel_utsman.n.saldo_qurban,
-										panel_utsman.n.saldo_wisata,
-										panel_utsman.n.status_nasabah,
-										panel_utsman.n.status_nama_nasabah,
-										panel_utsman.n.tahun_ajaran,
-										panel_utsman.n.status_siswa,
+										{$this->secondary_db}.n.id_nasabah,
+										{$this->secondary_db}.n.nis,
+										{$this->secondary_db}.n.nama_nasabah,
+										{$this->secondary_db}.n.tanggal_transaksi,
+										{$this->secondary_db}.n.tingkat,
+										{$this->secondary_db}.n.nama_wali,
+										{$this->secondary_db}.n.nomor_hp_wali,
+										{$this->secondary_db}.n.email_nasabah,
+										{$this->secondary_db}.n.saldo_umum,
+										{$this->secondary_db}.n.saldo_qurban,
+										{$this->secondary_db}.n.saldo_wisata,
+										{$this->secondary_db}.n.status_nasabah,
+										{$this->secondary_db}.n.status_nama_nasabah,
+										{$this->secondary_db}.n.tahun_ajaran,
+										{$this->secondary_db}.n.status_siswa,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     	) AS nama_tahun_ajaran
 									FROM
-										panel_utsman.import_nasabah_personal n
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.import_nasabah_personal n
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.n.tahun_ajaran
+                                    	{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.n.tahun_ajaran
 									ORDER BY
-										panel_utsman.n.id_nasabah
+										{$this->secondary_db}.n.id_nasabah
 									ASC");
         return $sql->result();
     }
@@ -1453,33 +1453,33 @@ class SavingsModel extends CI_Model
     public function get_all_import_employee_customer()
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.n.id_nasabah,
-										panel_utsman.n.nip,
-										panel_utsman.n.nama_nasabah,
-										panel_utsman.n.tanggal_transaksi,
-										panel_utsman.n.tingkat,
-										panel_utsman.n.jenis_kelamin,
-										panel_utsman.n.nomor_hp_pegawai,
-										panel_utsman.n.email_nasabah,
-										panel_utsman.n.saldo_umum,
-										panel_utsman.n.saldo_qurban,
-										panel_utsman.n.saldo_tht,
-										panel_utsman.n.status_pegawai,
-										panel_utsman.n.status_nasabah,
-										panel_utsman.n.status_nama_nasabah,
-										panel_utsman.n.tahun_ajaran,
+										{$this->secondary_db}.n.id_nasabah,
+										{$this->secondary_db}.n.nip,
+										{$this->secondary_db}.n.nama_nasabah,
+										{$this->secondary_db}.n.tanggal_transaksi,
+										{$this->secondary_db}.n.tingkat,
+										{$this->secondary_db}.n.jenis_kelamin,
+										{$this->secondary_db}.n.nomor_hp_pegawai,
+										{$this->secondary_db}.n.email_nasabah,
+										{$this->secondary_db}.n.saldo_umum,
+										{$this->secondary_db}.n.saldo_qurban,
+										{$this->secondary_db}.n.saldo_tht,
+										{$this->secondary_db}.n.status_pegawai,
+										{$this->secondary_db}.n.status_nasabah,
+										{$this->secondary_db}.n.status_nama_nasabah,
+										{$this->secondary_db}.n.tahun_ajaran,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     	) AS nama_tahun_ajaran
 									FROM
-										panel_utsman.import_nasabah_pegawai n
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.import_nasabah_pegawai n
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.n.tahun_ajaran
+                                    	{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.n.tahun_ajaran
 									ORDER BY
-										panel_utsman.n.id_nasabah
+										{$this->secondary_db}.n.id_nasabah
 									ASC");
         return $sql->result();
     }
@@ -1487,160 +1487,160 @@ class SavingsModel extends CI_Model
     public function get_all_personal_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.s.id_siswa,
-										panel_utsman.s.nis,
-										panel_utsman.s.level_tingkat,
-										panel_utsman.s.nama_lengkap,
-										panel_utsman.s.jenis_kelamin,
-										panel_utsman.s.nomor_handphone,
-										panel_utsman.s.email,
-										panel_utsman.s.jalur,
-										panel_utsman.s.th_ajaran,
-										panel_utsman.s.status_siswa,
+										{$this->secondary_db}.s.id_siswa,
+										{$this->secondary_db}.s.nis,
+										{$this->secondary_db}.s.level_tingkat,
+										{$this->secondary_db}.s.nama_lengkap,
+										{$this->secondary_db}.s.jenis_kelamin,
+										{$this->secondary_db}.s.nomor_handphone,
+										{$this->secondary_db}.s.email,
+										{$this->secondary_db}.s.jalur,
+										{$this->secondary_db}.s.th_ajaran,
+										{$this->secondary_db}.s.status_siswa,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttu.nominal),
+											COALESCE(SUM({$this->secondary_db}.ttu.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_umum ttu
+											{$this->secondary_db}.transaksi_tabungan_umum ttu
 										WHERE
-											panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 1 AND(
+											{$this->secondary_db}.ttu.nis_siswa = {$this->secondary_db}.s.nis AND {$this->secondary_db}.ttu.status_kredit_debet = 1 AND(
 											DATE_FORMAT(
-											panel_utsman.ttu.waktu_transaksi,
+											{$this->secondary_db}.ttu.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
                                             )
 										) AS kredit_umum,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttu.nominal),
+												COALESCE(SUM({$this->secondary_db}.ttu.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_umum ttu
+												{$this->secondary_db}.transaksi_tabungan_umum ttu
 											WHERE
-												panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttu.status_kredit_debet = 2 AND(
+												{$this->secondary_db}.ttu.nis_siswa = {$this->secondary_db}.s.nis AND {$this->secondary_db}.ttu.status_kredit_debet = 2 AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    {$this->secondary_db}.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_umum,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttu.saldo, 0)
-											FROM panel_utsman.transaksi_tabungan_umum ttu
+												COALESCE({$this->secondary_db}.ttu.saldo, 0)
+											FROM {$this->secondary_db}.transaksi_tabungan_umum ttu
 											WHERE
-												panel_utsman.ttu.nis_siswa = panel_utsman.s.nis AND(
+												{$this->secondary_db}.ttu.nis_siswa = {$this->secondary_db}.s.nis AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    {$this->secondary_db}.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttu.id_transaksi_umum
+												{$this->secondary_db}.ttu.id_transaksi_umum
 											DESC LIMIT 1
 										) AS saldo_umum,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttq.nominal),
+											COALESCE(SUM({$this->secondary_db}.ttq.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_qurban ttq
+											{$this->secondary_db}.transaksi_tabungan_qurban ttq
 										WHERE
-											panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND ttq.status_kredit_debet = 1 AND(
+											{$this->secondary_db}.ttq.nis_siswa = {$this->secondary_db}.s.nis AND ttq.status_kredit_debet = 1 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttq.waktu_transaksi,
+                                                {$this->secondary_db}.ttq.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS kredit_qurban,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttq.nominal),
+												COALESCE(SUM({$this->secondary_db}.ttq.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_qurban ttq
+												{$this->secondary_db}.transaksi_tabungan_qurban ttq
 											WHERE
-												panel_utsman.ttq.nis_siswa = s.nis AND panel_utsman.ttq.status_kredit_debet = 2 AND(
+												{$this->secondary_db}.ttq.nis_siswa = s.nis AND {$this->secondary_db}.ttq.status_kredit_debet = 2 AND(
 												DATE_FORMAT(
-											    panel_utsman.ttq.waktu_transaksi,
+											    {$this->secondary_db}.ttq.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS debet_qurban,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttq.saldo, 0)
+												COALESCE({$this->secondary_db}.ttq.saldo, 0)
 											FROM
-												panel_utsman.transaksi_tabungan_qurban ttq
+												{$this->secondary_db}.transaksi_tabungan_qurban ttq
 											WHERE
-												panel_utsman.ttq.nis_siswa = panel_utsman.s.nis AND(
+												{$this->secondary_db}.ttq.nis_siswa = {$this->secondary_db}.s.nis AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttq.waktu_transaksi,
+                                                    {$this->secondary_db}.ttq.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttq.id_transaksi_qurban
+												{$this->secondary_db}.ttq.id_transaksi_qurban
 											DESC LIMIT 1
 										) AS saldo_qurban,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttw.nominal),
+											COALESCE(SUM({$this->secondary_db}.ttw.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_wisata ttw
+											{$this->secondary_db}.transaksi_tabungan_wisata ttw
 										WHERE
-											panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND panel_utsman.ttw.status_kredit_debet = 1 AND(
+											{$this->secondary_db}.ttw.nis_siswa = {$this->secondary_db}.s.nis AND {$this->secondary_db}.ttw.status_kredit_debet = 1 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttw.waktu_transaksi,
+                                                {$this->secondary_db}.ttw.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 										) AS kredit_wisata,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttw.nominal),
+												COALESCE(SUM({$this->secondary_db}.ttw.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_wisata ttw
+												{$this->secondary_db}.transaksi_tabungan_wisata ttw
 											WHERE
 												ttw.nis_siswa = s.nis AND ttw.status_kredit_debet = 2 AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttw.waktu_transaksi,
+                                                    {$this->secondary_db}.ttw.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_wisata,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttw.saldo, 0)
+												COALESCE({$this->secondary_db}.ttw.saldo, 0)
 											FROM
-												panel_utsman.transaksi_tabungan_wisata ttw
+												{$this->secondary_db}.transaksi_tabungan_wisata ttw
 											WHERE
-												panel_utsman.ttw.nis_siswa = panel_utsman.s.nis AND(
+												{$this->secondary_db}.ttw.nis_siswa = {$this->secondary_db}.s.nis AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttw.waktu_transaksi,
+                                                    {$this->secondary_db}.ttw.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttw.id_transaksi_wisata
+												{$this->secondary_db}.ttw.id_transaksi_wisata
 											DESC LIMIT 1
 										) AS saldo_wisata,
-										panel_utsman.s.nama_wali,
+										{$this->secondary_db}.s.nama_wali,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     	) AS tahun_ajaran
 									FROM
 										siswa s
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.s.th_ajaran
+                                    	{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.s.th_ajaran
 									ORDER BY
-										panel_utsman.s.id_siswa
+										{$this->secondary_db}.s.id_siswa
 									DESC");
         return $sql->result();
     }
@@ -1648,121 +1648,121 @@ class SavingsModel extends CI_Model
     public function get_all_employee_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.p.id_pegawai,
-										panel_utsman.p.id_jabatan,
-										panel_utsman.p.nip,
-										panel_utsman.p.level_tingkat,
-										panel_utsman.p.nama_lengkap,
-										panel_utsman.p.jenis_kelamin,
-										panel_utsman.p.nomor_hp,
-										panel_utsman.p.email,
-										panel_utsman.p.jenis_pegawai,
-										panel_utsman.p.th_ajaran,
-										panel_utsman.jb.id_jabatan,
-										panel_utsman.jb.hasil_nama_jabatan,
+										{$this->secondary_db}.p.id_pegawai,
+										{$this->secondary_db}.p.id_jabatan,
+										{$this->secondary_db}.p.nip,
+										{$this->secondary_db}.p.level_tingkat,
+										{$this->secondary_db}.p.nama_lengkap,
+										{$this->secondary_db}.p.jenis_kelamin,
+										{$this->secondary_db}.p.nomor_hp,
+										{$this->secondary_db}.p.email,
+										{$this->secondary_db}.p.jenis_pegawai,
+										{$this->secondary_db}.p.th_ajaran,
+										{$this->secondary_db}.jb.id_jabatan,
+										{$this->secondary_db}.jb.hasil_nama_jabatan,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttu.nominal),
+											COALESCE(SUM({$this->secondary_db}.ttu.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_umum_pegawai ttu
+											{$this->secondary_db}.transaksi_tabungan_umum_pegawai ttu
 										WHERE
-											panel_utsman.ttu.nip_pegawai = panel_utsman.p.nip AND panel_utsman.ttu.status_kredit_debet = 1 AND(
+											{$this->secondary_db}.ttu.nip_pegawai = {$this->secondary_db}.p.nip AND {$this->secondary_db}.ttu.status_kredit_debet = 1 AND(
 											DATE_FORMAT(
-											panel_utsman.ttu.waktu_transaksi,
+											{$this->secondary_db}.ttu.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
                                             )
 										) AS kredit_umum,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttu.nominal),
+												COALESCE(SUM({$this->secondary_db}.ttu.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_umum_pegawai ttu
+												{$this->secondary_db}.transaksi_tabungan_umum_pegawai ttu
 											WHERE
-												panel_utsman.ttu.nip_pegawai = panel_utsman.p.nip AND panel_utsman.ttu.status_kredit_debet = 2 AND(
+												{$this->secondary_db}.ttu.nip_pegawai = {$this->secondary_db}.p.nip AND {$this->secondary_db}.ttu.status_kredit_debet = 2 AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    {$this->secondary_db}.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_umum,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttu.saldo, 0)
-											FROM panel_utsman.transaksi_tabungan_umum_pegawai ttu
+												COALESCE({$this->secondary_db}.ttu.saldo, 0)
+											FROM {$this->secondary_db}.transaksi_tabungan_umum_pegawai ttu
 											WHERE
-												panel_utsman.ttu.nip_pegawai = panel_utsman.p.nip AND(
+												{$this->secondary_db}.ttu.nip_pegawai = {$this->secondary_db}.p.nip AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttu.waktu_transaksi,
+                                                    {$this->secondary_db}.ttu.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttu.id_transaksi_umum_pegawai
+												{$this->secondary_db}.ttu.id_transaksi_umum_pegawai
 											DESC LIMIT 1
 										) AS saldo_umum,
 
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttt.nominal),
+											COALESCE(SUM({$this->secondary_db}.ttt.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_tht_pegawai ttt
+											{$this->secondary_db}.transaksi_tabungan_tht_pegawai ttt
 										WHERE
-											panel_utsman.ttt.nip_pegawai = panel_utsman.p.nip AND panel_utsman.ttt.status_kredit_debet = 1 AND(
+											{$this->secondary_db}.ttt.nip_pegawai = {$this->secondary_db}.p.nip AND {$this->secondary_db}.ttt.status_kredit_debet = 1 AND(
 											DATE_FORMAT(
-											panel_utsman.ttt.waktu_transaksi,
+											{$this->secondary_db}.ttt.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
                                             )
 										) AS kredit_tht,
 										(
 											SELECT
-												COALESCE(SUM(panel_utsman.ttt.nominal),
+												COALESCE(SUM({$this->secondary_db}.ttt.nominal),
 												0)
 											FROM
-												panel_utsman.transaksi_tabungan_tht_pegawai ttt
+												{$this->secondary_db}.transaksi_tabungan_tht_pegawai ttt
 											WHERE
-												panel_utsman.ttt.nip_pegawai = panel_utsman.p.nip AND panel_utsman.ttt.status_kredit_debet = 2 AND(
+												{$this->secondary_db}.ttt.nip_pegawai = {$this->secondary_db}.p.nip AND {$this->secondary_db}.ttt.status_kredit_debet = 2 AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttt.waktu_transaksi,
+                                                    {$this->secondary_db}.ttt.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 										) AS debet_umum,
 										(
 											SELECT
-												COALESCE(panel_utsman.ttt.saldo, 0)
-											FROM panel_utsman.transaksi_tabungan_tht_pegawai ttt
+												COALESCE({$this->secondary_db}.ttt.saldo, 0)
+											FROM {$this->secondary_db}.transaksi_tabungan_tht_pegawai ttt
 											WHERE
-												panel_utsman.ttt.nip_pegawai = panel_utsman.p.nip AND(
+												{$this->secondary_db}.ttt.nip_pegawai = {$this->secondary_db}.p.nip AND(
 													DATE_FORMAT(
-                                                    panel_utsman.ttt.waktu_transaksi,
+                                                    {$this->secondary_db}.ttt.waktu_transaksi,
                                                     '%Y-%m-%d'
                                                     ) BETWEEN '$start_date' AND '$end_date'
 												)
 											ORDER BY
-												panel_utsman.ttt.id_transaksi_tht_pegawai
+												{$this->secondary_db}.ttt.id_transaksi_tht_pegawai
 											DESC LIMIT 1
 										) AS saldo_tht,
 										CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     	) AS tahun_ajaran
 									FROM
 										pegawai p
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 	ON
-                                    	panel_utsman.ta.id_tahun_ajaran = panel_utsman.p.th_ajaran
-									LEFT JOIN panel_utsman.jabatan jb
+                                    	{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.p.th_ajaran
+									LEFT JOIN {$this->secondary_db}.jabatan jb
                                 	ON
-                                    	panel_utsman.jb.id_jabatan = panel_utsman.p.id_jabatan
+                                    	{$this->secondary_db}.jb.id_jabatan = {$this->secondary_db}.p.id_jabatan
 									WHERE p.level_tingkat != '0'
 									ORDER BY
-										panel_utsman.p.id_pegawai
+										{$this->secondary_db}.p.id_pegawai
 									DESC");
         return $sql->result();
     }
@@ -1770,78 +1770,78 @@ class SavingsModel extends CI_Model
     public function get_all_import_joint_customer()
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.tb.id_nasabah_bersama,
-										panel_utsman.tb.id_penanggung_jawab,
-										panel_utsman.tb.nomor_rekening_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.tingkat,
-										panel_utsman.tb.tahun_ajaran,
-										panel_utsman.tb.nama_wali,
-										panel_utsman.tb.jenis_tabungan,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.saldo_bersama,
-										panel_utsman.tb.nomor_hp_wali,
-										panel_utsman.tb.tanggal_transaksi,
-										panel_utsman.tb.status_nasabah_bersama,
-										panel_utsman.tb.status_penanggung_jawab,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,  -- Use COALESCE and NULLIF to get the right name
+										{$this->secondary_db}.tb.id_nasabah_bersama,
+										{$this->secondary_db}.tb.id_penanggung_jawab,
+										{$this->secondary_db}.tb.nomor_rekening_bersama,
+										{$this->secondary_db}.tb.nama_tabungan_bersama,
+										{$this->secondary_db}.tb.tingkat,
+										{$this->secondary_db}.tb.tahun_ajaran,
+										{$this->secondary_db}.tb.nama_wali,
+										{$this->secondary_db}.tb.jenis_tabungan,
+										{$this->secondary_db}.tb.nama_tabungan_bersama,
+										{$this->secondary_db}.tb.saldo_bersama,
+										{$this->secondary_db}.tb.nomor_hp_wali,
+										{$this->secondary_db}.tb.tanggal_transaksi,
+										{$this->secondary_db}.tb.status_nasabah_bersama,
+										{$this->secondary_db}.tb.status_penanggung_jawab,
+										COALESCE(NULLIF({$this->secondary_db}.s.nama_lengkap, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_lengkap,  -- Use COALESCE and NULLIF to get the right name
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS nama_tahun_ajaran
 									FROM
-										panel_utsman.import_nasabah_bersama tb
+										{$this->secondary_db}.import_nasabah_bersama tb
 									LEFT JOIN
-										panel_utsman.siswa s ON panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										{$this->secondary_db}.siswa s ON {$this->secondary_db}.s.nis = {$this->secondary_db}.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.tahun_ajaran ta ON panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.tahun_ajaran
+										{$this->secondary_db}.tahun_ajaran ta ON {$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tb.tahun_ajaran
 									LEFT JOIN
-										panel_utsman.pegawai p ON panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab  -- Joining pegawai to get employee name
+										{$this->secondary_db}.pegawai p ON {$this->secondary_db}.p.nip = {$this->secondary_db}.tb.id_penanggung_jawab  -- Joining pegawai to get employee name
 									ORDER BY
-										panel_utsman.tb.id_nasabah_bersama ASC");
+										{$this->secondary_db}.tb.id_nasabah_bersama ASC");
         return $sql->result();
     }
 
     public function get_all_joint_customer($start_date = '', $end_date = '')
     {
         $sql = $this->db2->query("SELECT
-										panel_utsman.tb.id_tabungan_bersama,
-										panel_utsman.tb.id_penanggung_jawab,
-										panel_utsman.tb.nomor_rekening_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.keterangan_tabungan_bersama,
-										panel_utsman.tb.id_tingkat,
-										panel_utsman.tb.jenis_tabungan,
-										panel_utsman.tb.id_th_ajaran,
-										COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-										COALESCE(NULLIF(panel_utsman.s.nomor_handphone, ''), panel_utsman.p.nomor_hp) AS nomor_handphone,
-										COALESCE(NULLIF(panel_utsman.s.email, ''), panel_utsman.p.email) AS email,
+										{$this->secondary_db}.tb.id_tabungan_bersama,
+										{$this->secondary_db}.tb.id_penanggung_jawab,
+										{$this->secondary_db}.tb.nomor_rekening_bersama,
+										{$this->secondary_db}.tb.nama_tabungan_bersama,
+										{$this->secondary_db}.tb.keterangan_tabungan_bersama,
+										{$this->secondary_db}.tb.id_tingkat,
+										{$this->secondary_db}.tb.jenis_tabungan,
+										{$this->secondary_db}.tb.id_th_ajaran,
+										COALESCE(NULLIF({$this->secondary_db}.s.nama_wali, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_wali,
+										COALESCE(NULLIF({$this->secondary_db}.s.nama_lengkap, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_lengkap,
+										COALESCE(NULLIF({$this->secondary_db}.s.nomor_handphone, ''), {$this->secondary_db}.p.nomor_hp) AS nomor_handphone,
+										COALESCE(NULLIF({$this->secondary_db}.s.email, ''), {$this->secondary_db}.p.email) AS email,
 										(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttb.nominal),
+											COALESCE(SUM({$this->secondary_db}.ttb.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_bersama ttb
+											{$this->secondary_db}.transaksi_tabungan_bersama ttb
 										WHERE
-											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 1 AND(
+											{$this->secondary_db}.ttb.nomor_rekening_bersama = {$this->secondary_db}.tb.nomor_rekening_bersama AND {$this->secondary_db}.ttb.status_kredit_debet = 1 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttb.waktu_transaksi,
+                                                {$this->secondary_db}.ttb.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
 									) AS kredit_bersama,
 									(
 										SELECT
-											COALESCE(SUM(panel_utsman.ttb.nominal),
+											COALESCE(SUM({$this->secondary_db}.ttb.nominal),
 											0)
 										FROM
-											panel_utsman.transaksi_tabungan_bersama ttb
+											{$this->secondary_db}.transaksi_tabungan_bersama ttb
 										WHERE
-											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND panel_utsman.ttb.status_kredit_debet = 2 AND(
+											{$this->secondary_db}.ttb.nomor_rekening_bersama = {$this->secondary_db}.tb.nomor_rekening_bersama AND {$this->secondary_db}.ttb.status_kredit_debet = 2 AND(
 												DATE_FORMAT(
-                                                panel_utsman.ttb.waktu_transaksi,
+                                                {$this->secondary_db}.ttb.waktu_transaksi,
                                                 '%Y-%m-%d'
                                                 ) BETWEEN '$start_date' AND '$end_date'
 											)
@@ -1850,38 +1850,38 @@ class SavingsModel extends CI_Model
 										SELECT
 											COALESCE(ttb.nominal, 0)
 										FROM
-											panel_utsman.transaksi_tabungan_bersama ttb
+											{$this->secondary_db}.transaksi_tabungan_bersama ttb
 										WHERE
-											panel_utsman.ttb.nomor_rekening_bersama = panel_utsman.tb.nomor_rekening_bersama AND(
+											{$this->secondary_db}.ttb.nomor_rekening_bersama = {$this->secondary_db}.tb.nomor_rekening_bersama AND(
 												DATE_FORMAT(
-													panel_utsman.ttb.waktu_transaksi,
+													{$this->secondary_db}.ttb.waktu_transaksi,
 													'%Y-%m-%d'
 												) BETWEEN '$start_date' AND '$end_date'
 											)
 										ORDER BY
-											panel_utsman.ttb.id_transaksi_bersama
+											{$this->secondary_db}.ttb.id_transaksi_bersama
 										DESC
 									LIMIT 1
 									) AS saldo_bersama,
 									CONCAT(
-										panel_utsman.ta.tahun_awal,
+										{$this->secondary_db}.ta.tahun_awal,
 										'/',
-										panel_utsman.ta.tahun_akhir
+										{$this->secondary_db}.ta.tahun_akhir
 									) AS tahun_ajaran
 									FROM
 										tabungan_bersama tb
-									LEFT JOIN panel_utsman.siswa s
+									LEFT JOIN {$this->secondary_db}.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										{$this->secondary_db}.s.nis = {$this->secondary_db}.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.pegawai p
+										{$this->secondary_db}.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.p.nip = {$this->secondary_db}.tb.id_penanggung_jawab
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.tb.id_th_ajaran
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tb.id_th_ajaran
 									ORDER BY
-										panel_utsman.tb.id_tabungan_bersama
+										{$this->secondary_db}.tb.id_tabungan_bersama
 									DESC");
         return $sql->result();
     }
@@ -1889,55 +1889,55 @@ class SavingsModel extends CI_Model
     public function get_all_general_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_umum,
-									panel_utsman.tt.nomor_transaksi_umum,
-                                    panel_utsman.tt.nis_siswa,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    {$this->secondary_db}.tt.id_transaksi_umum,
+									{$this->secondary_db}.tt.nomor_transaksi_umum,
+                                    {$this->secondary_db}.tt.nis_siswa,
+									{$this->secondary_db}.tt.id_tingkat,
+                                    {$this->secondary_db}.s.nama_lengkap,
+                                    {$this->default_db}.ak.nama_akun,
+                                    {$this->default_db}.ak.email_akun,
+                                    {$this->secondary_db}.tt.saldo,
+									{$this->secondary_db}.tt.jenis_tabungan,
+                                    {$this->secondary_db}.tt.catatan,
+                                    {$this->secondary_db}.tt.nominal,
+                                    {$this->secondary_db}.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									{$this->secondary_db}.tt.th_ajaran,
+                                    {$this->secondary_db}.tt.tanggal_transaksi,
+                                    DATE_FORMAT({$this->secondary_db}.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_general vmax
+                                        {$this->secondary_db}.view_max_id_transaction_general vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_umum = panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.tt.id_transaksi_umum = {$this->secondary_db}.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_umum tt
-                                LEFT JOIN panel_utsman.siswa s
+                                    {$this->secondary_db}.transaksi_tabungan_umum tt
+                                LEFT JOIN {$this->secondary_db}.siswa s
                                 ON
-                                    panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    {$this->secondary_db}.s.nis = {$this->secondary_db}.tt.nis_siswa
+                                LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    {$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+                                LEFT JOIN {$this->default_db}.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    {$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_umum
+                                    {$this->secondary_db}.tt.id_transaksi_umum
                                 DESC");
         return $sql->result();
     }
@@ -1945,55 +1945,55 @@ class SavingsModel extends CI_Model
     public function get_all_general_transaction_savings_employee($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_umum_pegawai,
-									panel_utsman.tt.nomor_transaksi_umum,
-                                    panel_utsman.tt.nip_pegawai,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.p.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    {$this->secondary_db}.tt.id_transaksi_umum_pegawai,
+									{$this->secondary_db}.tt.nomor_transaksi_umum,
+                                    {$this->secondary_db}.tt.nip_pegawai,
+									{$this->secondary_db}.tt.id_tingkat,
+                                    {$this->secondary_db}.p.nama_lengkap,
+                                    {$this->default_db}.ak.nama_akun,
+                                    {$this->default_db}.ak.email_akun,
+                                    {$this->secondary_db}.tt.saldo,
+									{$this->secondary_db}.tt.jenis_tabungan,
+                                    {$this->secondary_db}.tt.catatan,
+                                    {$this->secondary_db}.tt.nominal,
+                                    {$this->secondary_db}.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									{$this->secondary_db}.tt.th_ajaran,
+                                    {$this->secondary_db}.tt.tanggal_transaksi,
+                                    DATE_FORMAT({$this->secondary_db}.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_general_employee vmax
+                                        {$this->secondary_db}.view_max_id_transaction_general_employee vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_umum_pegawai = panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.tt.id_transaksi_umum_pegawai = {$this->secondary_db}.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_umum_pegawai tt
-                                LEFT JOIN panel_utsman.pegawai p
+                                    {$this->secondary_db}.transaksi_tabungan_umum_pegawai tt
+                                LEFT JOIN {$this->secondary_db}.pegawai p
                                 ON
-                                    panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    {$this->secondary_db}.p.nip = {$this->secondary_db}.tt.nip_pegawai
+                                LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    {$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+                                LEFT JOIN {$this->default_db}.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    {$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_umum_pegawai
+                                    {$this->secondary_db}.tt.id_transaksi_umum_pegawai
                                 DESC");
         return $sql->result();
     }
@@ -2001,55 +2001,55 @@ class SavingsModel extends CI_Model
     public function get_all_qurban_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_qurban,
-									panel_utsman.tt.nomor_transaksi_qurban,
-                                    panel_utsman.tt.nis_siswa,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    {$this->secondary_db}.tt.id_transaksi_qurban,
+									{$this->secondary_db}.tt.nomor_transaksi_qurban,
+                                    {$this->secondary_db}.tt.nis_siswa,
+									{$this->secondary_db}.tt.id_tingkat,
+                                    {$this->secondary_db}.s.nama_lengkap,
+                                    {$this->default_db}.ak.nama_akun,
+                                    {$this->default_db}.ak.email_akun,
+                                    {$this->secondary_db}.tt.saldo,
+									{$this->secondary_db}.tt.jenis_tabungan,
+                                    {$this->secondary_db}.tt.catatan,
+                                    {$this->secondary_db}.tt.nominal,
+                                    {$this->secondary_db}.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									{$this->secondary_db}.tt.th_ajaran,
+                                    {$this->secondary_db}.tt.tanggal_transaksi,
+                                    DATE_FORMAT({$this->secondary_db}.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_qurban vmax
+                                        {$this->secondary_db}.view_max_id_transaction_qurban vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_qurban = panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.tt.id_transaksi_qurban = {$this->secondary_db}.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_qurban tt
-                                LEFT JOIN panel_utsman.siswa s
+                                    {$this->secondary_db}.transaksi_tabungan_qurban tt
+                                LEFT JOIN {$this->secondary_db}.siswa s
                                 ON
-                                    panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    {$this->secondary_db}.s.nis = {$this->secondary_db}.tt.nis_siswa
+                                LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    {$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+                                LEFT JOIN {$this->default_db}.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    {$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_qurban
+                                    {$this->secondary_db}.tt.id_transaksi_qurban
                                 DESC");
         return $sql->result();
     }
@@ -2057,55 +2057,55 @@ class SavingsModel extends CI_Model
     public function get_all_qurban_transaction_savings_employee($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_qurban_pegawai,
-									panel_utsman.tt.nomor_transaksi_qurban,
-                                    panel_utsman.tt.nip_pegawai,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.p.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    {$this->secondary_db}.tt.id_transaksi_qurban_pegawai,
+									{$this->secondary_db}.tt.nomor_transaksi_qurban,
+                                    {$this->secondary_db}.tt.nip_pegawai,
+									{$this->secondary_db}.tt.id_tingkat,
+                                    {$this->secondary_db}.p.nama_lengkap,
+                                    {$this->default_db}.ak.nama_akun,
+                                    {$this->default_db}.ak.email_akun,
+                                    {$this->secondary_db}.tt.saldo,
+									{$this->secondary_db}.tt.jenis_tabungan,
+                                    {$this->secondary_db}.tt.catatan,
+                                    {$this->secondary_db}.tt.nominal,
+                                    {$this->secondary_db}.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									{$this->secondary_db}.tt.th_ajaran,
+                                    {$this->secondary_db}.tt.tanggal_transaksi,
+                                    DATE_FORMAT({$this->secondary_db}.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_qurban_employee vmax
+                                        {$this->secondary_db}.view_max_id_transaction_qurban_employee vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_qurban_pegawai = panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.tt.id_transaksi_qurban_pegawai = {$this->secondary_db}.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_qurban_pegawai tt
-                                LEFT JOIN panel_utsman.pegawai p
+                                    {$this->secondary_db}.transaksi_tabungan_qurban_pegawai tt
+                                LEFT JOIN {$this->secondary_db}.pegawai p
                                 ON
-                                    panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    {$this->secondary_db}.p.nip = {$this->secondary_db}.tt.nip_pegawai
+                                LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    {$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+                                LEFT JOIN {$this->default_db}.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    {$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_qurban_pegawai
+                                    {$this->secondary_db}.tt.id_transaksi_qurban_pegawai
                                 DESC");
         return $sql->result();
     }
@@ -2113,55 +2113,55 @@ class SavingsModel extends CI_Model
     public function get_all_tour_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_wisata,
-									panel_utsman.tt.nomor_transaksi_wisata,
-                                    panel_utsman.tt.nis_siswa,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.s.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    {$this->secondary_db}.tt.id_transaksi_wisata,
+									{$this->secondary_db}.tt.nomor_transaksi_wisata,
+                                    {$this->secondary_db}.tt.nis_siswa,
+									{$this->secondary_db}.tt.id_tingkat,
+                                    {$this->secondary_db}.s.nama_lengkap,
+                                    {$this->default_db}.ak.nama_akun,
+                                    {$this->default_db}.ak.email_akun,
+                                    {$this->secondary_db}.tt.saldo,
+									{$this->secondary_db}.tt.jenis_tabungan,
+                                    {$this->secondary_db}.tt.catatan,
+                                    {$this->secondary_db}.tt.nominal,
+                                    {$this->secondary_db}.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									{$this->secondary_db}.tt.th_ajaran,
+                                    {$this->secondary_db}.tt.tanggal_transaksi,
+                                    DATE_FORMAT({$this->secondary_db}.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_tour vmax
+                                        {$this->secondary_db}.view_max_id_transaction_tour vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_wisata = panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.tt.id_transaksi_wisata = {$this->secondary_db}.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_wisata tt
-                                LEFT JOIN panel_utsman.siswa s
+                                    {$this->secondary_db}.transaksi_tabungan_wisata tt
+                                LEFT JOIN {$this->secondary_db}.siswa s
                                 ON
-                                    panel_utsman.s.nis = panel_utsman.tt.nis_siswa
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    {$this->secondary_db}.s.nis = {$this->secondary_db}.tt.nis_siswa
+                                LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    {$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+                                LEFT JOIN {$this->default_db}.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    {$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_wisata
+                                    {$this->secondary_db}.tt.id_transaksi_wisata
                                 DESC");
         return $sql->result();
     }
@@ -2169,122 +2169,122 @@ class SavingsModel extends CI_Model
     public function get_all_tht_transaction_savings_employee($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-                                    panel_utsman.tt.id_transaksi_tht_pegawai,
-									panel_utsman.tt.nomor_transaksi_tht,
-                                    panel_utsman.tt.nip_pegawai,
-									panel_utsman.tt.id_tingkat,
-                                    panel_utsman.p.nama_lengkap,
-                                    keuangan_utsman.ak.nama_akun,
-                                    keuangan_utsman.ak.email_akun,
-                                    panel_utsman.tt.saldo,
-									panel_utsman.tt.jenis_tabungan,
-                                    panel_utsman.tt.catatan,
-                                    panel_utsman.tt.nominal,
-                                    panel_utsman.tt.status_kredit_debet,
+                                    {$this->secondary_db}.tt.id_transaksi_tht_pegawai,
+									{$this->secondary_db}.tt.nomor_transaksi_tht,
+                                    {$this->secondary_db}.tt.nip_pegawai,
+									{$this->secondary_db}.tt.id_tingkat,
+                                    {$this->secondary_db}.p.nama_lengkap,
+                                    {$this->default_db}.ak.nama_akun,
+                                    {$this->default_db}.ak.email_akun,
+                                    {$this->secondary_db}.tt.saldo,
+									{$this->secondary_db}.tt.jenis_tabungan,
+                                    {$this->secondary_db}.tt.catatan,
+                                    {$this->secondary_db}.tt.nominal,
+                                    {$this->secondary_db}.tt.status_kredit_debet,
                                     CONCAT(
-                                        panel_utsman.ta.tahun_awal,
+                                        {$this->secondary_db}.ta.tahun_awal,
                                         '/',
-                                        panel_utsman.ta.tahun_akhir
+                                        {$this->secondary_db}.ta.tahun_akhir
                                     ) AS tahun_ajaran,
-									panel_utsman.tt.th_ajaran,
-                                    panel_utsman.tt.tanggal_transaksi,
-                                    DATE_FORMAT(panel_utsman.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
+									{$this->secondary_db}.tt.th_ajaran,
+                                    {$this->secondary_db}.tt.tanggal_transaksi,
+                                    DATE_FORMAT({$this->secondary_db}.tt.waktu_transaksi, '%d/%m/%Y %H:%i:%s') AS waktu_transaksi,
                                     CASE WHEN EXISTS(
                                     SELECT
-                                        panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.vmax.id_max
                                     FROM
-                                        panel_utsman.view_max_id_transaction_tht_employee vmax
+                                        {$this->secondary_db}.view_max_id_transaction_tht_employee vmax
                                     WHERE
-                                        panel_utsman.tt.id_transaksi_tht_pegawai = panel_utsman.vmax.id_max
+                                        {$this->secondary_db}.tt.id_transaksi_tht_pegawai = {$this->secondary_db}.vmax.id_max
                                 ) THEN 1 ELSE 0
                                 END AS status_edit
                                 FROM
-                                    panel_utsman.transaksi_tabungan_tht_pegawai tt
-                                LEFT JOIN panel_utsman.pegawai p
+                                    {$this->secondary_db}.transaksi_tabungan_tht_pegawai tt
+                                LEFT JOIN {$this->secondary_db}.pegawai p
                                 ON
-                                    panel_utsman.p.nip = panel_utsman.tt.nip_pegawai
-                                LEFT JOIN panel_utsman.tahun_ajaran ta
+                                    {$this->secondary_db}.p.nip = {$this->secondary_db}.tt.nip_pegawai
+                                LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
                                 ON
-                                    panel_utsman.ta.id_tahun_ajaran = panel_utsman.tt.th_ajaran
-                                LEFT JOIN keuangan_utsman.akun_keuangan ak
+                                    {$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.tt.th_ajaran
+                                LEFT JOIN {$this->default_db}.akun_keuangan ak
                                 ON
-                                    keuangan_utsman.ak.id_akun_keuangan = panel_utsman.tt.id_pegawai
+                                    {$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.tt.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.tt.waktu_transaksi,
+											{$this->secondary_db}.tt.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
                                 ORDER BY
-                                    panel_utsman.tt.id_transaksi_tht_pegawai
+                                    {$this->secondary_db}.tt.id_transaksi_tht_pegawai
                                 DESC");
         return $sql->result();
     }
     public function get_all_joint_transaction_savings($start_date = '', $end_date = '')
     {
         $sql = $this->db->query("SELECT
-										panel_utsman.ttb.id_transaksi_bersama,
-										panel_utsman.ttb.id_tingkat,
-										panel_utsman.ttb.nomor_rekening_bersama,
-										panel_utsman.ttb.nomor_transaksi_bersama,
-										panel_utsman.tb.nama_tabungan_bersama,
-										panel_utsman.tb.jenis_tabungan,
-										COALESCE(NULLIF(panel_utsman.s.nama_lengkap, ''), panel_utsman.p.nama_lengkap) AS nama_lengkap,
-										COALESCE(NULLIF(panel_utsman.s.nama_wali, ''), panel_utsman.p.nama_lengkap) AS nama_wali,
-										keuangan_utsman.ak.nama_akun,
-										keuangan_utsman.ak.email_akun,
-										panel_utsman.ttb.saldo,
-										panel_utsman.ttb.catatan,
-										panel_utsman.ttb.nominal,
-										panel_utsman.ttb.status_kredit_debet,
+										{$this->secondary_db}.ttb.id_transaksi_bersama,
+										{$this->secondary_db}.ttb.id_tingkat,
+										{$this->secondary_db}.ttb.nomor_rekening_bersama,
+										{$this->secondary_db}.ttb.nomor_transaksi_bersama,
+										{$this->secondary_db}.tb.nama_tabungan_bersama,
+										{$this->secondary_db}.tb.jenis_tabungan,
+										COALESCE(NULLIF({$this->secondary_db}.s.nama_lengkap, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_lengkap,
+										COALESCE(NULLIF({$this->secondary_db}.s.nama_wali, ''), {$this->secondary_db}.p.nama_lengkap) AS nama_wali,
+										{$this->default_db}.ak.nama_akun,
+										{$this->default_db}.ak.email_akun,
+										{$this->secondary_db}.ttb.saldo,
+										{$this->secondary_db}.ttb.catatan,
+										{$this->secondary_db}.ttb.nominal,
+										{$this->secondary_db}.ttb.status_kredit_debet,
 										CONCAT(
-											panel_utsman.ta.tahun_awal,
+											{$this->secondary_db}.ta.tahun_awal,
 											'/',
-											panel_utsman.ta.tahun_akhir
+											{$this->secondary_db}.ta.tahun_akhir
 										) AS tahun_ajaran,
-										panel_utsman.ttb.th_ajaran,
-										panel_utsman.ttb.tanggal_transaksi,
+										{$this->secondary_db}.ttb.th_ajaran,
+										{$this->secondary_db}.ttb.tanggal_transaksi,
 										DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											{$this->secondary_db}.ttb.waktu_transaksi,
 											'%d/%m/%Y %H:%i:%s'
 										) AS waktu_transaksi,
 										CASE WHEN EXISTS(
 										SELECT
-											panel_utsman.vmax.id_max
+											{$this->secondary_db}.vmax.id_max
 										FROM
-											panel_utsman.view_max_id_transaction_joint vmax
+											{$this->secondary_db}.view_max_id_transaction_joint vmax
 										WHERE
-											panel_utsman.ttb.id_transaksi_bersama = panel_utsman.vmax.id_max
+											{$this->secondary_db}.ttb.id_transaksi_bersama = {$this->secondary_db}.vmax.id_max
 									) THEN 1 ELSE 0
 									END AS status_edit
 									FROM
-										panel_utsman.transaksi_tabungan_bersama ttb
-									LEFT JOIN panel_utsman.tabungan_bersama tb
+										{$this->secondary_db}.transaksi_tabungan_bersama ttb
+									LEFT JOIN {$this->secondary_db}.tabungan_bersama tb
 									ON
-										panel_utsman.tb.nomor_rekening_bersama = panel_utsman.ttb.nomor_rekening_bersama
-									LEFT JOIN panel_utsman.siswa s
+										{$this->secondary_db}.tb.nomor_rekening_bersama = {$this->secondary_db}.ttb.nomor_rekening_bersama
+									LEFT JOIN {$this->secondary_db}.siswa s
 									ON
-										panel_utsman.s.nis = panel_utsman.tb.id_penanggung_jawab
+										{$this->secondary_db}.s.nis = {$this->secondary_db}.tb.id_penanggung_jawab
 									LEFT JOIN
-										panel_utsman.pegawai p
+										{$this->secondary_db}.pegawai p
 									ON
-										panel_utsman.p.nip = panel_utsman.tb.id_penanggung_jawab
-									LEFT JOIN panel_utsman.tahun_ajaran ta
+										{$this->secondary_db}.p.nip = {$this->secondary_db}.tb.id_penanggung_jawab
+									LEFT JOIN {$this->secondary_db}.tahun_ajaran ta
 									ON
-										panel_utsman.ta.id_tahun_ajaran = panel_utsman.ttb.th_ajaran
-									LEFT JOIN keuangan_utsman.akun_keuangan ak
+										{$this->secondary_db}.ta.id_tahun_ajaran = {$this->secondary_db}.ttb.th_ajaran
+									LEFT JOIN {$this->default_db}.akun_keuangan ak
 									ON
-										keuangan_utsman.ak.id_akun_keuangan = panel_utsman.ttb.id_pegawai
+										{$this->default_db}.ak.id_akun_keuangan = {$this->secondary_db}.ttb.id_pegawai
 									WHERE
 									(
 										DATE_FORMAT(
-											panel_utsman.ttb.waktu_transaksi,
+											{$this->secondary_db}.ttb.waktu_transaksi,
 											'%Y-%m-%d'
 										) BETWEEN '$start_date' AND '$end_date'
 									)
 									ORDER BY
-										panel_utsman.ttb.id_transaksi_bersama
+										{$this->secondary_db}.ttb.id_transaksi_bersama
 									DESC
 										");
         return $sql->result();
@@ -3334,27 +3334,27 @@ class SavingsModel extends CI_Model
 											status_siswa
 										)
 										SELECT
-											panel_utsman.inp.nis,
-											panel_utsman.inp.nis AS nomor_dpb,
+											{$this->secondary_db}.inp.nis,
+											{$this->secondary_db}.inp.nis AS nomor_dpb,
 											CONCAT(
 												'8',
-												SUBSTRING(panel_utsman.inp.nis, 2)
+												SUBSTRING({$this->secondary_db}.inp.nis, 2)
 											) AS nomor_du,
-											panel_utsman.inp.password,
-											panel_utsman.inp.tingkat,
-											panel_utsman.inp.nama_nasabah,
-											panel_utsman.inp.nomor_hp_wali,
-											panel_utsman.inp.email_nasabah,
-											panel_utsman.inp.nama_wali,
-											panel_utsman.inp.tahun_ajaran,
-											panel_utsman.inp.saldo_umum,
-											panel_utsman.inp.saldo_qurban,
-											panel_utsman.inp.saldo_wisata,
-											panel_utsman.inp.status_siswa
+											{$this->secondary_db}.inp.password,
+											{$this->secondary_db}.inp.tingkat,
+											{$this->secondary_db}.inp.nama_nasabah,
+											{$this->secondary_db}.inp.nomor_hp_wali,
+											{$this->secondary_db}.inp.email_nasabah,
+											{$this->secondary_db}.inp.nama_wali,
+											{$this->secondary_db}.inp.tahun_ajaran,
+											{$this->secondary_db}.inp.saldo_umum,
+											{$this->secondary_db}.inp.saldo_qurban,
+											{$this->secondary_db}.inp.saldo_wisata,
+											{$this->secondary_db}.inp.status_siswa
 										FROM
-											panel_utsman.import_nasabah_personal inp
+											{$this->secondary_db}.import_nasabah_personal inp
 										WHERE
-											panel_utsman.inp.id_nasabah IN ($id)
+											{$this->secondary_db}.inp.id_nasabah IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -3396,22 +3396,22 @@ class SavingsModel extends CI_Model
 											saldo_tabungan_tht
 										)
 										SELECT
-											panel_utsman.inp.nip,
-											panel_utsman.inp.password,
-											panel_utsman.inp.tingkat,
-											panel_utsman.inp.nama_nasabah,
-											panel_utsman.inp.jenis_kelamin,
-											panel_utsman.inp.nomor_hp_pegawai,
-											panel_utsman.inp.email_nasabah,
-											panel_utsman.inp.status_pegawai,
-											panel_utsman.inp.tahun_ajaran,
-											panel_utsman.inp.saldo_umum,
-											panel_utsman.inp.saldo_qurban,
-											panel_utsman.inp.saldo_tht
+											{$this->secondary_db}.inp.nip,
+											{$this->secondary_db}.inp.password,
+											{$this->secondary_db}.inp.tingkat,
+											{$this->secondary_db}.inp.nama_nasabah,
+											{$this->secondary_db}.inp.jenis_kelamin,
+											{$this->secondary_db}.inp.nomor_hp_pegawai,
+											{$this->secondary_db}.inp.email_nasabah,
+											{$this->secondary_db}.inp.status_pegawai,
+											{$this->secondary_db}.inp.tahun_ajaran,
+											{$this->secondary_db}.inp.saldo_umum,
+											{$this->secondary_db}.inp.saldo_qurban,
+											{$this->secondary_db}.inp.saldo_tht
 										FROM
-											panel_utsman.import_nasabah_pegawai inp
+											{$this->secondary_db}.import_nasabah_pegawai inp
 										WHERE
-											panel_utsman.inp.id_nasabah IN ($id)
+											{$this->secondary_db}.inp.id_nasabah IN ($id)
 										ON DUPLICATE KEY UPDATE
 											password = VALUES(password),
 											level_tingkat = VALUES(level_tingkat),
@@ -3450,19 +3450,19 @@ class SavingsModel extends CI_Model
 											jenis_tabungan
 										)
 										SELECT
-											panel_utsman.inb.id_penanggung_jawab,
-											panel_utsman.inb.id_pegawai,
-											panel_utsman.inb.tingkat,
-											panel_utsman.inb.tahun_ajaran,
-											panel_utsman.inb.nomor_rekening_bersama,
-											panel_utsman.inb.nama_tabungan_bersama,
-											panel_utsman.inb.saldo_bersama AS saldo_tabungan_bersama,
-											panel_utsman.inb.keterangan_bersama AS keterangan_tabungan_bersama,
-											panel_utsman.inb.jenis_tabungan
+											{$this->secondary_db}.inb.id_penanggung_jawab,
+											{$this->secondary_db}.inb.id_pegawai,
+											{$this->secondary_db}.inb.tingkat,
+											{$this->secondary_db}.inb.tahun_ajaran,
+											{$this->secondary_db}.inb.nomor_rekening_bersama,
+											{$this->secondary_db}.inb.nama_tabungan_bersama,
+											{$this->secondary_db}.inb.saldo_bersama AS saldo_tabungan_bersama,
+											{$this->secondary_db}.inb.keterangan_bersama AS keterangan_tabungan_bersama,
+											{$this->secondary_db}.inb.jenis_tabungan
 										FROM
-											panel_utsman.import_nasabah_bersama inb
+											{$this->secondary_db}.import_nasabah_bersama inb
 										WHERE
-											panel_utsman.inb.id_nasabah_bersama IN ($id)
+											{$this->secondary_db}.inb.id_nasabah_bersama IN ($id)
 										ON DUPLICATE KEY UPDATE
 											id_penanggung_jawab = VALUES(id_penanggung_jawab),
 											id_pegawai = VALUES(id_pegawai),
@@ -3475,15 +3475,15 @@ class SavingsModel extends CI_Model
 											jenis_tabungan = VALUES(jenis_tabungan)");
 
         $this->db2->query("UPDATE
-								panel_utsman.siswa AS s,
-								panel_utsman.import_nasabah_bersama AS inb
+								{$this->secondary_db}.siswa AS s,
+								{$this->secondary_db}.import_nasabah_bersama AS inb
 							SET
-								panel_utsman.s.nama_wali = panel_utsman.inb.nama_wali,
-								panel_utsman.s.nomor_handphone = panel_utsman.inb.nomor_hp_wali
+								{$this->secondary_db}.s.nama_wali = {$this->secondary_db}.inb.nama_wali,
+								{$this->secondary_db}.s.nomor_handphone = {$this->secondary_db}.inb.nomor_hp_wali
 							WHERE
-								panel_utsman.s.nis = panel_utsman.inb.id_penanggung_jawab
+								{$this->secondary_db}.s.nis = {$this->secondary_db}.inb.id_penanggung_jawab
 								AND
-								panel_utsman.inb.id_nasabah_bersama IN ($id)");
+								{$this->secondary_db}.inb.id_nasabah_bersama IN ($id)");
 
         if ($this->db2->trans_status() === false) {
             $this->db2->trans_rollback();
