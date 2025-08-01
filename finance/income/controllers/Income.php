@@ -2547,6 +2547,8 @@ class Income extends MX_Controller
         // get all raw data
         $data = $this->IncomeModel->get_all_income_dpb();
 
+        //var_dump($data);exit;
+
                                                 // Encrypt the 'id_tagihan_pembayaran_dpb' and add it to each item in the array
         for ($i = 0; $i < count($data); $i++) { // Use '<' instead of '<='
             $data[$i]['id_encrypt']               = paramEncrypt($data[$i]['id_tagihan_pembayaran_dpb']);

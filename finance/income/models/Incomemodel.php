@@ -598,6 +598,8 @@ class IncomeModel extends MY_Model
         $this->db2->from('tagihan_pembayaran_du p');
         $this->db2->join('tahun_ajaran ta', 'p.th_ajaran = ta.id_tahun_ajaran', 'left');
         $this->db2->join('siswa s', 's.nomor_pembayaran_du = p.nomor_siswa', 'left');
+
+        $this->db2->group_by('p.id_tagihan_pembayaran_du');
         $this->db2->order_by('p.id_tagihan_pembayaran_du', 'DESC');
 
         $sql = $this->db2->get();
@@ -626,6 +628,7 @@ class IncomeModel extends MY_Model
         $this->db2->join('tahun_ajaran ta', 'p.th_ajaran = ta.id_tahun_ajaran', 'left');
         $this->db2->join('siswa s', 's.nomor_pembayaran_dpb = p.nomor_siswa', 'left');
 
+        $this->db2->group_by('p.id_tagihan_pembayaran_dpb');
         $this->db2->order_by('p.id_tagihan_pembayaran_dpb', 'DESC');
 
         $sql = $this->db2->get();
@@ -652,6 +655,7 @@ class IncomeModel extends MY_Model
         $this->db2->from('transisi_tagihan_pembayaran p');
         $this->db2->join('tahun_ajaran ta', 'p.th_ajaran = ta.id_tahun_ajaran', 'left');
         $this->db2->join('siswa s', 's.nomor_pembayaran_dpb = p.nomor_siswa', 'left');
+
         $this->db2->order_by('p.inserted_at', 'DESC');
 
         $sql = $this->db2->get();
