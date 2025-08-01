@@ -134,6 +134,12 @@ class Income extends MX_Controller
 
     public function check_payment_number_dpb_add()
     {
+        
+    
+        $this->db->query('SET SESSION interactive_timeout = 28000');
+        $this->db->query('SET SESSION wait_timeout = 28000');
+        $this->db2->query('SET SESSION interactive_timeout = 28000');
+        $this->db2->query('SET SESSION wait_timeout = 28000');
 
         $name = $this->input->post('nama');
         $name = $this->security->xss_clean($name);
@@ -189,6 +195,10 @@ class Income extends MX_Controller
 
     public function check_payment_number_du_add()
     {
+        $this->db->query('SET SESSION interactive_timeout = 28000');
+        $this->db->query('SET SESSION wait_timeout = 28000');
+        $this->db2->query('SET SESSION interactive_timeout = 28000');
+        $this->db2->query('SET SESSION wait_timeout = 28000');
 
         $name = $this->input->post('nama');
         $name = $this->security->xss_clean($name);

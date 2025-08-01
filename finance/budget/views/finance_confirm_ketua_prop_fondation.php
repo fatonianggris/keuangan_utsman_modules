@@ -34,7 +34,7 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            <div class="row">
+            <div class="row"d
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="card card-custom mb-8">
                         <div class="card-body py-4 mt-4 mb-3 text-center">
